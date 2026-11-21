@@ -446,7 +446,13 @@ class RuleEditor(Adw.Dialog):
         self.act_group.set_header_suffix(add)
         self.act_list = Gtk.ListBox(css_classes=["boxed-list"], selection_mode=Gtk.SelectionMode.NONE)
         self.act_empty = Adw.ActionRow(title="Noch keine Aktion", subtitle="Über „+ Aktion“ hinzufügen")
+        # Zweiter Einstieg direkt unter der letzten Aktion – dort, wo man weitermachen will
+        self.add_more = Gtk.MenuButton(css_classes=["flat"], halign=Gtk.Align.START, margin_top=6,
+                                       direction=Gtk.ArrowType.UP)
+        self.add_more.set_child(Adw.ButtonContent(icon_name="list-add-symbolic", label="Weitere Aktion hinzufügen"))
+        self.add_more.set_popover(self._action_popover())
         self.act_group.add(self.act_list)
+        self.act_group.add(self.add_more)
         page.add(self.act_group)
         self.editors: list[ActionEditor] = []
         acts = data.get("do", data.get("actions")) or []
@@ -587,7 +593,7 @@ class RuleEditor(Adw.Dialog):
         for kind in ACTION_ORDER:
             title, desc, icon, style = ACTION_META[kind]
             row = Gtk.ListBoxRow()
-            h = Gtk.Box(spacing=12, margin_top=6, margin_bottom=6, margin_start=4, margin_end=8)
+            h = Gtk.Box(spacing=12, margin_top=3, margin_bottom=3, margin_start=4, margin_end=8)
             h.append(make_tile(icon, style, 30, 16))
             v = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, valign=Gtk.Align.CENTER)
             v.append(Gtk.Label(label=title, xalign=0, css_classes=["heading"]))
@@ -610,7 +616,10 @@ class RuleEditor(Adw.Dialog):
             self._refresh_actions()
             self.mark_dirty()
         box.connect("row-activated", act)
-        pop.set_child(box)
+        # Die Liste ist lang – scrollbar machen, damit sie auch unten im Dialog ganz bedienbar bleibt
+        sc = Gtk.ScrolledWindow(hscrollbar_policy=Gtk.PolicyType.NEVER, propagate_natural_height=True,
+                                max_content_height=380, child=box)
+        pop.set_child(sc)
         return pop
 
     def _add_editor(self, action: dict, expanded=False):
@@ -622,6 +631,7 @@ class RuleEditor(Adw.Dialog):
             self.act_list.remove(c)
         if not self.editors:
             self.act_list.append(self.act_empty)
+        self.add_more.set_visible(bool(self.editors))
         for i, ed in enumerate(self.editors):
             self.act_list.append(ed.row)
             ed.up.set_sensitive(i > 0)
