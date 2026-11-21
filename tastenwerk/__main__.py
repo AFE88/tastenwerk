@@ -190,7 +190,17 @@ def cmd_clipboard(args):
     if command(what) is None:
         print("Erlaubt: show · clear · paste N (1 = zuletzt kopiert)")
         return 2
-    if not control.send_command("clipboard " + what):
+    ok = control.send_command("clipboard " + what)
+    # Aufrufe von außen (OpenLogi, Skripte) nachvollziehbar machen – die laufen ohne Terminal
+    try:
+        import time as _t
+        control.LOG_DIR.mkdir(parents=True, exist_ok=True)
+        with open(control.LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"{_t.strftime('%H:%M:%S')} INFO    Aufruf 'tastenwerk clipboard {what}' "
+                    f"(von PID {os.getppid()}): {'übergeben' if ok else 'Dienst nicht erreichbar'}\n")
+    except OSError:
+        pass
+    if not ok:
         print("Tastenwerk läuft nicht.")
         return 1
     return 0
