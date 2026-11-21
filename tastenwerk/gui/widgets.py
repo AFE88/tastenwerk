@@ -11,6 +11,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk, Pango  # noqa: E402
 from .. import control  # noqa: E402
 from ..apps import Catalog  # noqa: E402
 from ..keys import MOD_ORDER, Combo, KeyError_  # noqa: E402
+from ..i18n import tr, trn  # noqa: E402
 
 CSS = """
 .keycap {
@@ -96,16 +97,16 @@ def install_css():
 # ---------------------------------------------------------------------------
 # Tasten hübsch darstellen
 # ---------------------------------------------------------------------------
-MOD_LABEL = {"ctrl": "Strg", "alt": "Alt", "shift": "⇧ Umschalt", "super": "Super", "altgr": "AltGr"}
+MOD_LABEL = {"ctrl": tr("Strg"), "alt": tr("Alt"), "shift": tr("⇧ Umschalt"), "super": "Super", "altgr": "AltGr"}
 KEY_LABEL = {
-    "Left": "←", "Right": "→", "Up": "↑", "Down": "↓", "Return": "Enter", "KP_Enter": "Enter",
-    "BackSpace": "⌫", "Delete": "Entf", "Escape": "Esc", "Tab": "Tab", "space": "Leertaste",
-    "Prior": "Bild ↑", "Next": "Bild ↓", "Home": "Pos1", "End": "Ende", "Insert": "Einfg",
-    "Print": "Druck", "numbersign": "#", "less": "<", "greater": ">", "plus": "+", "minus": "-",
+    "Left": "←", "Right": "→", "Up": "↑", "Down": "↓", "Return": tr("Enter"), "KP_Enter": tr("Enter"),
+    "BackSpace": "⌫", "Delete": tr("Entf"), "Escape": tr("Esc"), "Tab": "Tab", "space": tr("Leertaste"),
+    "Prior": tr("Bild ↑"), "Next": tr("Bild ↓"), "Home": "Pos1", "End": tr("Ende"), "Insert": tr("Einfg"),
+    "Print": tr("Druck"), "numbersign": "#", "less": "<", "greater": ">", "plus": "+", "minus": "-",
     "period": ".", "comma": ",", "ssharp": "ß", "adiaeresis": "Ä", "odiaeresis": "Ö", "udiaeresis": "Ü",
     "dead_circumflex": "^", "dead_acute": "´", "asciicircum": "^", "Super_L": "Super",
-    "Control_L": "Strg", "Alt_L": "Alt", "Shift_L": "Umschalt", "XF86AudioNext": "⏭", "XF86AudioPrev": "⏮",
-    "XF86AudioPlay": "⏯", "XF86Tools": "F13", "Menu": "Menü", "Caps_Lock": "Feststell",
+    "Control_L": tr("Strg"), "Alt_L": tr("Alt"), "Shift_L": tr("Umschalt"), "XF86AudioNext": "⏭", "XF86AudioPrev": "⏮",
+    "XF86AudioPlay": "⏯", "XF86Tools": "F13", "Menu": tr("Menü"), "Caps_Lock": tr("Feststell"),
 }
 
 
@@ -153,7 +154,7 @@ def gesture_pill(text: str, dim: bool = False) -> Gtk.Widget:
     from ..gestures import ARROW, Gesture, GestureError
     try:
         g = Gesture.parse(text)
-        label, tip = f"{g.fingers} Finger {ARROW[g.direction]}", g.label
+        label, tip = tr("{n} Finger {arrow}").format(n=g.fingers, arrow=ARROW[g.direction]), g.label
     except GestureError:
         label, tip = str(text), None
     box = Gtk.Box(spacing=5, css_classes=["gesturepill"], valign=Gtk.Align.CENTER, tooltip_text=tip)
@@ -182,21 +183,21 @@ def trigger_widget(item_data: dict, dim: bool = False) -> Gtk.Widget:
 # ---------------------------------------------------------------------------
 ACTION_META = {
     # typ: (Titel, Beschreibung, Icon, Kachel-Stil)
-    "type": ("Text einfügen", "Text-Baustein tippen oder einfügen", "insert-text-symbolic", "tile-text"),
-    "keys": ("Tasten senden", "Eine oder mehrere Tastenkombinationen", "input-keyboard-symbolic", "tile-keys"),
-    "window": ("Fenster anordnen", "Andocken, maximieren, Monitor wechseln", "view-dual-symbolic", "tile-window"),
-    "ai": ("Mit Claude umformen", "Markierten Text umschreiben lassen", "starred-symbolic", "tile-ai"),
-    "open": ("Öffnen", "Datei, Ordner, Webseite oder Programm", "folder-open-symbolic", "tile-open"),
-    "run": ("Befehl ausführen", "Shell-Befehl, optional mit Ausgabe", "utilities-terminal-symbolic", "tile-run"),
-    "workspace": ("Arbeitsfläche wechseln", "Nächste, vorherige oder bestimmte", "view-paged-symbolic", "tile-window"),
-    "delay": ("Warten", "Pause zwischen Aktionen", "alarm-symbolic", "tile-other"),
-    "clipboard": ("Zwischenablage-Verlauf", "Frühere Kopien suchen und einfügen", "edit-paste-symbolic", "tile-clip"),
-    "app": ("Programm öffnen / wechseln", "Läuft es, nach vorne holen – sonst starten",
+    "type": (tr("Text einfügen"), tr("Text-Baustein tippen oder einfügen"), "insert-text-symbolic", "tile-text"),
+    "keys": (tr("Tasten senden"), tr("Eine oder mehrere Tastenkombinationen"), "input-keyboard-symbolic", "tile-keys"),
+    "window": (tr("Fenster anordnen"), tr("Andocken, maximieren, Monitor wechseln"), "view-dual-symbolic", "tile-window"),
+    "ai": (tr("Mit Claude umformen"), tr("Markierten Text umschreiben lassen"), "starred-symbolic", "tile-ai"),
+    "open": (tr("Öffnen"), tr("Datei, Ordner, Webseite oder Programm"), "folder-open-symbolic", "tile-open"),
+    "run": (tr("Befehl ausführen"), tr("Shell-Befehl, optional mit Ausgabe"), "utilities-terminal-symbolic", "tile-run"),
+    "workspace": (tr("Arbeitsfläche wechseln"), tr("Nächste, vorherige oder bestimmte"), "view-paged-symbolic", "tile-window"),
+    "delay": (tr("Warten"), tr("Pause zwischen Aktionen"), "alarm-symbolic", "tile-other"),
+    "clipboard": (tr("Zwischenablage-Verlauf"), tr("Frühere Kopien suchen und einfügen"), "edit-paste-symbolic", "tile-clip"),
+    "app": (tr("Programm öffnen / wechseln"), tr("Läuft es, nach vorne holen – sonst starten"),
             "view-app-grid-symbolic", "tile-open"),
-    "screenshot": ("Bildschirmfoto", "Bereich, Bildschirm oder Fenster aufnehmen",
+    "screenshot": (tr("Bildschirmfoto"), tr("Bereich, Bildschirm oder Fenster aufnehmen"),
                    "accessories-screenshot-symbolic", "tile-shot"),
-    "lock": ("Bildschirm sperren", "Sitzung sperren", "system-lock-screen-symbolic", "tile-lock"),
-    "notify": ("Benachrichtigung", "Kurze Meldung anzeigen", "preferences-system-notifications-symbolic", "tile-other"),
+    "lock": (tr("Bildschirm sperren"), tr("Sitzung sperren"), "system-lock-screen-symbolic", "tile-lock"),
+    "notify": (tr("Benachrichtigung"), tr("Kurze Meldung anzeigen"), "preferences-system-notifications-symbolic", "tile-other"),
 }
 ACTION_ORDER = ["type", "keys", "app", "window", "clipboard", "screenshot", "ai", "open", "run", "workspace", "delay", "lock", "notify"]
 
@@ -258,13 +259,13 @@ class AppPicker(Adw.Dialog):
     """Dialog zur Auswahl eines Programms (offene Fenster zuerst, dann alle installierten)."""
 
     def __init__(self, on_pick, exclude=()):
-        super().__init__(title="Programm wählen", content_width=420, content_height=560)
+        super().__init__(title=tr("Programm wählen"), content_width=420, content_height=560)
         self.on_pick = on_pick
         cat = AppCatalog.get()
         tv = Adw.ToolbarView()
         hb = Adw.HeaderBar()
         tv.add_top_bar(hb)
-        self.search = Gtk.SearchEntry(placeholder_text="Programm suchen", hexpand=True)
+        self.search = Gtk.SearchEntry(placeholder_text=tr("Programm suchen"), hexpand=True)
         sbar = Gtk.Box(margin_start=12, margin_end=12, margin_bottom=6)
         sbar.append(self.search)
         tv.add_top_bar(sbar)
@@ -292,13 +293,13 @@ class AppPicker(Adw.Dialog):
             box.append(g)
 
         open_w = [(w, cat.lookup(w)) for w in cat.open_windows()]
-        section("Gerade geöffnet", open_w)
-        section("Alle Programme", [(k, i) for k, i in cat.apps])
-        manual = Adw.PreferencesGroup(title="Nicht in der Liste?",
-                                      description="Programmnamen (WM_CLASS) direkt eintragen, z. B. „code“")
-        self.manual = Adw.EntryRow(title="Programmname")
+        section(tr("Gerade geöffnet"), open_w)
+        section(tr("Alle Programme"), [(k, i) for k, i in cat.apps])
+        manual = Adw.PreferencesGroup(title=tr("Nicht in der Liste?"),
+                                      description=tr("Programmnamen (WM_CLASS) direkt eintragen, z. B. „code“"))
+        self.manual = Adw.EntryRow(title=tr("Programmname"))
         add = Gtk.Button(icon_name="list-add-symbolic", valign=Gtk.Align.CENTER, css_classes=["flat"],
-                         tooltip_text="Hinzufügen")
+                         tooltip_text=tr("Hinzufügen"))
         add.connect("clicked", lambda *_: self.manual.get_text().strip() and self._pick(self.manual.get_text().strip()))
         self.manual.add_suffix(add)
         self.manual.connect("entry-activated", lambda *_: self.manual.get_text().strip() and self._pick(self.manual.get_text().strip()))
@@ -326,7 +327,7 @@ def app_chip(wm: str, on_remove) -> Gtk.Widget:
     box.append(app_image(wm, 16))
     box.append(Gtk.Label(label=AppCatalog.get().name(wm), ellipsize=Pango.EllipsizeMode.END, max_width_chars=22))
     btn = Gtk.Button(icon_name="window-close-symbolic", css_classes=["flat", "circular"],
-                     tooltip_text="Entfernen", valign=Gtk.Align.CENTER)
+                     tooltip_text=tr("Entfernen"), valign=Gtk.Align.CENTER)
     btn.connect("clicked", lambda *_: on_remove(wm))
     box.append(btn)
     return box
@@ -381,7 +382,7 @@ class KeyRecorder(Gtk.Button):
 
     __gsignals__ = {"recorded": (GObject.SignalFlags.RUN_FIRST, None, (str,))}
 
-    def __init__(self, value: str | None = None, placeholder="Kürzel aufnehmen", allow_bare=True):
+    def __init__(self, value: str | None = None, placeholder=tr("Kürzel aufnehmen"), allow_bare=True):
         super().__init__(css_classes=["recorder"], valign=Gtk.Align.CENTER)
         self.value = value
         self.placeholder = placeholder
@@ -404,12 +405,12 @@ class KeyRecorder(Gtk.Button):
             if mods:
                 box.append(keycaps("+".join(mods + ["…"])))
             else:
-                box.append(Gtk.Label(label="Tasten drücken …"))
+                box.append(Gtk.Label(label=tr("Tasten drücken …")))
             self.set_child(box)
-            self.set_tooltip_text("Esc bricht ab · Rücktaste löscht")
+            self.set_tooltip_text(tr("Esc bricht ab · Rücktaste löscht"))
         elif self.value:
             self.set_child(keycaps(self.value))
-            self.set_tooltip_text("Klicken, um neu aufzunehmen")
+            self.set_tooltip_text(tr("Klicken, um neu aufzunehmen"))
         else:
             box = Gtk.Box(spacing=8)
             box.append(Gtk.Image(icon_name="input-keyboard-symbolic"))
@@ -481,7 +482,7 @@ class GestureRecorder(Gtk.Box):
         self.btn.connect("clicked", lambda *_: self.stop() if self.recording else self.start())
         self.append(self.btn)
         self.menu = Gtk.MenuButton(icon_name="view-more-symbolic", valign=Gtk.Align.CENTER,
-                                   css_classes=["flat"], tooltip_text="Geste von Hand wählen")
+                                   css_classes=["flat"], tooltip_text=tr("Geste von Hand wählen"))
         self.menu.set_popover(self._picker())
         self.append(self.menu)
         self._show()
@@ -491,18 +492,18 @@ class GestureRecorder(Gtk.Box):
         if self.recording:
             box = Gtk.Box(spacing=8)
             box.append(Gtk.Image(icon_name="media-record-symbolic"))
-            box.append(Gtk.Label(label="Jetzt auf dem Touchpad wischen …"))
+            box.append(Gtk.Label(label=tr("Jetzt auf dem Touchpad wischen …")))
             self.btn.set_child(box)
-            self.btn.set_tooltip_text("Klicken bricht ab")
+            self.btn.set_tooltip_text(tr("Klicken bricht ab"))
         elif self.value:
             self.btn.set_child(gesture_pill(self.value))
-            self.btn.set_tooltip_text("Klicken und Geste neu ausführen")
+            self.btn.set_tooltip_text(tr("Klicken und Geste neu ausführen"))
         else:
             box = Gtk.Box(spacing=8)
             box.append(Gtk.Image(icon_name="input-touchpad-symbolic"))
-            box.append(Gtk.Label(label="Geste aufnehmen"))
+            box.append(Gtk.Label(label=tr("Geste aufnehmen")))
             self.btn.set_child(box)
-            self.btn.set_tooltip_text("Klicken und die Geste auf dem Touchpad ausführen")
+            self.btn.set_tooltip_text(tr("Klicken und die Geste auf dem Touchpad ausführen"))
 
     # --- Aufnehmen über Touchégg ---
     def start(self):
@@ -512,7 +513,7 @@ class GestureRecorder(Gtk.Box):
         if self._listener.conn is None:
             self._listener.close()
             self._listener = None
-            toast(self, "Touchpad-Gesten nicht erreichbar – bitte von Hand wählen (⋯)")
+            toast(self, tr("Touchpad-Gesten nicht erreichbar – bitte von Hand wählen (⋯)"))
             self.menu.popup()
             return
         self.recording = True
@@ -550,7 +551,7 @@ class GestureRecorder(Gtk.Box):
         pop = Gtk.Popover()
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12, margin_top=12, margin_bottom=12,
                       margin_start=12, margin_end=12)
-        box.append(Gtk.Label(label="Finger", xalign=0, css_classes=["heading"]))
+        box.append(Gtk.Label(label=tr("Finger"), xalign=0, css_classes=["heading"]))
         fb = Gtk.Box(css_classes=["linked"], homogeneous=True)
         self._fbtn = {}
         first = None
@@ -565,7 +566,7 @@ class GestureRecorder(Gtk.Box):
             cur = 4
         self._fbtn.get(cur, self._fbtn[4]).set_active(True)
         box.append(fb)
-        box.append(Gtk.Label(label="Wischen", xalign=0, css_classes=["heading"]))
+        box.append(Gtk.Label(label=tr("Wischen"), xalign=0, css_classes=["heading"]))
         grid = Gtk.Grid(row_spacing=4, column_spacing=4, halign=Gtk.Align.CENTER)
         pos = {"up": (1, 0), "left": (0, 1), "right": (2, 1), "down": (1, 2)}
 
@@ -582,9 +583,9 @@ class GestureRecorder(Gtk.Box):
         grid.attach(Gtk.Image(icon_name="input-touchpad-symbolic", pixel_size=20, css_classes=["dim-label"]),
                     1, 1, 1, 1)
         box.append(grid)
-        box.append(Gtk.Label(label="Zusammenziehen", xalign=0, css_classes=["heading"]))
+        box.append(Gtk.Label(label=tr("Zusammenziehen"), xalign=0, css_classes=["heading"]))
         pb = Gtk.Box(spacing=6, homogeneous=True)
-        for d, text in (("in", "→← zusammen"), ("out", "←→ auseinander")):
+        for d, text in (("in", tr("→← zusammen")), ("out", tr("←→ auseinander"))):
             b = Gtk.Button(label=text)
             b.connect("clicked", pick, "pinch", d)
             pb.append(b)

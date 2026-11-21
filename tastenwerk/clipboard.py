@@ -30,6 +30,7 @@ HISTORY_FILE = DATA_DIR / "history.json"
 IMG_DIR = DATA_DIR / "images"
 
 from .clipboard_defaults import DEFAULTS  # noqa: E402
+from .i18n import tr, trn  # noqa: E402
 MAX_TEXT = 500_000
 MAX_IMAGE_PIXELS = 40_000_000
 SECRET_TARGETS = {"x-kde-passwordManagerHint", "application/x-kde-passwordManagerHint"}
@@ -50,21 +51,21 @@ def _app_name(wm: tuple[str, ...]) -> str:
                 info = None
             if info:
                 return info.get_name()
-    aliases = {"gnome-terminal-server": "Terminal", "zen": "Zen", "org.gnome.nautilus": "Dateien"}
+    aliases = {"gnome-terminal-server": tr("Terminal"), "zen": "Zen", "org.gnome.nautilus": tr("Dateien")}
     return aliases.get(wm[0].lower(), wm[-1])
 
 
 def relative_time(ts: float) -> str:
     d = time.time() - ts
     if d < 60:
-        return "gerade eben"
+        return tr("gerade eben")
     if d < 3600:
-        return f"vor {int(d // 60)} Min."
+        return tr("vor {n} Min.").format(n=int(d // 60))
     if d < 86400 and datetime.fromtimestamp(ts).date() == datetime.now().date():
-        return f"vor {int(d // 3600)} Std."
+        return tr("vor {n} Std.").format(n=int(d // 3600))
     if d < 2 * 86400:
-        return "gestern"
-    return datetime.fromtimestamp(ts).strftime("%d.%m.%Y")
+        return tr("gestern")
+    return datetime.fromtimestamp(ts).strftime(tr("%d.%m.%Y"))
 
 
 # =============================================================================
@@ -362,7 +363,7 @@ class ClipPopup:
         prov.load_from_data(CSS)
         Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(), prov,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-        w = Gtk.Window(title="Zwischenablage")
+        w = Gtk.Window(title=tr("Zwischenablage"))
         w.set_wmclass("tastenwerk-clipboard", "Tastenwerk")
         w.set_decorated(False)
         w.set_skip_taskbar_hint(True)
@@ -385,10 +386,10 @@ class ClipPopup:
         root.get_style_context().add_class("tw-clip")
         head = Gtk.Box(spacing=6)
         head.get_style_context().add_class("tw-clip-head")
-        self.search = Gtk.SearchEntry(placeholder_text="Verlauf durchsuchen …", hexpand=True)
+        self.search = Gtk.SearchEntry(placeholder_text=tr("Verlauf durchsuchen …"), hexpand=True)
         self.search.connect("search-changed", lambda *_: self._fill())
         head.pack_start(self.search, True, True, 0)
-        self.pin_filter = Gtk.ToggleButton(tooltip_text="Nur Angeheftete (Tab)")
+        self.pin_filter = Gtk.ToggleButton(tooltip_text=tr("Nur Angeheftete (Tab)"))
         self.pin_filter.add(Gtk.Image.new_from_icon_name("starred-symbolic", Gtk.IconSize.BUTTON))
         self.pin_filter.get_style_context().add_class("filter")
         self.pin_filter.set_can_focus(False)
@@ -408,7 +409,7 @@ class ClipPopup:
         self.stack.add_named(self.scroller, "list")
         self.stack.add_named(self.empty, "empty")
         root.pack_start(self.stack, True, True, 0)
-        foot = Gtk.Label(label="↵ Einfügen   ⇧↵ Nur kopieren   Strg+1–9   Strg+P Anheften   Entf Löschen",
+        foot = Gtk.Label(label=tr("↵ Einfügen   ⇧↵ Nur kopieren   Strg+1–9   Strg+P Anheften   Entf Löschen"),
                          xalign=0, ellipsize=Pango.EllipsizeMode.END)
         foot.get_style_context().add_class("foot")
         root.pack_start(foot, False, False, 0)
@@ -428,9 +429,9 @@ class ClipPopup:
         if not self.search.get_text() and not self.only_pinned:
             pinned = row.item.get("pinned")
             if before is None:
-                want = "Angeheftet" if pinned else None
+                want = tr("Angeheftet") if pinned else None
             elif before.item.get("pinned") and not pinned:
-                want = "Verlauf"
+                want = tr("Verlauf")
         if want:
             lbl = Gtk.Label(label=want.upper(), xalign=0)
             lbl.get_style_context().add_class("section")
@@ -464,7 +465,7 @@ class ClipPopup:
             img.set_halign(Gtk.Align.START)
             img.get_style_context().add_class("thumb")
             mid.pack_start(img, False, False, 0)
-            meta = f"Bild {it.get('width', '?')}×{it.get('height', '?')}"
+            meta = tr("Bild {w}×{h}").format(w=it.get('width', '?'), h=it.get('height', '?'))
         else:
             text = it["text"]
             flat = " ".join(text.split())
@@ -472,7 +473,8 @@ class ClipPopup:
                             wrap_mode=Pango.WrapMode.WORD_CHAR, max_width_chars=40)
             mid.pack_start(lbl, False, False, 0)
             nl = text.count("\n")
-            meta = f"{len(text)} Zeichen" + (f" · {nl + 1} Zeilen" if nl else "")
+            meta = trn("{n} Zeichen", "{n} Zeichen", len(text)).format(n=len(text)) + \
+                (tr(" · {n} Zeilen").format(n=nl + 1) if nl else "")
             row.set_tooltip_text(text[:1500] + ("…" if len(text) > 1500 else ""))
         parts = [p for p in (it.get("app"), relative_time(it.get("time", 0)), meta) if p]
         m = Gtk.Label(label=" · ".join(parts), xalign=0, ellipsize=Pango.EllipsizeMode.END)
@@ -480,7 +482,7 @@ class ClipPopup:
         mid.pack_start(m, False, False, 0)
         box.pack_start(mid, True, True, 0)
         pin = Gtk.Button(relief=Gtk.ReliefStyle.NONE, valign=Gtk.Align.CENTER,
-                         tooltip_text="Lösen (Strg+P)" if it.get("pinned") else "Anheften (Strg+P)")
+                         tooltip_text=tr("Lösen (Strg+P)") if it.get("pinned") else tr("Anheften (Strg+P)"))
         pin.add(Gtk.Image.new_from_icon_name("starred-symbolic" if it.get("pinned") else "non-starred-symbolic",
                                              Gtk.IconSize.BUTTON))
         pin.get_style_context().add_class("rowbtn")
@@ -488,7 +490,7 @@ class ClipPopup:
             pin.get_style_context().add_class("on")
         pin.set_can_focus(False)
         pin.connect("clicked", lambda *_: self.history.toggle_pin(it["id"]))
-        dele = Gtk.Button(relief=Gtk.ReliefStyle.NONE, valign=Gtk.Align.CENTER, tooltip_text="Löschen (Entf)")
+        dele = Gtk.Button(relief=Gtk.ReliefStyle.NONE, valign=Gtk.Align.CENTER, tooltip_text=tr("Löschen (Entf)"))
         dele.add(Gtk.Image.new_from_icon_name("user-trash-symbolic", Gtk.IconSize.BUTTON))
         dele.get_style_context().add_class("rowbtn")
         dele.set_can_focus(False)
@@ -528,13 +530,13 @@ class ClipPopup:
             self._select(target or self.list.get_row_at_index(0))
         else:
             if self.search.get_text():
-                self.empty.set_text("Nichts gefunden")
+                self.empty.set_text(tr("Nichts gefunden"))
             elif self.only_pinned:
-                self.empty.set_text("Noch nichts angeheftet\nStrg+P heftet den markierten Eintrag an")
+                self.empty.set_text(tr("Noch nichts angeheftet\nStrg+P heftet den markierten Eintrag an"))
             elif not self.history.cfg.get("history", True):
-                self.empty.set_text("Der Verlauf ist ausgeschaltet\n(Tastenwerk → Einstellungen → Zwischenablage)")
+                self.empty.set_text(tr("Der Verlauf ist ausgeschaltet\n(Tastenwerk → Einstellungen → Zwischenablage)"))
             else:
-                self.empty.set_text("Noch leer\nAlles, was du kopierst, erscheint hier")
+                self.empty.set_text(tr("Noch leer\nAlles, was du kopierst, erscheint hier"))
             self.stack.set_visible_child_name("empty")
 
     def _select(self, row):

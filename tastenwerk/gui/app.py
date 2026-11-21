@@ -18,16 +18,17 @@ from ..config import ConfigError  # noqa: E402
 from ..keys import Combo, KeyError_  # noqa: E402
 from ..store import RuleItem, Store  # noqa: E402
 from .widgets import AppCatalog, action_tile, app_image, install_css, trigger_widget  # noqa: E402
+from ..i18n import tr, trn  # noqa: E402
 
 CATEGORIES = [
-    ("all", "Alle Regeln", "view-list-symbolic"),
-    ("hotkeys", "Tastenkürzel", "input-keyboard-symbolic"),
-    ("abbr", "Tastenfolgen", "insert-text-symbolic"),
-    ("gestures", "Touchpad-Gesten", "input-touchpad-symbolic"),
-    ("window", "Fenster", "view-dual-symbolic"),
-    ("ai", "Mit Claude", "starred-symbolic"),
-    ("review", "Zu prüfen", "dialog-warning-symbolic"),
-    ("off", "Ausgeschaltet", "action-unavailable-symbolic"),
+    ("all", tr("Alle Regeln"), "view-list-symbolic"),
+    ("hotkeys", tr("Tastenkürzel"), "input-keyboard-symbolic"),
+    ("abbr", tr("Tastenfolgen"), "insert-text-symbolic"),
+    ("gestures", tr("Touchpad-Gesten"), "input-touchpad-symbolic"),
+    ("window", tr("Fenster"), "view-dual-symbolic"),
+    ("ai", tr("Mit Claude"), "starred-symbolic"),
+    ("review", tr("Zu prüfen"), "dialog-warning-symbolic"),
+    ("off", tr("Ausgeschaltet"), "action-unavailable-symbolic"),
 ]
 
 
@@ -101,14 +102,14 @@ class MainWindow(Adw.ApplicationWindow):
         hb = Adw.HeaderBar()
         menu = Gio.Menu()
         sec = Gio.Menu()
-        sec.append("Aus BetterTouchTool importieren …", "app.import")
+        sec.append(tr("Aus BetterTouchTool importieren …"), "app.import")
         menu.append_section(None, sec)
         sec = Gio.Menu()
-        sec.append("Einstellungen", "app.preferences")
-        sec.append("Tastenkürzel von Tastenwerk", "app.shortcuts")
-        sec.append("Über Tastenwerk", "app.about")
+        sec.append(tr("Einstellungen"), "app.preferences")
+        sec.append(tr("Tastenkürzel von Tastenwerk"), "app.shortcuts")
+        sec.append(tr("Über Tastenwerk"), "app.about")
         menu.append_section(None, sec)
-        mb = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu, tooltip_text="Hauptmenü", primary=True)
+        mb = Gtk.MenuButton(icon_name="open-menu-symbolic", menu_model=menu, tooltip_text=tr("Hauptmenü"), primary=True)
         hb.pack_end(mb)
         title = Adw.WindowTitle(title="Tastenwerk")
         hb.set_title_widget(title)
@@ -118,7 +119,7 @@ class MainWindow(Adw.ApplicationWindow):
         self.cat_list = Gtk.ListBox(css_classes=["navigation-sidebar"], selection_mode=Gtk.SelectionMode.SINGLE)
         self.cat_list.connect("row-selected", self._on_cat_selected)
         box.append(self.cat_list)
-        self.app_heading = Gtk.Label(label="PROGRAMME", xalign=0, css_classes=["sidebar-heading"])
+        self.app_heading = Gtk.Label(label=tr("Programme").upper(), xalign=0, css_classes=["sidebar-heading"])
         box.append(self.app_heading)
         self.app_list = Gtk.ListBox(css_classes=["navigation-sidebar"], selection_mode=Gtk.SelectionMode.SINGLE)
         self.app_list.connect("row-selected", self._on_cat_selected)
@@ -137,7 +138,7 @@ class MainWindow(Adw.ApplicationWindow):
         v.append(self.status_title)
         v.append(self.status_sub)
         card.append(v)
-        self.status_switch = Gtk.Switch(valign=Gtk.Align.CENTER, tooltip_text="Hintergrunddienst starten/stoppen")
+        self.status_switch = Gtk.Switch(valign=Gtk.Align.CENTER, tooltip_text=tr("Hintergrunddienst starten/stoppen"))
         self._switch_handler = self.status_switch.connect("state-set", self._on_status_switch)
         card.append(self.status_switch)
         tv.add_bottom_bar(card)
@@ -146,17 +147,17 @@ class MainWindow(Adw.ApplicationWindow):
     def _build_content(self):
         tv = Adw.ToolbarView()
         hb = Adw.HeaderBar()
-        self.content_title = Adw.WindowTitle(title="Alle Regeln")
+        self.content_title = Adw.WindowTitle(title=tr("Alle Regeln"))
         hb.set_title_widget(self.content_title)
-        self.search_btn = Gtk.ToggleButton(icon_name="system-search-symbolic", tooltip_text="Suchen (Strg+F)")
+        self.search_btn = Gtk.ToggleButton(icon_name="system-search-symbolic", tooltip_text=tr("Suchen (Strg+F)"))
         hb.pack_start(self.search_btn)
-        add = Gtk.Button(icon_name="list-add-symbolic", tooltip_text="Neue Regel (Strg+N)")
+        add = Gtk.Button(icon_name="list-add-symbolic", tooltip_text=tr("Neue Regel (Strg+N)"))
         add.connect("clicked", lambda *_: self.new_rule())
         hb.pack_end(add)
         tv.add_top_bar(hb)
 
         self.search_bar = Gtk.SearchBar()
-        self.search_entry = Gtk.SearchEntry(placeholder_text="Name, Kürzel, Text oder Programm", hexpand=True)
+        self.search_entry = Gtk.SearchEntry(placeholder_text=tr("Name, Kürzel, Text oder Programm"), hexpand=True)
         clamp = Adw.Clamp(maximum_size=600, child=self.search_entry)
         self.search_bar.set_child(clamp)
         self.search_bar.connect_entry(self.search_entry)
@@ -166,14 +167,14 @@ class MainWindow(Adw.ApplicationWindow):
         self.search_entry.connect("search-changed", self._on_search)
         tv.add_top_bar(self.search_bar)
 
-        self.banner = Adw.Banner(title="Tastenwerk ist gestoppt – Kürzel, Tastenfolgen und Gesten reagieren gerade nicht.",
-                                 button_label="Starten")
+        self.banner = Adw.Banner(title=tr("Tastenwerk ist gestoppt – Kürzel, Tastenfolgen und Gesten reagieren gerade nicht."),
+                                 button_label=tr("Starten"))
         self.banner.connect("button-clicked", lambda *_: self._start_daemon())
         tv.add_top_bar(self.banner)
 
         self.scroller = Gtk.ScrolledWindow(vexpand=True, hscrollbar_policy=Gtk.PolicyType.NEVER)
         tv.set_content(self.scroller)
-        self.content_page = Adw.NavigationPage(title="Regeln", child=tv)
+        self.content_page = Adw.NavigationPage(title=tr("Regeln"), child=tv)
         return self.content_page
 
     # ================================================================ Befüllen
@@ -210,7 +211,7 @@ class MainWindow(Adw.ApplicationWindow):
             for a in it.apps:
                 apps[a] = apps.get(a, 0) + 1
         cat = AppCatalog.get()
-        app_entries = [("global", "Überall", "applications-system-symbolic", None, sum(1 for it in items if not it.apps))]
+        app_entries = [("global", tr("Überall"), "applications-system-symbolic", None, sum(1 for it in items if not it.apps))]
         for a in sorted(apps, key=lambda x: cat.name(x).casefold()):
             app_entries.append(("app:" + a, cat.name(a), None, a, apps[a]))
         return cats, app_entries
@@ -253,10 +254,10 @@ class MainWindow(Adw.ApplicationWindow):
             if key == cat:
                 return label
         if cat == "global":
-            return "Überall"
+            return tr("Überall")
         if cat.startswith("app:"):
             return AppCatalog.get().name(cat[4:])
-        return "Regeln"
+        return tr("Regeln")
 
     def _visible_items(self):
         q = self.query.casefold()
@@ -278,27 +279,28 @@ class MainWindow(Adw.ApplicationWindow):
         items = self._visible_items()
         self.content_title.set_title(self._cat_label(self.category))
         n = len(items)
-        self.content_title.set_subtitle(f"{n} Regel{'n' if n != 1 else ''}" + (" gefunden" if self.query else ""))
+        self.content_title.set_subtitle((trn("{n} Regel gefunden", "{n} Regeln gefunden", n) if self.query
+                                         else trn("{n} Regel", "{n} Regeln", n)).format(n=n))
         self.content_page.set_title(self._cat_label(self.category))
 
         if not items:
             if self.query:
-                sp = Adw.StatusPage(icon_name="system-search-symbolic", title="Nichts gefunden",
-                                    description="Versuche einen anderen Suchbegriff.")
+                sp = Adw.StatusPage(icon_name="system-search-symbolic", title=tr("Nichts gefunden"),
+                                    description=tr("Versuche einen anderen Suchbegriff."))
             elif not self.store.items:
-                sp = Adw.StatusPage(icon_name=control.APP_ID, title="Willkommen bei Tastenwerk",
-                                    description="Lege deine erste Regel an – oder übernimm deine Einstellungen aus BetterTouchTool.")
+                sp = Adw.StatusPage(icon_name=control.APP_ID, title=tr("Willkommen bei Tastenwerk"),
+                                    description=tr("Lege deine erste Regel an – oder übernimm deine Einstellungen aus BetterTouchTool."))
                 b = Gtk.Box(spacing=12, halign=Gtk.Align.CENTER)
-                n1 = Gtk.Button(label="Neue Regel", css_classes=["pill", "suggested-action"])
+                n1 = Gtk.Button(label=tr("Neue Regel"), css_classes=["pill", "suggested-action"])
                 n1.connect("clicked", lambda *_: self.new_rule())
-                n2 = Gtk.Button(label="Aus BetterTouchTool importieren", css_classes=["pill"])
+                n2 = Gtk.Button(label=tr("Aus BetterTouchTool importieren"), css_classes=["pill"])
                 n2.connect("clicked", lambda *_: self.get_application().activate_action("import"))
                 b.append(n1)
                 b.append(n2)
                 sp.set_child(b)
             else:
-                sp = Adw.StatusPage(icon_name="view-list-symbolic", title="Hier ist noch nichts",
-                                    description="In dieser Ansicht gibt es keine Regeln.")
+                sp = Adw.StatusPage(icon_name="view-list-symbolic", title=tr("Hier ist noch nichts"),
+                                    description=tr("In dieser Ansicht gibt es keine Regeln."))
             self.scroller.set_child(sp)
             return
 
@@ -307,8 +309,8 @@ class MainWindow(Adw.ApplicationWindow):
         warns = self.store.warnings()
         if warns and self.category in ("all", "review") and not self.query:
             g = Adw.PreferencesGroup()
-            ex = Adw.ExpanderRow(title=f"{len(warns)} Hinweis{'e' if len(warns) != 1 else ''} zur Konfiguration",
-                                 subtitle="Doppelte Belegungen und ähnliches")
+            ex = Adw.ExpanderRow(title=trn("{n} Hinweis zur Konfiguration", "{n} Hinweise zur Konfiguration", len(warns)).format(n=len(warns)),
+                                 subtitle=tr("Doppelte Belegungen und ähnliches"))
             ex.add_prefix(Gtk.Image(icon_name="dialog-warning-symbolic", css_classes=["warning"]))
             for w in warns[:30]:
                 ex.add_row(Adw.ActionRow(title=esc(w), title_lines=3))
@@ -329,7 +331,7 @@ class MainWindow(Adw.ApplicationWindow):
             if single:
                 title = ""
             elif key == "*":
-                title = "Überall"
+                title = tr("Überall")
             else:
                 title = ", ".join(cat.name(a) for a in key.split(", "))
             g = Adw.PreferencesGroup(title=esc(title))
@@ -354,17 +356,17 @@ class MainWindow(Adw.ApplicationWindow):
             try:
                 c = Combo.parse(str(it.hotkey))
                 if c in self.system_shortcuts:
-                    problem = f"Von GNOME belegt ({self.system_shortcuts[c]}) – wird nicht ausgelöst"
+                    problem = tr("Von GNOME belegt ({what}) – wird nicht ausgelöst").format(what=self.system_shortcuts[c])
             except KeyError_:
-                problem = "Ungültiges Kürzel"
+                problem = tr("Ungültiges Kürzel")
         if it.gesture:
             g = it.gesture_obj
             if g is None:
-                problem = "Ungültige Geste"
+                problem = tr("Ungültige Geste")
             elif self.system_gestures and g in self.system_gestures:
-                problem = f"Wird auch vom System genutzt ({self.system_gestures[g]}) – beides löst aus"
+                problem = tr("Wird auch vom System genutzt ({what}) – beides löst aus").format(what=self.system_gestures[g])
         if it.notes:
-            problem = (problem + "\n" if problem else "") + "Hinweise vom Import: " + "; ".join(it.notes[:2])
+            problem = (problem + "\n" if problem else "") + tr("Hinweise vom Import: ") + "; ".join(it.notes[:2])
         if problem:
             ic = Gtk.Image(icon_name="dialog-warning-symbolic", css_classes=["warning"], tooltip_text=problem,
                            valign=Gtk.Align.CENTER)
@@ -387,9 +389,9 @@ class MainWindow(Adw.ApplicationWindow):
         rect.x, rect.y, rect.width, rect.height = int(x), int(y), 1, 1
         pop.set_pointing_to(rect)
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, css_classes=["menu"])
-        for label, fn in (("Bearbeiten", lambda: self.edit(it)),
-                          ("Duplizieren", lambda: self._dup(it)),
-                          ("Löschen", lambda: self.delete_item(it))):
+        for label, fn in ((tr("Bearbeiten"), lambda: self.edit(it)),
+                          (tr("Duplizieren"), lambda: self._dup(it)),
+                          (tr("Löschen"), lambda: self.delete_item(it))):
             b = Gtk.Button(label=label, css_classes=["flat"], halign=Gtk.Align.FILL)
             b.get_child().set_xalign(0)
             b.connect("clicked", lambda _b, f=fn: (pop.popdown(), f()))
@@ -410,7 +412,7 @@ class MainWindow(Adw.ApplicationWindow):
         try:
             self.store.set_enabled(it, state)
         except ConfigError as e:
-            self.toast(f"Fehler: {e}")
+            self.toast(tr("Fehler: {e}").format(e=e))
             return True
         GLib.idle_add(lambda: (self.refresh(), False)[1])
         return False
@@ -437,7 +439,7 @@ class MainWindow(Adw.ApplicationWindow):
     def _dup(self, it):
         new = self.store.duplicate(it)
         self.refresh()
-        self.toast("Kopie angelegt (ausgeschaltet)")
+        self.toast(tr("Kopie angelegt (ausgeschaltet)"))
         self.edit(new)
 
     def delete_item(self, it):
@@ -452,7 +454,7 @@ class MainWindow(Adw.ApplicationWindow):
             self.store.save(file)
             self.store.load()
             self.refresh()
-        self.toast(f"„{it.name}“ gelöscht", "Rückgängig", undo)
+        self.toast(tr("„{name}“ gelöscht").format(name=it.name), tr("Rückgängig"), undo)
 
     def reload_store(self):
         self.store.load()
@@ -485,7 +487,7 @@ class MainWindow(Adw.ApplicationWindow):
                 self.store.load()
                 self.refresh()
             except ConfigError as e:
-                self.toast(f"Konfiguration fehlerhaft: {e}")
+                self.toast(tr("Konfiguration fehlerhaft: {e}").format(e=e))
         return True
 
     def _poll_status(self):
@@ -497,30 +499,31 @@ class MainWindow(Adw.ApplicationWindow):
         self.dot.remove_css_class("stopped")
         if pid and control.PAUSED_FILE.exists():
             self.dot.add_css_class("stopped")
-            self.status_title.set_label("Pausiert")
-            self.status_sub.set_label("Fortsetzen über das Tray-Symbol")
+            self.status_title.set_label(tr("Pausiert"))
+            self.status_sub.set_label(tr("Fortsetzen über das Tray-Symbol"))
         elif pid:
-            self.status_title.set_label("Aktiv")
+            self.status_title.set_label(tr("Aktiv"))
             n = sum(1 for it in self.store.items if it.enabled) if self.store else 0
-            self.status_sub.set_label(f"{n} Regeln reagieren")
+            self.status_sub.set_label(trn("{n} Regel reagiert", "{n} Regeln reagieren", n).format(n=n))
         else:
             self.dot.add_css_class("stopped")
-            self.status_title.set_label("Gestoppt")
-            self.status_sub.set_label("Kürzel reagieren nicht")
+            self.status_title.set_label(tr("Gestoppt"))
+            self.status_sub.set_label(tr("Kürzel reagieren nicht"))
         self.banner.set_revealed(not pid)
 
     def _on_status_switch(self, sw, state):
         ok = control.start() if state else control.stop()
         if not ok:
-            self.toast("Konnte den Dienst nicht " + ("starten" if state else "stoppen") + " – siehe Protokoll")
+            self.toast(tr("Konnte den Dienst nicht starten – siehe Protokoll") if state
+                       else tr("Konnte den Dienst nicht stoppen – siehe Protokoll"))
         self._poll_status()
         return True
 
     def _start_daemon(self):
         if control.start():
-            self.toast("Tastenwerk läuft")
+            self.toast(tr("Tastenwerk läuft"))
         else:
-            self.toast("Start fehlgeschlagen – siehe Protokoll in den Einstellungen")
+            self.toast(tr("Start fehlgeschlagen – siehe Protokoll in den Einstellungen"))
         self._poll_status()
 
     def _load_system_shortcuts(self):
@@ -544,9 +547,9 @@ class MainWindow(Adw.ApplicationWindow):
         return False
 
     def _show_load_error(self):
-        sp = Adw.StatusPage(icon_name="dialog-error-symbolic", title="Konfiguration fehlerhaft",
+        sp = Adw.StatusPage(icon_name="dialog-error-symbolic", title=tr("Konfiguration fehlerhaft"),
                             description=esc(self.load_error))
-        b = Gtk.Button(label="Ordner öffnen", css_classes=["pill"], halign=Gtk.Align.CENTER)
+        b = Gtk.Button(label=tr("Ordner öffnen"), css_classes=["pill"], halign=Gtk.Align.CENTER)
         from ..config import CONFIG_DIR
         b.connect("clicked", lambda *_: Gio.AppInfo.launch_default_for_uri(CONFIG_DIR.as_uri(), None))
         sp.set_child(b)
@@ -590,23 +593,23 @@ class TastenwerkApp(Adw.Application):
     def _about(self, *_):
         d = Adw.AboutDialog(application_name="Tastenwerk", application_icon=control.APP_ID, version=__version__,
                             developer_name="Tastenwerk",
-                            comments="Tastenkürzel, Tastenfolgen, Touchpad-Gesten, Zwischenablage-Verlauf und "
+                            comments=tr("Tastenkürzel, Tastenfolgen, Touchpad-Gesten, Zwischenablage-Verlauf und "
                                      "Fenster-Aktionen für Linux.\n"
-                                     "Mit BetterTouchTool-Import und Claude-Textumformung.",
+                                     "Mit BetterTouchTool-Import und Claude-Textumformung."),
                             website="https://github.com/AFE88/tastenwerk",
                             issue_url="https://github.com/AFE88/tastenwerk/issues",
                             license_type=Gtk.License.GPL_3_0)
         d.present(self.win)
 
     def _shortcuts(self, *_):
-        d = Adw.Dialog(title="Tastenkürzel von Tastenwerk", content_width=420)
+        d = Adw.Dialog(title=tr("Tastenkürzel von Tastenwerk"), content_width=420)
         tv = Adw.ToolbarView()
         tv.add_top_bar(Adw.HeaderBar())
         page = Adw.PreferencesPage()
         g = Adw.PreferencesGroup()
         from .widgets import keycaps
-        for combo, text in (("ctrl+n", "Neue Regel"), ("ctrl+f", "Suchen"), ("ctrl+i", "Aus BetterTouchTool importieren"),
-                            ("ctrl+comma", "Einstellungen"), ("ctrl+q", "Beenden")):
+        for combo, text in (("ctrl+n", tr("Neue Regel")), ("ctrl+f", tr("Suchen")), ("ctrl+i", tr("Aus BetterTouchTool importieren")),
+                            ("ctrl+comma", tr("Einstellungen")), ("ctrl+q", tr("Beenden"))):
             r = Adw.ActionRow(title=text)
             r.add_suffix(keycaps(combo))
             g.add(r)

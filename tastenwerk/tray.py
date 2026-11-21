@@ -9,23 +9,40 @@ from __future__ import annotations
 import logging
 import subprocess
 
-from .mainthread import Gtk
+from .i18n import tr, trn  # noqa: E402
 
 log = logging.getLogger("tastenwerk")
 
-try:
-    import gi
-    gi.require_version("AyatanaAppIndicator3", "0.1")
-    from gi.repository import AyatanaAppIndicator3 as AI
-except (ValueError, ImportError):
-    AI = None
+# GTK 3 und AppIndicator erst im Dienst laden – die Oberfläche (GTK 4) fragt nur available()
+AI = None
+Gtk = None
 
 ICON = "tastenwerk-tray-symbolic"
 ICON_PAUSED = "tastenwerk-tray-paused-symbolic"
 
 
 def available() -> bool:
-    return AI is not None
+    """Ist die AppIndicator-Bibliothek installiert? (lädt nichts, auch nicht in der GTK-4-Oberfläche)"""
+    try:
+        import gi
+        return bool(gi.Repository.get_default().enumerate_versions("AyatanaAppIndicator3"))
+    except Exception:
+        return False
+
+
+def _load() -> bool:
+    global AI, Gtk
+    if AI is not None:
+        return True
+    try:
+        from .mainthread import Gtk as _Gtk
+        import gi
+        gi.require_version("AyatanaAppIndicator3", "0.1")
+        from gi.repository import AyatanaAppIndicator3 as _AI
+    except (ValueError, ImportError):
+        return False
+    AI, Gtk = _AI, _Gtk
+    return True
 
 
 class Tray:
@@ -40,7 +57,7 @@ class Tray:
             if self.ind is not None:
                 self.ind.set_status(AI.IndicatorStatus.PASSIVE)
             return
-        if AI is None:
+        if not _load():
             log.info("Tray-Symbol nicht verfügbar (Paket gir1.2-ayatanaappindicator3-0.1 fehlt)")
             return
         if self.ind is None:
@@ -58,13 +75,13 @@ class Tray:
         self.status_item.set_sensitive(False)
         m.append(self.status_item)
         m.append(Gtk.SeparatorMenuItem())
-        self._item(m, "Zwischenablage-Verlauf", lambda: self.daemon._control_command("clipboard show"))
-        self.pause_item = self._item(m, "Pausieren", self._toggle_pause)
+        self._item(m, tr("Zwischenablage-Verlauf"), lambda: self.daemon._control_command("clipboard show"))
+        self.pause_item = self._item(m, tr("Pausieren"), self._toggle_pause)
         m.append(Gtk.SeparatorMenuItem())
-        self._item(m, "Tastenwerk öffnen …", self._open_gui)
-        self._item(m, "Konfiguration neu laden", lambda: self.daemon.reload())
+        self._item(m, tr("Tastenwerk öffnen …"), self._open_gui)
+        self._item(m, tr("Konfiguration neu laden"), lambda: self.daemon.reload())
         m.append(Gtk.SeparatorMenuItem())
-        self._item(m, "Beenden", self.daemon.quit)
+        self._item(m, tr("Beenden"), self.daemon.quit)
         m.show_all()
         self.menu = m
         self.ind.set_menu(m)
@@ -84,14 +101,14 @@ class Tray:
             return
         d = self.daemon
         if d.user_paused:
-            self.ind.set_icon_full(ICON_PAUSED, "Tastenwerk pausiert")
-            self.status_item.set_label("Pausiert – Kürzel ruhen")
-            self.pause_item.set_label("Fortsetzen")
+            self.ind.set_icon_full(ICON_PAUSED, tr("Tastenwerk pausiert"))
+            self.status_item.set_label(tr("Pausiert – Kürzel ruhen"))
+            self.pause_item.set_label(tr("Fortsetzen"))
         else:
             n = len(d.config.enabled_rules()) if d.config else 0
-            self.ind.set_icon_full(ICON, "Tastenwerk aktiv")
-            self.status_item.set_label(f"Aktiv – {n} Regeln")
-            self.pause_item.set_label("Pausieren")
+            self.ind.set_icon_full(ICON, tr("Tastenwerk aktiv"))
+            self.status_item.set_label(trn("Aktiv – {n} Regel", "Aktiv – {n} Regeln", n).format(n=n))
+            self.pause_item.set_label(tr("Pausieren"))
 
     def _toggle_pause(self):
         self.daemon.set_user_paused(not self.daemon.user_paused)

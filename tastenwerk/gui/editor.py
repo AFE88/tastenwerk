@@ -13,16 +13,17 @@ from ..config import WINDOW_OPS, ConfigError  # noqa: E402
 from ..keys import Combo, KeyError_, parse_sequence  # noqa: E402
 from .widgets import (ACTION_META, ACTION_ORDER, AppPicker, GestureRecorder, KeyRecorder, action_kind,  # noqa: E402
                       app_chip, keycaps, make_tile)
+from ..i18n import tr, trn  # noqa: E402
 
-PLACEHOLDERS = [("Datum", "{date}"), ("Uhrzeit", "{time}"), ("Datum + Zeit", "{datetime}"),
-                ("Zwischenablage", "{clipboard}"), ("Cursor hier", "{cursor}")]
-TEXT_METHODS = [("auto", "Automatisch", "Kurze Texte tippen, lange und mehrzeilige einfügen"),
-                ("type", "Tippen", "Zeichen für Zeichen – funktioniert überall"),
-                ("paste", "Einfügen", "Über die Zwischenablage – schnell, ideal für lange Texte")]
-RUN_OUTPUT = [(None, "Ignorieren"), ("type", "An Cursor einfügen"), ("paste", "Über Zwischenablage einfügen"),
-              ("notify", "Als Benachrichtigung")]
-AI_INPUT = [("selection", "Markierter Text"), ("line", "Aktuelle Zeile bis zum Cursor"), ("all", "Gesamter Text im Feld")]
-WS_CHOICES = [("next", "Nächste"), ("prev", "Vorherige")] + [(str(i), f"Nummer {i}") for i in range(1, 10)]
+PLACEHOLDERS = [(tr("Datum"), "{date}"), (tr("Uhrzeit"), "{time}"), (tr("Datum + Zeit"), "{datetime}"),
+                (tr("Zwischenablage"), "{clipboard}"), (tr("Cursor hier"), "{cursor}")]
+TEXT_METHODS = [("auto", tr("Automatisch"), tr("Kurze Texte tippen, lange und mehrzeilige einfügen")),
+                ("type", tr("Tippen"), tr("Zeichen für Zeichen – funktioniert überall")),
+                ("paste", tr("Einfügen"), tr("Über die Zwischenablage – schnell, ideal für lange Texte"))]
+RUN_OUTPUT = [(None, tr("Ignorieren")), ("type", tr("An Cursor einfügen")), ("paste", tr("Über Zwischenablage einfügen")),
+              ("notify", tr("Als Benachrichtigung"))]
+AI_INPUT = [("selection", tr("Markierter Text")), ("line", tr("Aktuelle Zeile bis zum Cursor")), ("all", tr("Gesamter Text im Feld"))]
+WS_CHOICES = [("next", tr("Nächste")), ("prev", tr("Vorherige"))] + [(str(i), tr("Nummer {i}").format(i=i)) for i in range(1, 10)]
 
 
 def _string_list(labels):
@@ -47,7 +48,7 @@ class TextArea(Gtk.Box):
         self.buf.connect("changed", lambda *_: on_change())
         if placeholders:
             bar = Gtk.Box(spacing=6)
-            bar.append(Gtk.Label(label="Einfügen:", css_classes=["dim-label", "caption"]))
+            bar.append(Gtk.Label(label=tr("Einfügen:"), css_classes=["dim-label", "caption"]))
             for label, ph in PLACEHOLDERS:
                 b = Gtk.Button(label=label, css_classes=["placeholder-btn"])
                 b.set_tooltip_text(ph)
@@ -75,9 +76,9 @@ class ActionEditor:
         title, _desc, icon, style = ACTION_META[self.kind]
         self.row = Adw.ExpanderRow(title=title, expanded=expanded)
         self.row.add_prefix(make_tile(icon, style, 30, 16))
-        self.up = Gtk.Button(icon_name="go-up-symbolic", css_classes=["flat"], valign=Gtk.Align.CENTER, tooltip_text="Nach oben")
-        self.down = Gtk.Button(icon_name="go-down-symbolic", css_classes=["flat"], valign=Gtk.Align.CENTER, tooltip_text="Nach unten")
-        rm = Gtk.Button(icon_name="user-trash-symbolic", css_classes=["flat"], valign=Gtk.Align.CENTER, tooltip_text="Aktion entfernen")
+        self.up = Gtk.Button(icon_name="go-up-symbolic", css_classes=["flat"], valign=Gtk.Align.CENTER, tooltip_text=tr("Nach oben"))
+        self.down = Gtk.Button(icon_name="go-down-symbolic", css_classes=["flat"], valign=Gtk.Align.CENTER, tooltip_text=tr("Nach unten"))
+        rm = Gtk.Button(icon_name="user-trash-symbolic", css_classes=["flat"], valign=Gtk.Align.CENTER, tooltip_text=tr("Aktion entfernen"))
         self.up.connect("clicked", lambda *_: dialog.move_action(self, -1))
         self.down.connect("clicked", lambda *_: dialog.move_action(self, 1))
         rm.connect("clicked", lambda *_: dialog.remove_action(self))
@@ -96,7 +97,7 @@ class ActionEditor:
             a = self.get()
             sub = describe_action(a)
             # Typ-Präfix aus der Kurzbeschreibung entfernen, der Titel sagt es schon
-            for p in ("Tippen ", "Einfügen ", "Tasten ", "Fenster: ", "Öffnen ", "Befehl ", "Claude: ", "Arbeitsfläche: ", "Hinweis ", "Zwischenablage-"):
+            for p in ("Tippen ", tr("Einfügen "), "Tasten ", "Fenster: ", tr("Öffnen "), "Befehl ", "Claude: ", tr("Arbeitsfläche: "), "Hinweis ", "Zwischenablage-"):
                 if sub.startswith(p):
                     sub = sub[len(p):]
             self.row.set_subtitle(GLib.markup_escape_text(sub))
@@ -109,7 +110,7 @@ class ActionEditor:
         method = "paste" if "paste" in self.a else self.a.get("method", "auto")
         self.text = TextArea(str(text), self.changed)
         self.row.add_row(self.text)
-        self.method = Adw.ComboRow(title="Einfügen als", model=_string_list([m[1] for m in TEXT_METHODS]))
+        self.method = Adw.ComboRow(title=tr("Einfügen als"), model=_string_list([m[1] for m in TEXT_METHODS]))
         idx = next((i for i, m in enumerate(TEXT_METHODS) if m[0] == method), 0)
         self.method.set_selected(idx)
         self.method.set_subtitle(TEXT_METHODS[idx][2])
@@ -117,9 +118,9 @@ class ActionEditor:
         self.row.add_row(self.method)
 
     def _build_keys(self):
-        self.keys = Adw.EntryRow(title="Tasten (nacheinander, mit Leerzeichen getrennt)", text=str(self.a.get("keys", "")))
-        rec = KeyRecorder(placeholder="Aufnehmen")
-        rec.set_tooltip_text("Kombination aufnehmen und anhängen")
+        self.keys = Adw.EntryRow(title=tr("Tasten (nacheinander, mit Leerzeichen getrennt)"), text=str(self.a.get("keys", "")))
+        rec = KeyRecorder(placeholder=tr("Aufnehmen"))
+        rec.set_tooltip_text(tr("Kombination aufnehmen und anhängen"))
 
         def add(_r, combo):
             if combo:
@@ -130,7 +131,7 @@ class ActionEditor:
         self.keys.add_suffix(rec)
         self.keys.connect("changed", lambda *_: (self._validate_keys(), self.changed()))
         self.row.add_row(self.keys)
-        self.keys_preview = Adw.ActionRow(title="Vorschau")
+        self.keys_preview = Adw.ActionRow(title=tr("Vorschau"))
         self.row.add_row(self.keys_preview)
         self._validate_keys()
 
@@ -146,7 +147,7 @@ class ActionEditor:
             for part in txt.split():
                 box.append(keycaps(part))
             self._kp_child = box
-            self.keys_preview.set_subtitle("" if txt else "Noch keine Tasten")
+            self.keys_preview.set_subtitle("" if txt else tr("Noch keine Tasten"))
         except KeyError_ as e:
             self.keys.add_css_class("error")
             self._kp_child = Gtk.Label(label=str(e), css_classes=["error"])
@@ -154,30 +155,30 @@ class ActionEditor:
 
     def _build_window(self):
         ops = WINDOW_OPS
-        self.win = Adw.ComboRow(title="Fenster", model=_string_list([WINDOW_LABELS.get(o, o) for o in ops]))
+        self.win = Adw.ComboRow(title=tr("Fenster"), model=_string_list([WINDOW_LABELS.get(o, o) for o in ops]))
         cur = self.a.get("window", "left_half")
         self.win.set_selected(ops.index(cur) if cur in ops else 0)
         self.win.connect("notify::selected", lambda *_: self.changed())
         self.row.add_row(self.win)
 
     def _build_workspace(self):
-        self.ws = Adw.ComboRow(title="Wechseln zu", model=_string_list([w[1] for w in WS_CHOICES]))
+        self.ws = Adw.ComboRow(title=tr("Wechseln zu"), model=_string_list([w[1] for w in WS_CHOICES]))
         cur = str(self.a.get("workspace", "next"))
         self.ws.set_selected(next((i for i, w in enumerate(WS_CHOICES) if w[0] == cur), 0))
         self.ws.connect("notify::selected", lambda *_: self.changed())
         self.row.add_row(self.ws)
 
     def _build_open(self):
-        self.open = Adw.EntryRow(title="Datei, Ordner, Webseite oder Programm", text=str(self.a.get("open", "")))
+        self.open = Adw.EntryRow(title=tr("Datei, Ordner, Webseite oder Programm"), text=str(self.a.get("open", "")))
         btn = Gtk.Button(icon_name="document-open-symbolic", css_classes=["flat"], valign=Gtk.Align.CENTER,
-                         tooltip_text="Datei auswählen")
+                         tooltip_text=tr("Datei auswählen"))
         btn.connect("clicked", self._choose_file)
         self.open.add_suffix(btn)
         self.open.connect("changed", lambda *_: self.changed())
         self.row.add_row(self.open)
 
     def _choose_file(self, *_):
-        fd = Gtk.FileDialog(title="Datei oder Ordner wählen")
+        fd = Gtk.FileDialog(title=tr("Datei oder Ordner wählen"))
 
         def done(dlg, res):
             try:
@@ -189,18 +190,18 @@ class ActionEditor:
         fd.open(self.dlg.get_root(), None, done)
 
     def _build_run(self):
-        self.cmd = Adw.EntryRow(title="Befehl", text=str(self.a.get("run", "")))
+        self.cmd = Adw.EntryRow(title=tr("Befehl"), text=str(self.a.get("run", "")))
         self.cmd.add_css_class("monospace")
         self.cmd.connect("changed", lambda *_: self.changed())
         self.row.add_row(self.cmd)
-        self.output = Adw.ComboRow(title="Ausgabe des Befehls", model=_string_list([o[1] for o in RUN_OUTPUT]))
+        self.output = Adw.ComboRow(title=tr("Ausgabe des Befehls"), model=_string_list([o[1] for o in RUN_OUTPUT]))
         self.output.set_selected(next((i for i, o in enumerate(RUN_OUTPUT) if o[0] == self.a.get("output")), 0))
         self.output.connect("notify::selected", lambda *_: self.changed())
         self.row.add_row(self.output)
 
     def _build_delay(self):
         self.delay = Adw.SpinRow.new_with_range(0.05, 30, 0.05)
-        self.delay.set_title("Sekunden")
+        self.delay.set_title(tr("Sekunden"))
         self.delay.set_digits(2)
         self.delay.set_value(float(self.a.get("delay", 0.3)))
         self.delay.connect("notify::value", lambda *_: self.changed())
@@ -209,11 +210,11 @@ class ActionEditor:
     def _build_clipboard(self):
         from ..clipboard_defaults import MAX_N, command
         cmd, n = command(self.a.get("clipboard", "show")) or ("show", 0)
-        self.clip = Adw.ComboRow(title="Was passiert",
-                                 model=_string_list(["Verlauf zeigen", "Eintrag direkt einfügen", "Verlauf leeren"]))
+        self.clip = Adw.ComboRow(title=tr("Was passiert"),
+                                 model=_string_list([tr("Verlauf zeigen"), tr("Eintrag direkt einfügen"), tr("Verlauf leeren")]))
         self.clip.set_selected({"show": 0, "paste": 1, "clear": 2}[cmd])
         self.clip_nr = Adw.SpinRow.new_with_range(1, MAX_N, 1)
-        self.clip_nr.set_title("Welcher Eintrag")
+        self.clip_nr.set_title(tr("Welcher Eintrag"))
         self.clip_nr.set_value(n or 2)
         self.clip_nr.connect("notify::value", lambda *_: (self._clip_hint(), self.changed()))
         self.clip.connect("notify::selected", lambda *_: (self._clip_hint(), self.changed()))
@@ -226,26 +227,26 @@ class ActionEditor:
         self.clip_nr.set_visible(sel == 1)
         n = int(self.clip_nr.get_value())
         self.clip.set_subtitle({
-            0: "Fenster mit Suche, ↵ fügt ein, Strg+P heftet an",
-            1: ("1 = zuletzt kopiert, ohne Angeheftete. Nr. 2 wechselt bei jedem Druck "
-                "zwischen den letzten beiden Kopien hin und her." if n == 2 else
-                "1 = zuletzt kopiert, 2 = davor … Angeheftete zählen nicht mit."),
-            2: "Löscht alles außer Angehefteten",
+            0: tr("Fenster mit Suche, ↵ fügt ein, Strg+P heftet an"),
+            1: (tr("1 = zuletzt kopiert, ohne Angeheftete. Nr. 2 wechselt bei jedem Druck "
+                "zwischen den letzten beiden Kopien hin und her.") if n == 2 else
+                tr("1 = zuletzt kopiert, 2 = davor … Angeheftete zählen nicht mit.")),
+            2: tr("Löscht alles außer Angehefteten"),
         }[sel])
 
     def _build_app(self):
         from ..config import APP_IF_ACTIVE
         self.app_key = str(self.a.get("app", "")).strip()
-        self.app_row = Adw.ActionRow(title="Programm", activatable=True)
+        self.app_row = Adw.ActionRow(title=tr("Programm"), activatable=True)
         self.app_icon = Gtk.Image(pixel_size=32)
         self.app_row.add_prefix(self.app_icon)
-        pick = Gtk.Button(label="Wählen …", valign=Gtk.Align.CENTER)
+        pick = Gtk.Button(label=tr("Wählen …"), valign=Gtk.Align.CENTER)
         pick.connect("clicked", self._pick_target_app)
         self.app_row.add_suffix(pick)
         self.app_row.set_activatable_widget(pick)
         self.row.add_row(self.app_row)
         self.app_modes = list(APP_IF_ACTIVE)
-        self.app_if = Adw.ComboRow(title="Wenn es schon vorne ist", model=_string_list(list(APP_IF_ACTIVE.values())))
+        self.app_if = Adw.ComboRow(title=tr("Wenn es schon vorne ist"), model=_string_list(list(APP_IF_ACTIVE.values())))
         cur = self.a.get("if_active", "next")
         self.app_if.set_selected(self.app_modes.index(cur) if cur in self.app_modes else 0)
         self.app_if.connect("notify::selected", lambda *_: self.changed())
@@ -259,11 +260,11 @@ class ActionEditor:
         cat = AppCatalog.get()
         if self.app_key:
             self.app_row.set_title(GLib.markup_escape_text(cat.name(self.app_key)))
-            self.app_row.set_subtitle("Läuft es, kommt sein Fenster nach vorne – sonst wird es gestartet")
+            self.app_row.set_subtitle(tr("Läuft es, kommt sein Fenster nach vorne – sonst wird es gestartet"))
             self.app_icon.set_from_gicon(cat.icon(self.app_key))
         else:
-            self.app_row.set_title("Noch kein Programm gewählt")
-            self.app_row.set_subtitle("Gerade geöffnete Programme stehen oben in der Liste")
+            self.app_row.set_title(tr("Noch kein Programm gewählt"))
+            self.app_row.set_subtitle(tr("Gerade geöffnete Programme stehen oben in der Liste"))
             self.app_icon.set_from_icon_name("view-app-grid-symbolic")
 
     def _pick_target_app(self, *_):
@@ -278,29 +279,29 @@ class ActionEditor:
     def _build_screenshot(self):
         from ..config import SCREENSHOT_MODES
         self.shot_modes = list(SCREENSHOT_MODES)
-        self.shot = Adw.ComboRow(title="Was aufnehmen", model=_string_list(list(SCREENSHOT_MODES.values())))
+        self.shot = Adw.ComboRow(title=tr("Was aufnehmen"), model=_string_list(list(SCREENSHOT_MODES.values())))
         cur = str(self.a.get("screenshot", "area"))
         self.shot.set_selected(self.shot_modes.index(cur) if cur in self.shot_modes else 0)
-        self.shot.set_subtitle("Öffnet das Bildschirmfoto-Werkzeug von GNOME. Das Bild landet in "
-                               "„Bilder/Bildschirmfotos“ und in der Zwischenablage.")
+        self.shot.set_subtitle(tr("Öffnet das Bildschirmfoto-Werkzeug von GNOME. Das Bild landet in "
+                               "„Bilder/Bildschirmfotos“ und in der Zwischenablage."))
         self.shot.connect("notify::selected", lambda *_: self.changed())
         self.row.add_row(self.shot)
 
     def _build_lock(self):
-        self.row.add_row(Adw.ActionRow(title="Keine Einstellungen nötig", subtitle="Sperrt die Sitzung sofort"))
+        self.row.add_row(Adw.ActionRow(title=tr("Keine Einstellungen nötig"), subtitle=tr("Sperrt die Sitzung sofort")))
 
     def _build_notify(self):
-        self.note = Adw.EntryRow(title="Meldung", text=str(self.a.get("notify", "")))
+        self.note = Adw.EntryRow(title=tr("Meldung"), text=str(self.a.get("notify", "")))
         self.note.connect("changed", lambda *_: self.changed())
         self.row.add_row(self.note)
 
     def _build_ai(self):
-        lbl = Adw.ActionRow(title="Anweisung an Claude",
-                            subtitle="Was soll mit dem Text passieren? z. B. „Formuliere als freundliche Mail in der Du-Form“")
+        lbl = Adw.ActionRow(title=tr("Anweisung an Claude"),
+                            subtitle=tr("Was soll mit dem Text passieren? z. B. „Formuliere als freundliche Mail in der Du-Form“"))
         self.row.add_row(lbl)
         self.prompt = TextArea(str(self.a.get("ai", "")), self.changed, placeholders=False, mono=False, height=72)
         self.row.add_row(self.prompt)
-        self.ai_in = Adw.ComboRow(title="Welcher Text", model=_string_list([o[1] for o in AI_INPUT]))
+        self.ai_in = Adw.ComboRow(title=tr("Welcher Text"), model=_string_list([o[1] for o in AI_INPUT]))
         self.ai_in.set_selected(next((i for i, o in enumerate(AI_INPUT) if o[0] == self.a.get("input", "selection")), 0))
         self.ai_in.connect("notify::selected", lambda *_: self.changed())
         self.row.add_row(self.ai_in)
@@ -365,16 +366,16 @@ class RuleEditor(Adw.Dialog):
         data = dict(item.data) if item else dict(template or {})
         self.data = data
         self.dirty = False
-        self.set_title("Regel bearbeiten" if item else "Neue Regel")
+        self.set_title(tr("Regel bearbeiten") if item else tr("Neue Regel"))
         self.connect("close-attempt", self._on_close_attempt)
         self.connect("closed", lambda *_: self.gest_rec.recording and self.gest_rec.stop())
         self.set_can_close(False)  # Schließen läuft über _on_close_attempt (Rückfrage bei Änderungen)
 
         tv = Adw.ToolbarView()
         hb = Adw.HeaderBar(show_end_title_buttons=False, show_start_title_buttons=False)
-        cancel = Gtk.Button(label="Abbrechen")
+        cancel = Gtk.Button(label=tr("Abbrechen"))
         cancel.connect("clicked", lambda *_: self._on_close_attempt(self))
-        self.save_btn = Gtk.Button(label="Speichern" if item else "Anlegen", css_classes=["suggested-action"])
+        self.save_btn = Gtk.Button(label=tr("Speichern") if item else tr("Anlegen"), css_classes=["suggested-action"])
         self.save_btn.connect("clicked", self._save)
         hb.pack_start(cancel)
         hb.pack_end(self.save_btn)
@@ -386,13 +387,13 @@ class RuleEditor(Adw.Dialog):
         # --- Hinweise vom Import ---
         notes = list(data.get("notes") or [])
         if notes:
-            g = Adw.PreferencesGroup(title="Hinweise vom Import",
-                                     description="Diese Regel wurde aus BetterTouchTool übernommen. Prüfe die Punkte und schalte sie dann ein.")
+            g = Adw.PreferencesGroup(title=tr("Hinweise vom Import"),
+                                     description=tr("Diese Regel wurde aus BetterTouchTool übernommen. Prüfe die Punkte und schalte sie dann ein."))
             for n in notes:
                 r = Adw.ActionRow(title=GLib.markup_escape_text(n), title_lines=3)
                 r.add_prefix(Gtk.Image(icon_name="dialog-warning-symbolic", css_classes=["warning"]))
                 g.add(r)
-            done = Gtk.Button(label="Erledigt", valign=Gtk.Align.CENTER, css_classes=["flat"])
+            done = Gtk.Button(label=tr("Erledigt"), valign=Gtk.Align.CENTER, css_classes=["flat"])
             g.set_header_suffix(done)
 
             def clear(*_):
@@ -405,9 +406,9 @@ class RuleEditor(Adw.Dialog):
 
         # --- Allgemein ---
         g = Adw.PreferencesGroup()
-        self.name = Adw.EntryRow(title="Name", text=str(data.get("name", "")))
+        self.name = Adw.EntryRow(title=tr("Name"), text=str(data.get("name", "")))
         self.name.connect("changed", lambda *_: self.mark_dirty())
-        self.enabled = Adw.SwitchRow(title="Aktiv", subtitle="Ausgeschaltete Regeln bleiben gespeichert",
+        self.enabled = Adw.SwitchRow(title=tr("Aktiv"), subtitle=tr("Ausgeschaltete Regeln bleiben gespeichert"),
                                      active=bool(data.get("enabled", True)))
         self.enabled.connect("notify::active", lambda *_: self.mark_dirty())
         g.add(self.name)
@@ -415,24 +416,24 @@ class RuleEditor(Adw.Dialog):
         page.add(g)
 
         # --- Auslöser ---
-        g = Adw.PreferencesGroup(title="Auslöser")
+        g = Adw.PreferencesGroup(title=tr("Auslöser"))
         seg = Gtk.Box(css_classes=["linked"], valign=Gtk.Align.CENTER)
-        self.t_hot = Gtk.ToggleButton(label="Tastenkürzel")
-        self.t_abbr = Gtk.ToggleButton(label="Tastenfolge", group=self.t_hot)
-        self.t_gest = Gtk.ToggleButton(label="Geste", group=self.t_hot)
+        self.t_hot = Gtk.ToggleButton(label=tr("Tastenkürzel"))
+        self.t_abbr = Gtk.ToggleButton(label=tr("Tastenfolge"), group=self.t_hot)
+        self.t_gest = Gtk.ToggleButton(label=tr("Geste"), group=self.t_hot)
         seg.append(self.t_hot)
         seg.append(self.t_abbr)
         seg.append(self.t_gest)
         g.set_header_suffix(seg)
-        self.hot_row = Adw.ActionRow(title="Tastenkürzel", subtitle="Klicken und die gewünschten Tasten drücken")
+        self.hot_row = Adw.ActionRow(title=tr("Tastenkürzel"), subtitle=tr("Klicken und die gewünschten Tasten drücken"))
         self.recorder = KeyRecorder(str(data["hotkey"]) if data.get("hotkey") else None)
         self.recorder.connect("recorded", lambda *_: (self._check_trigger(), self.mark_dirty()))
         self.hot_row.add_suffix(self.recorder)
-        self.abbr_row = Adw.EntryRow(title="Getippte Folge, z. B. ##mail",
+        self.abbr_row = Adw.EntryRow(title=tr("Getippte Folge, z. B. ##mail"),
                                      text=str(data.get("abbreviation") or data.get("abbr") or ""))
         self.abbr_row.connect("changed", lambda *_: (self._check_trigger(), self.mark_dirty()))
-        self.gest_row = Adw.ActionRow(title="Touchpad-Geste",
-                                      subtitle="Klicken und auf dem Touchpad wischen, oder über ⋯ wählen")
+        self.gest_row = Adw.ActionRow(title=tr("Touchpad-Geste"),
+                                      subtitle=tr("Klicken und auf dem Touchpad wischen, oder über ⋯ wählen"))
         self.gest_rec = GestureRecorder(data.get("gesture"))
         self.gest_rec.connect("recorded", lambda *_: (self._check_trigger(), self.mark_dirty()))
         self.gest_row.add_suffix(self.gest_rec)
@@ -455,27 +456,27 @@ class RuleEditor(Adw.Dialog):
         self._update_trigger_mode()
 
         # --- Gilt in ---
-        g = Adw.PreferencesGroup(title="Gilt in")
+        g = Adw.PreferencesGroup(title=tr("Gilt in"))
         self.apps = list(data.get("apps") or ([data["app"]] if data.get("app") else []))
         self.not_apps = list(data.get("not_apps") or [])
-        self.everywhere = Adw.SwitchRow(title="In allen Programmen", active=not self.apps)
+        self.everywhere = Adw.SwitchRow(title=tr("In allen Programmen"), active=not self.apps)
         self.everywhere.connect("notify::active", lambda *_: (self._refresh_apps(), self.mark_dirty()))
         g.add(self.everywhere)
-        self.apps_row = Adw.ActionRow(title="Nur in")
+        self.apps_row = Adw.ActionRow(title=tr("Nur in"))
         self.apps_box = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=3,
                                     column_spacing=6, row_spacing=6, valign=Gtk.Align.CENTER, hexpand=True,
                                     margin_top=8, margin_bottom=8)
         add_app = Gtk.Button(icon_name="list-add-symbolic", valign=Gtk.Align.CENTER, css_classes=["flat"],
-                             tooltip_text="Programm hinzufügen")
+                             tooltip_text=tr("Programm hinzufügen"))
         add_app.connect("clicked", lambda *_: self._pick_app(False))
         self.apps_row.add_suffix(self.apps_box)
         self.apps_row.add_suffix(add_app)
-        self.except_row = Adw.ActionRow(title="Außer in")
+        self.except_row = Adw.ActionRow(title=tr("Außer in"))
         self.except_box = Gtk.FlowBox(selection_mode=Gtk.SelectionMode.NONE, max_children_per_line=3,
                                       column_spacing=6, row_spacing=6, valign=Gtk.Align.CENTER, hexpand=True,
                                       margin_top=8, margin_bottom=8)
         add_ex = Gtk.Button(icon_name="list-add-symbolic", valign=Gtk.Align.CENTER, css_classes=["flat"],
-                            tooltip_text="Ausnahme hinzufügen")
+                            tooltip_text=tr("Ausnahme hinzufügen"))
         add_ex.connect("clicked", lambda *_: self._pick_app(True))
         self.except_row.add_suffix(self.except_box)
         self.except_row.add_suffix(add_ex)
@@ -485,19 +486,19 @@ class RuleEditor(Adw.Dialog):
         self._refresh_apps()
 
         # --- Aktionen ---
-        self.act_group = Adw.PreferencesGroup(title="Aktionen", description="Laufen nacheinander von oben nach unten ab")
-        add = Gtk.MenuButton(label="Hinzufügen", icon_name="list-add-symbolic", valign=Gtk.Align.CENTER,
+        self.act_group = Adw.PreferencesGroup(title=tr("Aktionen"), description=tr("Laufen nacheinander von oben nach unten ab"))
+        add = Gtk.MenuButton(label=tr("Hinzufügen"), icon_name="list-add-symbolic", valign=Gtk.Align.CENTER,
                              css_classes=["flat"], always_show_arrow=False)
-        add_content = Adw.ButtonContent(icon_name="list-add-symbolic", label="Aktion")
+        add_content = Adw.ButtonContent(icon_name="list-add-symbolic", label=tr("Aktion"))
         add.set_child(add_content)
         add.set_popover(self._action_popover())
         self.act_group.set_header_suffix(add)
         self.act_list = Gtk.ListBox(css_classes=["boxed-list"], selection_mode=Gtk.SelectionMode.NONE)
-        self.act_empty = Adw.ActionRow(title="Noch keine Aktion", subtitle="Über „+ Aktion“ hinzufügen")
+        self.act_empty = Adw.ActionRow(title=tr("Noch keine Aktion"), subtitle=tr("Über „+ Aktion“ hinzufügen"))
         # Zweiter Einstieg direkt unter der letzten Aktion – dort, wo man weitermachen will
         self.add_more = Gtk.MenuButton(css_classes=["flat"], halign=Gtk.Align.START, margin_top=6,
                                        direction=Gtk.ArrowType.UP)
-        self.add_more.set_child(Adw.ButtonContent(icon_name="list-add-symbolic", label="Weitere Aktion hinzufügen"))
+        self.add_more.set_child(Adw.ButtonContent(icon_name="list-add-symbolic", label=tr("Weitere Aktion hinzufügen")))
         self.add_more.set_popover(self._action_popover())
         self.act_group.add(self.act_list)
         self.act_group.add(self.add_more)
@@ -512,10 +513,10 @@ class RuleEditor(Adw.Dialog):
         # --- Löschen ---
         if item:
             g = Adw.PreferencesGroup()
-            row = Adw.ActionRow(title="Regel löschen", activatable=True, css_classes=["error"])
+            row = Adw.ActionRow(title=tr("Regel löschen"), activatable=True, css_classes=["error"])
             row.add_prefix(Gtk.Image(icon_name="user-trash-symbolic"))
             row.connect("activated", self._delete)
-            dup = Adw.ActionRow(title="Als Kopie duplizieren", activatable=True)
+            dup = Adw.ActionRow(title=tr("Als Kopie duplizieren"), activatable=True)
             dup.add_prefix(Gtk.Image(icon_name="edit-copy-symbolic"))
             dup.connect("activated", self._duplicate)
             g.add(dup)
@@ -549,7 +550,7 @@ class RuleEditor(Adw.Dialog):
         trig = self._current_trigger()
         icon, text, cls = "dialog-information-symbolic", "", "dim-label"
         if not trig:
-            text = "Noch kein Auslöser festgelegt"
+            text = tr("Noch kein Auslöser festgelegt")
         else:
             rule = {**trig, "apps": self._apps_value()}
             others = self.store.same_trigger(rule, exclude=self.item)
@@ -570,22 +571,22 @@ class RuleEditor(Adw.Dialog):
                     pass
             if gest is not None and gest in gsys:
                 icon, cls = "dialog-warning-symbolic", "warning"
-                text = f"Wird auch vom System genutzt ({gsys[gest]}) – beides würde ausgelöst"
+                text = tr("Wird auch vom System genutzt ({what}) – beides würde ausgelöst").format(what=gsys[gest])
             elif combo is not None and combo in sysmap:
                 icon, cls = "dialog-warning-symbolic", "warning"
-                text = f"Von GNOME belegt ({sysmap[combo]}) – wird so nicht ausgelöst"
+                text = tr("Von GNOME belegt ({what}) – wird so nicht ausgelöst").format(what=sysmap[combo])
             elif others:
                 icon, cls = "dialog-warning-symbolic", "warning"
-                text = f"Schon vergeben an „{others[0].name}“"
+                text = tr("Schon vergeben an „{name}“").format(name=others[0].name)
             elif combo is not None and not combo.mods and not self._apps_value():
                 icon, cls = "dialog-warning-symbolic", "warning"
-                text = "Ohne Zusatztaste – überschreibt die Taste in allen Programmen"
+                text = tr("Ohne Zusatztaste – überschreibt die Taste in allen Programmen")
             elif "abbreviation" in trig and len(trig["abbreviation"]) < 3:
                 icon, cls = "dialog-warning-symbolic", "warning"
-                text = "Sehr kurz – löst eventuell beim normalen Schreiben aus"
+                text = tr("Sehr kurz – löst eventuell beim normalen Schreiben aus")
             else:
                 icon, cls = "emblem-ok-symbolic", "success"
-                text = "Frei – kann verwendet werden"
+                text = tr("Frei – kann verwendet werden")
         self.trig_icon.set_from_icon_name(icon)
         for c in ("dim-label", "warning", "success"):
             self.trig_icon.remove_css_class(c)
@@ -608,10 +609,10 @@ class RuleEditor(Adw.Dialog):
             for a in lst:
                 box.append(app_chip(a, lambda wm, ex=is_ex: self._remove_app(wm, ex)))
             if not lst:
-                box.append(Gtk.Label(label="Noch kein Programm" if not is_ex else "Keine Ausnahmen",
+                box.append(Gtk.Label(label=tr("Noch kein Programm") if not is_ex else tr("Keine Ausnahmen"),
                                      css_classes=["dim-label"]))
         if not every and not self.apps:
-            self.apps_row.set_subtitle("Füge mindestens ein Programm hinzu")
+            self.apps_row.set_subtitle(tr("Füge mindestens ein Programm hinzu"))
         else:
             self.apps_row.set_subtitle("")
         if hasattr(self, "trig_status"):
@@ -710,7 +711,7 @@ class RuleEditor(Adw.Dialog):
         trig = self._current_trigger()
         acts = [e.get() for e in self.editors]
         if not name:
-            name = describe_action(acts[0]) if acts else "Neue Regel"
+            name = describe_action(acts[0]) if acts else tr("Neue Regel")
         out = {"name": name, **trig}
         if self._apps_value():
             out["apps"] = self._apps_value()
@@ -722,24 +723,24 @@ class RuleEditor(Adw.Dialog):
         return out
 
     def _error(self, text):
-        d = Adw.AlertDialog(heading="Noch nicht ganz fertig", body=text)
+        d = Adw.AlertDialog(heading=tr("Noch nicht ganz fertig"), body=text)
         d.add_response("ok", "OK")
         d.present(self)
 
     def _save(self, *_):
         trig = self._current_trigger()
         if not trig:
-            return self._error("Lege einen Auslöser fest – ein Tastenkürzel, eine Tastenfolge oder eine Geste.")
+            return self._error(tr("Lege einen Auslöser fest – ein Tastenkürzel, eine Tastenfolge oder eine Geste."))
         if not self.editors:
-            return self._error("Füge mindestens eine Aktion hinzu.")
+            return self._error(tr("Füge mindestens eine Aktion hinzu."))
         if not self.everywhere.get_active() and not self.apps:
-            return self._error("Wähle mindestens ein Programm – oder schalte „In allen Programmen“ ein.")
+            return self._error(tr("Wähle mindestens ein Programm – oder schalte „In allen Programmen“ ein."))
         rule = self.build()
         for a in rule["do"]:
             if "ai" in a and not a["ai"]:
-                return self._error("Die Claude-Aktion braucht eine Anweisung.")
+                return self._error(tr("Die Claude-Aktion braucht eine Anweisung."))
             if "keys" in a and not a["keys"]:
-                return self._error("Bei „Tasten senden“ fehlen die Tasten.")
+                return self._error(tr("Bei „Tasten senden“ fehlen die Tasten."))
         try:
             if self.item:
                 self.store.update(self.item, rule)
@@ -749,18 +750,18 @@ class RuleEditor(Adw.Dialog):
             return self._error(str(e).replace("Regel: ", ""))
         self.dirty = False
         self.win.refresh()
-        self.win.toast("Gespeichert" if self.item else f"„{rule['name']}“ angelegt")
+        self.win.toast(tr("Gespeichert") if self.item else tr("„{name}“ angelegt").format(name=rule['name']))
         self.force_close()
 
     def _on_close_attempt(self, *_):
         if not self.dirty:
             self.force_close()
             return
-        d = Adw.AlertDialog(heading="Änderungen verwerfen?",
-                            body="Du hast Änderungen an dieser Regel noch nicht gespeichert.")
-        d.add_response("cancel", "Weiter bearbeiten")
-        d.add_response("discard", "Verwerfen")
-        d.add_response("save", "Speichern")
+        d = Adw.AlertDialog(heading=tr("Änderungen verwerfen?"),
+                            body=tr("Du hast Änderungen an dieser Regel noch nicht gespeichert."))
+        d.add_response("cancel", tr("Weiter bearbeiten"))
+        d.add_response("discard", tr("Verwerfen"))
+        d.add_response("save", tr("Speichern"))
         d.set_response_appearance("discard", Adw.ResponseAppearance.DESTRUCTIVE)
         d.set_response_appearance("save", Adw.ResponseAppearance.SUGGESTED)
         d.set_default_response("save")
@@ -784,5 +785,5 @@ class RuleEditor(Adw.Dialog):
         self.force_close()
         new = self.store.duplicate(self.item)
         self.win.refresh()
-        self.win.toast("Kopie angelegt (ausgeschaltet)")
+        self.win.toast(tr("Kopie angelegt (ausgeschaltet)"))
         RuleEditor(self.win, new).present(self.win)

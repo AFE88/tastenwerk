@@ -14,6 +14,7 @@ from .abbrev import AbbrevWatcher
 from .actions import Executor, Injection, Trigger, notify
 from .gestures import GestureListener
 from .hotkeys import HotkeyGrabber
+from .i18n import tr, trn  # noqa: E402
 
 log = logging.getLogger("tastenwerk")
 
@@ -70,7 +71,7 @@ class Daemon:
         def go():
             if cmd == "clear":
                 self.history.clear()
-                notify("Tastenwerk", "Zwischenablage-Verlauf geleert (Angeheftete bleiben)")
+                notify("Tastenwerk", tr("Zwischenablage-Verlauf geleert (Angeheftete bleiben)"))
             elif self.popup.is_front():
                 self.popup.hide()  # zweiter Druck schließt – aber nur, wenn er wirklich vorne ist
             elif self.popup.visible():
@@ -108,11 +109,11 @@ class Daemon:
             lines = [f"{c}: {why}" for c, why in failed]
             log.warning("Nicht belegbar:\n  " + "\n  ".join(lines))
         if cfg.settings.get("notify", True) and (announce or failed):
-            body = f"{len(combos)} Kürzel, {len(abbrs)} Tastenfolgen aktiv"
-            if gestures:
-                body = body.replace(" aktiv", f", {len(gestures)} Gesten aktiv")
+            body = tr("{h} Kürzel, {a} Tastenfolgen, {g} Gesten aktiv").format(
+                h=len(combos), a=len(abbrs), g=len(gestures))
             if failed:
-                body += f"\n{len(failed)} Kürzel nicht belegbar: " + ", ".join(str(c) for c, _ in failed[:5])
+                body += tr("\n{n} Kürzel nicht belegbar: ").format(n=len(failed)) + \
+                    ", ".join(str(c) for c, _ in failed[:5])
             notify("Tastenwerk", body)
 
     def _release(self):
@@ -170,7 +171,7 @@ class Daemon:
             self.config = cfgmod.load(self.config_path)
         except cfgmod.ConfigError as e:
             log.error("Konfiguration fehlerhaft, alte bleibt aktiv: %s", e)
-            notify("Tastenwerk: Konfiguration fehlerhaft", str(e)[:300], urgent=True)
+            notify(tr("Tastenwerk: Konfiguration fehlerhaft"), str(e)[:300], urgent=True)
             self._mtimes = self._stat()
             return True
         self._mtimes = self._stat()

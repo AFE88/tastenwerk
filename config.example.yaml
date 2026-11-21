@@ -5,6 +5,8 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 settings:
+  language: auto                      # auto (Systemsprache) | de | en
+  tray: true                          # Symbol in der oberen Leiste
   notify: true                        # Benachrichtigungen beim Start/bei Fehlern
   abbreviation_case_sensitive: false  # „##Mail“ = „##mail“
   clipboard:                          # Zwischenablage-Verlauf

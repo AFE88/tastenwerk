@@ -17,6 +17,7 @@ from pathlib import Path
 log = logging.getLogger("tastenwerk")
 
 import os as _os
+from .i18n import tr, trn  # noqa: E402
 DBUS_ADDRESS = _os.environ.get("TASTENWERK_TOUCHEGG_ADDRESS", "unix:abstract=touchegg")
 DBUS_IFACE = "io.github.joseexposito.Touchegg"
 DBUS_PATH = "/io/github/joseexposito/Touchegg"
@@ -38,8 +39,8 @@ _ALIASES = {
     "out": "out", "auseinander": "out", "raus": "out",
 }
 ARROW = {"up": "↑", "down": "↓", "left": "←", "right": "→", "in": "→←", "out": "←→"}
-DIR_LABEL = {"up": "nach oben", "down": "nach unten", "left": "nach links", "right": "nach rechts",
-             "in": "zusammenziehen", "out": "auseinanderziehen"}
+DIR_LABEL = {"up": tr("nach oben"), "down": tr("nach unten"), "left": tr("nach links"), "right": tr("nach rechts"),
+             "in": tr("zusammenziehen"), "out": tr("auseinanderziehen")}
 
 
 class GestureError(ValueError):
@@ -77,7 +78,7 @@ class Gesture:
         if direction not in DIRECTIONS[kind]:
             raise GestureError(f"{kind} kennt nur {', '.join(DIRECTIONS[kind])}")
         if fingers not in FINGERS:
-            raise GestureError("Gesten gehen mit 3, 4 oder 5 Fingern (2 Finger sind Scrollen)")
+            raise GestureError(tr("Gesten gehen mit 3, 4 oder 5 Fingern (2 Finger sind Scrollen)"))
         return cls(kind, direction, fingers)
 
     def __str__(self) -> str:
@@ -86,8 +87,8 @@ class Gesture:
     @property
     def label(self) -> str:
         if self.kind == "swipe":
-            return f"{self.fingers} Finger {DIR_LABEL[self.direction]} wischen"
-        return f"{self.fingers} Finger {DIR_LABEL[self.direction]}"
+            return tr("{n} Finger {direction} wischen").format(n=self.fingers, direction=DIR_LABEL[self.direction])
+        return tr("{n} Finger {direction}").format(n=self.fingers, direction=DIR_LABEL[self.direction])
 
     @property
     def short(self) -> str:
@@ -102,10 +103,10 @@ def all_gestures() -> list[Gesture]:
 TOUCHEGG_USER = Path.home() / ".config" / "touchegg" / "touchegg.conf"
 TOUCHEGG_SYSTEM = Path("/usr/share/touchegg/touchegg.conf")
 _TOUCHEGG_ACTIONS = {
-    "SHOW_DESKTOP": "Schreibtisch zeigen", "SEND_KEYS": "Tasten senden", "MAXIMIZE_RESTORE_WINDOW": "Maximieren",
-    "MINIMIZE_WINDOW": "Minimieren", "TILE_WINDOW": "Fenster andocken", "FULLSCREEN_WINDOW": "Vollbild",
-    "CLOSE_WINDOW": "Fenster schließen", "CHANGE_DESKTOP": "Arbeitsfläche wechseln", "RUN_COMMAND": "Befehl",
-    "MOUSE_CLICK": "Mausklick",
+    "SHOW_DESKTOP": tr("Schreibtisch zeigen"), "SEND_KEYS": tr("Tasten senden"), "MAXIMIZE_RESTORE_WINDOW": tr("Maximieren"),
+    "MINIMIZE_WINDOW": tr("Minimieren"), "TILE_WINDOW": tr("Fenster andocken"), "FULLSCREEN_WINDOW": tr("Vollbild"),
+    "CLOSE_WINDOW": tr("Fenster schließen"), "CHANGE_DESKTOP": tr("Arbeitsfläche wechseln"), "RUN_COMMAND": tr("Befehl"),
+    "MOUSE_CLICK": tr("Mausklick"),
 }
 
 
@@ -127,9 +128,9 @@ def system_gestures() -> dict[Gesture, str]:
             n = int(f.split()[-1])
         except (ValueError, IndexError):
             n = 3
-        for d, what in (("left", "Arbeitsfläche wechseln"), ("right", "Arbeitsfläche wechseln"),
-                        ("up", "Übersicht"), ("down", "Übersicht")):
-            out[Gesture("swipe", d, n)] = f"GNOME → {what}"
+        for d, what in (("left", tr("Arbeitsfläche wechseln")), ("right", tr("Arbeitsfläche wechseln")),
+                        ("up", tr("Übersicht")), ("down", tr("Übersicht"))):
+            out[Gesture("swipe", d, n)] = tr("GNOME → {what}").format(what=what)
     conf = TOUCHEGG_USER if TOUCHEGG_USER.exists() else TOUCHEGG_SYSTEM
     try:
         root = ET.parse(conf).getroot()

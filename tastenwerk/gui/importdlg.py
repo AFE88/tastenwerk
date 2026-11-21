@@ -15,10 +15,11 @@ from ..actions import describe_action  # noqa: E402
 from ..importer import btt  # noqa: E402
 from ..importer.wizard import Wizard, trigger_text  # noqa: E402
 from .widgets import AppCatalog, gesture_pill, keycaps  # noqa: E402
+from ..i18n import tr, trn  # noqa: E402
 
 STATUS_ICON = {"ok": "✅", "adapted": "🟡", "manual": "🛠", "unsupported": "⛔"}
-CHOICES = [("j", "Übernehmen"), ("d", "Ausgeschaltet"), ("n", "Weglassen")]
-CHANGED_CHOICES = [("j", "Aktualisieren"), ("n", "Beibehalten")]
+CHOICES = [("j", tr("Übernehmen")), ("d", tr("Ausgeschaltet")), ("n", tr("Weglassen"))]
+CHANGED_CHOICES = [("j", tr("Aktualisieren")), ("n", tr("Beibehalten"))]
 
 
 def esc(s) -> str:
@@ -27,7 +28,7 @@ def esc(s) -> str:
 
 class ImportDialog(Adw.Dialog):
     def __init__(self, window):
-        super().__init__(title="Aus BetterTouchTool übernehmen", content_width=760, content_height=780)
+        super().__init__(title=tr("Aus BetterTouchTool übernehmen"), content_width=760, content_height=780)
         self.win = window
         self.paths: list[Path] = []
         self.wiz: Wizard | None = None
@@ -39,18 +40,18 @@ class ImportDialog(Adw.Dialog):
     def _page_files(self):
         tv = Adw.ToolbarView()
         tv.add_top_bar(Adw.HeaderBar())
-        sp = Adw.StatusPage(icon_name="document-import-symbolic", title="Aus BetterTouchTool übernehmen",
-                            description="Wähle eine oder mehrere exportierte Preset-Dateien (.bttpreset oder .json).\n"
+        sp = Adw.StatusPage(icon_name="document-import-symbolic", title=tr("Aus BetterTouchTool übernehmen"),
+                            description=tr("Wähle eine oder mehrere exportierte Preset-Dateien (.bttpreset oder .json).\n"
                                         "Deine bestehenden Regeln bleiben erhalten – du kannst jederzeit erneut "
-                                        "importieren, dann wird nur Neues und Geändertes angeboten.")
+                                        "importieren, dann wird nur Neues und Geändertes angeboten."))
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=18, halign=Gtk.Align.CENTER)
-        pick = Gtk.Button(label="Dateien auswählen …", css_classes=["pill", "suggested-action"], halign=Gtk.Align.CENTER)
+        pick = Gtk.Button(label=tr("Dateien auswählen …"), css_classes=["pill", "suggested-action"], halign=Gtk.Align.CENTER)
         pick.connect("clicked", self._choose)
         box.append(pick)
         self.files_group = Adw.PreferencesGroup()
         clamp = Adw.Clamp(maximum_size=520, child=self.files_group)
         box.append(clamp)
-        self.next1 = Gtk.Button(label="Weiter", css_classes=["pill"], halign=Gtk.Align.CENTER, sensitive=False)
+        self.next1 = Gtk.Button(label=tr("Weiter"), css_classes=["pill"], halign=Gtk.Align.CENTER, sensitive=False)
         self.next1.connect("clicked", self._load)
         box.append(self.next1)
         self.spinner = Gtk.Spinner(halign=Gtk.Align.CENTER)
@@ -58,7 +59,7 @@ class ImportDialog(Adw.Dialog):
         sp.set_child(box)
         sc = Gtk.ScrolledWindow(child=sp)
         tv.set_content(sc)
-        return Adw.NavigationPage(title="Dateien", child=tv)
+        return Adw.NavigationPage(title=tr("Dateien"), child=tv)
 
     def _choose(self, *_):
         f = Gtk.FileFilter(name="BetterTouchTool-Presets")
@@ -66,7 +67,7 @@ class ImportDialog(Adw.Dialog):
             f.add_pattern(pat)
         filters = Gio.ListStore.new(Gtk.FileFilter)
         filters.append(f)
-        fd = Gtk.FileDialog(title="Presets auswählen", filters=filters, default_filter=f)
+        fd = Gtk.FileDialog(title=tr("Presets auswählen"), filters=filters, default_filter=f)
 
         def done(dlg, res):
             try:
@@ -82,7 +83,7 @@ class ImportDialog(Adw.Dialog):
 
     def _show_files(self):
         parent = self.files_group.get_parent()
-        new = Adw.PreferencesGroup(title="Ausgewählt")
+        new = Adw.PreferencesGroup(title=tr("Ausgewählt"))
         for p in self.paths:
             r = Adw.ActionRow(title=esc(p.name), subtitle=esc(p.parent))
             r.add_prefix(Gtk.Image(icon_name="text-x-generic-symbolic"))
@@ -114,7 +115,7 @@ class ImportDialog(Adw.Dialog):
         self.spinner.stop()
         self.next1.set_sensitive(True)
         if err:
-            d = Adw.AlertDialog(heading="Datei lässt sich nicht lesen", body=str(err))
+            d = Adw.AlertDialog(heading=tr("Datei lässt sich nicht lesen"), body=str(err))
             d.add_response("ok", "OK")
             d.present(self)
             return False
@@ -132,10 +133,10 @@ class ImportDialog(Adw.Dialog):
         for c in w.cands:
             counts[c.status] += 1
 
-        g = Adw.PreferencesGroup(title=f"{len(w.cands)} Auslöser gefunden",
-                                 description="So lassen sie sich unter Linux übernehmen")
+        g = Adw.PreferencesGroup(title=tr("{n} Auslöser gefunden").format(n=len(w.cands)),
+                                 description=tr("So lassen sie sich unter Linux übernehmen"))
         grid = Gtk.Box(spacing=12, homogeneous=True, margin_top=6)
-        labels = {"ok": "direkt", "adapted": "angepasst", "manual": "Handarbeit", "unsupported": "nicht übertragbar"}
+        labels = {"ok": "direkt", "adapted": "angepasst", "manual": tr("Handarbeit"), "unsupported": tr("nicht übertragbar")}
         for st in ("ok", "adapted", "manual", "unsupported"):
             card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2, css_classes=["card"])
             card.set_margin_top(0)
@@ -150,8 +151,8 @@ class ImportDialog(Adw.Dialog):
         uns = [c for c in w.cands if c.status == "unsupported"]
         if uns:
             g = Adw.PreferencesGroup()
-            ex = Adw.ExpanderRow(title="Was nicht übertragbar ist",
-                                 subtitle="Gesten und Touch Bar – die Maus übernimmt OpenLogi")
+            ex = Adw.ExpanderRow(title=tr("Was nicht übertragbar ist"),
+                                 subtitle=tr("Klick- und Maus-Gesten sowie die Touch Bar"))
             reasons: dict[str, int] = {}
             for c in uns:
                 r = c.notes[0] if c.notes else "?"
@@ -163,12 +164,12 @@ class ImportDialog(Adw.Dialog):
 
         uses_cmd = any(c.hotkey_mac and "cmd" in c.hotkey_mac[0] for c in w.cands if c.status != "unsupported")
         if uses_cmd:
-            g = Adw.PreferencesGroup(title="Die ⌘-Taste wird zu …",
-                                     description="In gesendeten Kürzeln wird ⌘ immer zu Strg (⌘V → Strg+V).")
+            g = Adw.PreferencesGroup(title=tr("Die ⌘-Taste wird zu …"),
+                                     description=tr("In gesendeten Kürzeln wird ⌘ immer zu Strg (⌘V → Strg+V)."))
             first = None
-            for key, title, sub in (("super", "Super (Windows-Taste)", "Empfohlen – kollidiert am wenigsten mit Programm-Kürzeln"),
-                                    ("ctrl", "Strg", "Wie unter Linux üblich, überschreibt aber oft Programm-Kürzel"),
-                                    ("alt", "Alt", "Gleiche Position wie ⌘ auf der Mac-Tastatur")):
+            for key, title, sub in (("super", tr("Super (Windows-Taste)"), tr("Empfohlen – kollidiert am wenigsten mit Programm-Kürzeln")),
+                                    ("ctrl", tr("Strg"), tr("Wie unter Linux üblich, überschreibt aber oft Programm-Kürzel")),
+                                    ("alt", tr("Alt"), tr("Gleiche Position wie ⌘ auf der Mac-Tastatur"))):
                 chk = Gtk.CheckButton(group=first, valign=Gtk.Align.CENTER, active=(key == w.opts.trigger_cmd))
                 first = first or chk
                 row = Adw.ActionRow(title=title, subtitle=sub, activatable_widget=chk)
@@ -178,8 +179,8 @@ class ImportDialog(Adw.Dialog):
             page.add(g)
 
         tv.set_content(page)
-        tv.add_bottom_bar(self._bottom("Weiter", self._after_overview))
-        return Adw.NavigationPage(title="Überblick", child=tv)
+        tv.add_bottom_bar(self._bottom(tr("Weiter"), self._after_overview))
+        return Adw.NavigationPage(title=tr("Überblick"), child=tv)
 
     def _bottom(self, label, cb, extra: Gtk.Widget | None = None):
         bar = Gtk.Box(spacing=12, margin_top=10, margin_bottom=10, margin_start=18, margin_end=18)
@@ -213,8 +214,8 @@ class ImportDialog(Adw.Dialog):
         tv = Adw.ToolbarView()
         tv.add_top_bar(Adw.HeaderBar())
         page = Adw.PreferencesPage()
-        g = Adw.PreferencesGroup(title="Welche Programme ersetzen deine Mac-Programme?",
-                                 description="Regeln, die auf dem Mac nur in einem Programm galten, brauchen das passende Linux-Programm.")
+        g = Adw.PreferencesGroup(title=tr("Welche Programme ersetzen deine Mac-Programme?"),
+                                 description=tr("Regeln, die auf dem Mac nur in einem Programm galten, brauchen das passende Linux-Programm."))
         all_keys = [k for k, _ in cat.apps]
         all_names = [i.get_display_name() for _, i in cat.apps]
         self.app_rows = {}
@@ -228,17 +229,17 @@ class ImportDialog(Adw.Dialog):
                 continue
             sugg = [s for s in btt.APP_SUGGESTIONS.get(key, []) if cat.lookup(s)]
             keys = [None] + sugg + [k for k in all_keys if k not in sugg]
-            labels = ["Nicht übernehmen"] + [f"{cat.name(s)}  ·  Vorschlag" for s in sugg] + \
+            labels = [tr("Nicht übernehmen")] + [tr("{name}  ·  Vorschlag").format(name=cat.name(s)) for s in sugg] + \
                      [n_ for k, n_ in zip(all_keys, all_names) if k not in sugg]
-            row = Adw.ComboRow(title=esc(name), subtitle=f"{n} Regel{'n' if n != 1 else ''}",
+            row = Adw.ComboRow(title=esc(name), subtitle=trn("{n} Regel", "{n} Regeln", n).format(n=n),
                                model=Gtk.StringList.new(labels), enable_search=True)
             row.set_selected(1 if sugg else 0)
             self.app_rows[bundle] = (row, keys)
             g.add(row)
         page.add(g)
         tv.set_content(page)
-        tv.add_bottom_bar(self._bottom("Weiter", self._after_apps))
-        return Adw.NavigationPage(title="Programme", child=tv)
+        tv.add_bottom_bar(self._bottom(tr("Weiter"), self._after_apps))
+        return Adw.NavigationPage(title=tr("Programme"), child=tv)
 
     def _after_apps(self):
         for bundle, (row, keys) in self.app_rows.items():
@@ -258,10 +259,10 @@ class ImportDialog(Adw.Dialog):
         changed = [p for p in self.plan if p["kind"] == "changed"]
 
         if new:
-            g = Adw.PreferencesGroup(title=f"Neu ({len(new)})",
-                                     description="Vorschläge sind voreingestellt. „Ausgeschaltet“ übernimmt die Regel, "
-                                                 "damit du sie später in Ruhe fertig machen kannst.")
-            allbtn = Gtk.Button(label="Alle übernehmen", css_classes=["flat"], valign=Gtk.Align.CENTER)
+            g = Adw.PreferencesGroup(title=tr("Neu ({n})").format(n=len(new)),
+                                     description=tr("Vorschläge sind voreingestellt. „Ausgeschaltet“ übernimmt die Regel, "
+                                                 "damit du sie später in Ruhe fertig machen kannst."))
+            allbtn = Gtk.Button(label=tr("Alle übernehmen"), css_classes=["flat"], valign=Gtk.Align.CENTER)
             g.set_header_suffix(allbtn)
             dds = []
             for p in sorted(new, key=lambda p: ("jdn".index(p["default"]), p["candidate"].app_name)):
@@ -270,17 +271,17 @@ class ImportDialog(Adw.Dialog):
             allbtn.connect("clicked", lambda *_: [d.set_selected(0) for d in dds])
             page.add(g)
         if changed:
-            g = Adw.PreferencesGroup(title=f"In BetterTouchTool geändert ({len(changed)})",
-                                     description="Diese Regeln gibt es schon – im Preset haben sie sich verändert.")
+            g = Adw.PreferencesGroup(title=tr("In BetterTouchTool geändert ({n})").format(n=len(changed)),
+                                     description=tr("Diese Regeln gibt es schon – im Preset haben sie sich verändert."))
             for p in changed:
                 self._row(g, p, CHANGED_CHOICES, changed=True)
             page.add(g)
 
-        info = Adw.PreferencesGroup(title="Außerdem")
-        for kind, title, sub in (("unchanged", "Schon vorhanden", "Seit dem letzten Import unverändert – deine Anpassungen bleiben"),
-                                 ("skipped_before", "Früher bewusst weggelassen", "Wird nicht erneut angeboten"),
-                                 ("not_mapped", "Programm nicht zugeordnet", "Ohne passendes Linux-Programm"),
-                                 ("unsupported", "Nicht übertragbar", "Gesten, Touch Bar, Remote")):
+        info = Adw.PreferencesGroup(title=tr("Außerdem"))
+        for kind, title, sub in (("unchanged", tr("Schon vorhanden"), tr("Seit dem letzten Import unverändert – deine Anpassungen bleiben")),
+                                 ("skipped_before", tr("Früher bewusst weggelassen"), tr("Wird nicht erneut angeboten")),
+                                 ("not_mapped", tr("Programm nicht zugeordnet"), tr("Ohne passendes Linux-Programm")),
+                                 ("unsupported", tr("Nicht übertragbar"), tr("Gesten, Touch Bar, Remote"))):
             items = [p for p in self.plan if p["kind"] == kind]
             if not items:
                 continue
@@ -291,8 +292,8 @@ class ImportDialog(Adw.Dialog):
             info.add(ex)
         page.add(info)
         if not new and not changed:
-            sp = Adw.StatusPage(icon_name="emblem-ok-symbolic", title="Nichts Neues",
-                                description="Deine Regeln sind auf dem Stand dieser Presets.")
+            sp = Adw.StatusPage(icon_name="emblem-ok-symbolic", title=tr("Nichts Neues"),
+                                description=tr("Deine Regeln sind auf dem Stand dieser Presets."))
             box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
             box.append(sp)
             box.append(page)
@@ -300,14 +301,14 @@ class ImportDialog(Adw.Dialog):
         else:
             tv.set_content(page)
         self.summary = Gtk.Label(xalign=0, css_classes=["dim-label"])
-        tv.add_bottom_bar(self._bottom("Importieren", self._do_import, self.summary))
+        tv.add_bottom_bar(self._bottom(tr("Importieren"), self._do_import, self.summary))
         self._update_summary()
-        return Adw.NavigationPage(title="Regeln prüfen", child=tv)
+        return Adw.NavigationPage(title=tr("Regeln prüfen"), child=tv)
 
     def _row(self, group, p, choices, changed=False):
         c, rule = p["candidate"], p["rule"]
         linux = trigger_text(rule)
-        where = "überall" if not rule.get("apps") else ", ".join(AppCatalog.get().name(a) for a in rule["apps"])
+        where = tr("überall") if not rule.get("apps") else ", ".join(AppCatalog.get().name(a) for a in rule["apps"])
         acts = "; ".join(describe_action(a) for a in rule["do"][:2])
         sub = f"{c.mac_trigger}  →  {linux}  ·  {where}"
         if not rule["name"].startswith(acts[:30]):
@@ -315,7 +316,7 @@ class ImportDialog(Adw.Dialog):
         notes = [n for n in p["notes"] if n]
         if changed:
             old = p.get("old") or {}
-            sub += f"\nbisher: {trigger_text(old)} → " + \
+            sub += tr("\nbisher: {trigger} → ").format(trigger=trigger_text(old)) + \
                    "; ".join(describe_action(a) for a in old.get("do") or [])
         if notes:
             sub += "\n⚠ " + "\n⚠ ".join(notes[:3])
@@ -347,10 +348,10 @@ class ImportDialog(Adw.Dialog):
         off = sum(1 for p, k in d if k == "d")
         up = sum(1 for p, k in d if k == "j" and p["kind"] == "changed")
         n = sum(1 for p, k in d if k == "n" and p["kind"] == "new")
-        parts = [f"{j} übernehmen", f"{off} ausgeschaltet"]
+        parts = [tr("{n} übernehmen").format(n=j), tr("{n} ausgeschaltet").format(n=off)]
         if up:
-            parts.append(f"{up} aktualisieren")
-        parts.append(f"{n} weglassen")
+            parts.append(tr("{n} aktualisieren").format(n=up))
+        parts.append(tr("{n} weglassen").format(n=n))
         self.summary.set_label(" · ".join(parts))
         if hasattr(self, "_bottom_btn"):
             self._bottom_btn.set_sensitive(bool(j or off or up or n))
@@ -375,17 +376,17 @@ class ImportDialog(Adw.Dialog):
                 continue
             if k == "d":
                 rule["enabled"] = False
-                notes = notes or ["Vor dem Einschalten prüfen"]
+                notes = notes or [tr("Vor dem Einschalten prüfen")]
             if notes:
                 rule["notes"] = notes
             w.accepted.append(rule)
         for p in self.plan:
             if p["kind"] == "not_mapped":
-                w.skipped.append((p["candidate"], "Programm weggelassen"))
+                w.skipped.append((p["candidate"], tr("Programm weggelassen")))
         try:
             files, report = w.write_results()
         except Exception as e:
-            d = Adw.AlertDialog(heading="Import fehlgeschlagen", body=str(e))
+            d = Adw.AlertDialog(heading=tr("Import fehlgeschlagen"), body=str(e))
             d.add_response("ok", "OK")
             d.present(self)
             return
@@ -399,19 +400,19 @@ class ImportDialog(Adw.Dialog):
         tv = Adw.ToolbarView()
         hb = Adw.HeaderBar()
         tv.add_top_bar(hb)
-        desc = f"{on} Regeln aktiv übernommen, {off} ausgeschaltet zum Nacharbeiten"
+        desc = tr("{on} Regeln aktiv übernommen, {off} ausgeschaltet zum Nacharbeiten").format(on=on, off=off)
         if up:
-            desc += f", {up} aktualisiert"
-        desc += ".\nAusgeschaltete Regeln findest du unter „Zu prüfen“."
-        sp = Adw.StatusPage(icon_name="emblem-ok-symbolic", title="Import abgeschlossen", description=desc)
+            desc += tr(", {up} aktualisiert").format(up=up)
+        desc += tr(".\nAusgeschaltete Regeln findest du unter „Zu prüfen“.")
+        sp = Adw.StatusPage(icon_name="emblem-ok-symbolic", title=tr("Import abgeschlossen"), description=desc)
         box = Gtk.Box(spacing=12, halign=Gtk.Align.CENTER)
-        rep = Gtk.Button(label="Bericht öffnen", css_classes=["pill"])
+        rep = Gtk.Button(label=tr("Bericht öffnen"), css_classes=["pill"])
         rep.connect("clicked", lambda *_: Gio.AppInfo.launch_default_for_uri(self.report.as_uri(), None))
-        done = Gtk.Button(label="Fertig", css_classes=["pill", "suggested-action"])
+        done = Gtk.Button(label=tr("Fertig"), css_classes=["pill", "suggested-action"])
         done.connect("clicked", lambda *_: (self.close(), self.win.show_category("review") if off else None))
         box.append(rep)
         box.append(done)
         sp.set_child(box)
         tv.set_content(sp)
-        page = Adw.NavigationPage(title="Fertig", child=tv, can_pop=False)
+        page = Adw.NavigationPage(title=tr("Fertig"), child=tv, can_pop=False)
         return page

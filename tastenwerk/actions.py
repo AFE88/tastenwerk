@@ -18,6 +18,7 @@ from .config import Config, Rule
 from .keys import Combo, parse_sequence
 from .windows import WindowOps
 from .x11 import X11
+from .i18n import tr, trn  # noqa: E402
 
 log = logging.getLogger("tastenwerk")
 
@@ -130,7 +131,7 @@ class Executor:
             except Exception as e:  # nie den Thread sterben lassen
                 log.exception("Fehler bei %s", getattr(trig, "key", trig))
                 if self.settings.get("notify", True):
-                    notify("Tastenwerk: Fehler", str(e), urgent=True)
+                    notify(tr("Tastenwerk: Fehler"), str(e), urgent=True)
 
     def _quiet(self):
         import contextlib
@@ -192,16 +193,16 @@ class Executor:
         try:
             subprocess.Popen([key], start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except OSError:
-            raise RuntimeError(f"Programm „{key}“ nicht gefunden") from None
+            raise RuntimeError(tr("Programm „{name}“ nicht gefunden").format(name=key)) from None
 
     def paste_history_nr(self, n: int):
         """Eintrag Nr. n des Verlaufs (1 = zuletzt kopiert, ohne Angeheftete) direkt einfügen."""
         if self.history is None:
-            raise RuntimeError("Zwischenablage-Verlauf ist nicht verfügbar")
+            raise RuntimeError(tr("Zwischenablage-Verlauf ist nicht verfügbar"))
         from .mainthread import run_on_main
         recent = run_on_main(lambda: [i for i in self.history.ordered() if not i.get("pinned")])
         if len(recent) < n:
-            notify("Tastenwerk", f"Im Zwischenablage-Verlauf gibt es keinen Eintrag Nr. {n}")
+            notify("Tastenwerk", tr("Im Zwischenablage-Verlauf gibt es keinen Eintrag Nr. {n}").format(n=n))
             return
         prev = self.x.active_window()
         self.paste_history(recent[n - 1], "paste", prev.id if prev is not None else None)
@@ -357,7 +358,7 @@ class Executor:
                 self.paste_history_nr(n)
                 return
             if self.on_clipboard is None:
-                raise RuntimeError("Zwischenablage-Verlauf ist nicht verfügbar")
+                raise RuntimeError(tr("Zwischenablage-Verlauf ist nicht verfügbar"))
             prev = self.x.active_window()
             self.on_clipboard(cmd, prev.id if prev is not None else None)
 
@@ -386,9 +387,9 @@ class Executor:
         old = self.clipboard.get_text()
         text = self.copy_selection(mode=a.get("input", "selection"), old=old)
         if not text:
-            notify("Tastenwerk", "Kein Text markiert.")
+            notify("Tastenwerk", tr("Kein Text markiert."))
             return
-        notify("Tastenwerk", "Claude formuliert …")
+        notify("Tastenwerk", tr("Claude formuliert …"))
         try:
             result = ai.transform(text, instruction, self.settings)
         except Exception:
@@ -404,25 +405,25 @@ class Executor:
 
 
 WINDOW_LABELS = {
-    "left_half": "linke Hälfte", "right_half": "rechte Hälfte", "top_half": "obere Hälfte",
-    "bottom_half": "untere Hälfte", "left_third": "linkes Drittel", "center_third": "mittleres Drittel",
-    "right_third": "rechtes Drittel", "left_two_thirds": "linke zwei Drittel",
-    "right_two_thirds": "rechte zwei Drittel", "top_left": "oben links", "top_right": "oben rechts",
+    "left_half": tr("linke Hälfte"), "right_half": tr("rechte Hälfte"), "top_half": tr("obere Hälfte"),
+    "bottom_half": tr("untere Hälfte"), "left_third": tr("linkes Drittel"), "center_third": tr("mittleres Drittel"),
+    "right_third": tr("rechtes Drittel"), "left_two_thirds": tr("linke zwei Drittel"),
+    "right_two_thirds": tr("rechte zwei Drittel"), "top_left": "oben links", "top_right": "oben rechts",
     "bottom_left": "unten links", "bottom_right": "unten rechts", "maximize": "maximieren",
-    "unmaximize": "Maximierung aufheben", "toggle_maximize": "maximieren an/aus",
-    "minimize": "minimieren", "minimize_under_cursor": "Fenster unter Maus minimieren",
-    "fullscreen": "Vollbild an/aus", "center": "zentrieren", "close": "schließen",
-    "next_monitor": "auf nächsten Monitor", "prev_monitor": "auf vorherigen Monitor",
-    "next_monitor_maximized": "auf nächsten Monitor, maximiert",
+    "unmaximize": tr("Maximierung aufheben"), "toggle_maximize": tr("maximieren an/aus"),
+    "minimize": "minimieren", "minimize_under_cursor": tr("Fenster unter Maus minimieren"),
+    "fullscreen": tr("Vollbild an/aus"), "center": "zentrieren", "close": tr("schließen"),
+    "next_monitor": tr("auf nächsten Monitor"), "prev_monitor": tr("auf vorherigen Monitor"),
+    "next_monitor_maximized": tr("auf nächsten Monitor, maximiert"),
 }
 
 
-_PRETTY_MOD = {"ctrl": "Strg", "alt": "Alt", "shift": "Umschalt", "super": "Super", "altgr": "AltGr"}
-_PRETTY_KEY = {"Return": "Enter", "KP_Enter": "Enter", "Left": "←", "Right": "→", "Up": "↑", "Down": "↓",
-               "BackSpace": "Rücktaste", "Delete": "Entf", "Escape": "Esc", "space": "Leertaste",
-               "Prior": "Bild↑", "Next": "Bild↓", "Home": "Pos1", "End": "Ende", "Print": "Druck",
+_PRETTY_MOD = {"ctrl": tr("Strg"), "alt": tr("Alt"), "shift": tr("Umschalt"), "super": "Super", "altgr": "AltGr"}
+_PRETTY_KEY = {"Return": tr("Enter"), "KP_Enter": tr("Enter"), "Left": "←", "Right": "→", "Up": "↑", "Down": "↓",
+               "BackSpace": tr("Rücktaste"), "Delete": tr("Entf"), "Escape": tr("Esc"), "space": tr("Leertaste"),
+               "Prior": "Bild↑", "Next": "Bild↓", "Home": "Pos1", "End": tr("Ende"), "Print": tr("Druck"),
                "numbersign": "#", "less": "<", "plus": "+", "minus": "-", "period": ".", "comma": ",",
-               "ssharp": "ß", "XF86AudioNext": "Nächster Titel", "XF86AudioPrev": "Voriger Titel"}
+               "ssharp": "ß", "XF86AudioNext": tr("Nächster Titel"), "XF86AudioPrev": tr("Voriger Titel")}
 
 
 def pretty_keys(seq: str) -> str:
@@ -469,10 +470,10 @@ def pretty_text(text: str) -> str:
         if kind == "cursor":
             return ""
         if kind == "clipboard":
-            return "[Zwischenablage]"
+            return tr("[Zwischenablage]")
         if kind == "date" and ("%H" in fmt or "%M" in fmt) and "%d" not in fmt:
-            return "[Uhrzeit]"
-        return {"date": "[Datum]", "time": "[Uhrzeit]", "datetime": "[Datum + Zeit]"}[kind]
+            return tr("[Uhrzeit]")
+        return {"date": tr("[Datum]"), "time": tr("[Uhrzeit]"), "datetime": tr("[Datum + Zeit]")}[kind]
     return _PLACEHOLDER.sub(repl, text).replace("{{", "{").replace("}}", "}")
 
 
@@ -480,44 +481,44 @@ def describe_action(a: dict) -> str:
     """Kurzbeschreibung einer Aktion für Listen und den Import-Assistenten."""
     for k, v in a.items():
         if k == "keys":
-            return f"Tasten {pretty_keys(v)}"
+            return tr("Tasten {keys}").format(keys=pretty_keys(v))
         if k == "type":
             s = pretty_text(str(v)).replace("\n", "⏎")
-            return f"Tippen „{s[:40]}{'…' if len(s) > 40 else ''}“"
+            return tr("Tippen „{text}“").format(text=s[:40] + ('…' if len(s) > 40 else ''))
         if k == "paste":
             s = pretty_text(str(v)).replace("\n", "⏎")
-            return f"Einfügen „{s[:40]}{'…' if len(s) > 40 else ''}“"
+            return tr("Einfügen „{text}“").format(text=s[:40] + ('…' if len(s) > 40 else ''))
         if k == "run":
-            return f"Befehl {shlex.quote(str(v))[:60]}"
+            return tr("Befehl {cmd}").format(cmd=shlex.quote(str(v))[:60])
         if k == "open":
-            return f"Öffnen {v}"
+            return tr("Öffnen {target}").format(target=v)
         if k == "window":
-            return "Fenster: " + WINDOW_LABELS.get(str(v), str(v))
+            return tr("Fenster: {what}").format(what=WINDOW_LABELS.get(str(v), str(v)))
         if k == "workspace":
-            return f"Arbeitsfläche: {v}"
+            return tr("Arbeitsfläche: {n}").format(n=v)
         if k == "delay":
-            return f"{v} s warten"
+            return tr("{n} s warten").format(n=v)
         if k == "lock":
-            return "Bildschirm sperren"
+            return tr("Bildschirm sperren")
         if k == "notify":
-            return f"Hinweis „{v}“"
+            return tr("Hinweis „{text}“").format(text=v)
         if k == "app":
             try:
                 from .apps import Catalog
                 name = Catalog.get().name(str(v))
             except Exception:
                 name = str(v)
-            return f"Programm: {name}"
+            return tr("Programm: {name}").format(name=name)
         if k == "screenshot":
             from .config import SCREENSHOT_MODES
-            return "Bildschirmfoto: " + SCREENSHOT_MODES.get(str(v), str(v))
+            return tr("Bildschirmfoto: {what}").format(what=SCREENSHOT_MODES.get(str(v), str(v)))
         if k == "clipboard":
             from .clipboard_defaults import command
             cmd, n = command(v) or ("show", 0)
             if cmd == "paste":
-                return {1: "Letzte Kopie einfügen", 2: "Vorletzte Kopie einfügen"}.get(n, f"Verlaufseintrag Nr. {n} einfügen")
-            return "Zwischenablage-Verlauf leeren" if cmd == "clear" else "Zwischenablage-Verlauf zeigen"
+                return {1: tr("Letzte Kopie einfügen"), 2: tr("Vorletzte Kopie einfügen")}.get(n, tr("Verlaufseintrag Nr. {n} einfügen").format(n=n))
+            return tr("Zwischenablage-Verlauf leeren") if cmd == "clear" else tr("Zwischenablage-Verlauf zeigen")
         if k == "ai":
             s = str(v).replace("\n", " ")
-            return f"Claude: {s[:50]}{'…' if len(s) > 50 else ''}"
+            return tr("Claude: {text}").format(text=s[:50] + ('…' if len(s) > 50 else ''))
     return str(a)

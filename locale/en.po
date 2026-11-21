@@ -1,0 +1,2049 @@
+# Tastenwerk – Übersetzung (en)
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: en\n"
+
+#: tastenwerk/actions.py:408
+msgid "linke Hälfte"
+msgstr "left half"
+
+#: tastenwerk/actions.py:408
+msgid "rechte Hälfte"
+msgstr "right half"
+
+#: tastenwerk/actions.py:408
+msgid "obere Hälfte"
+msgstr "top half"
+
+#: tastenwerk/actions.py:409
+msgid "untere Hälfte"
+msgstr "bottom half"
+
+#: tastenwerk/actions.py:409
+msgid "linkes Drittel"
+msgstr "left third"
+
+#: tastenwerk/actions.py:409
+msgid "mittleres Drittel"
+msgstr "center third"
+
+#: tastenwerk/actions.py:410
+msgid "rechtes Drittel"
+msgstr "right third"
+
+#: tastenwerk/actions.py:410
+msgid "linke zwei Drittel"
+msgstr "left two thirds"
+
+#: tastenwerk/actions.py:411
+msgid "rechte zwei Drittel"
+msgstr "right two thirds"
+
+#: tastenwerk/actions.py:413
+msgid "Maximierung aufheben"
+msgstr "unmaximize"
+
+#: tastenwerk/actions.py:413
+msgid "maximieren an/aus"
+msgstr "toggle maximize"
+
+#: tastenwerk/actions.py:414
+msgid "Fenster unter Maus minimieren"
+msgstr "minimize window under mouse"
+
+#: tastenwerk/actions.py:415
+msgid "Vollbild an/aus"
+msgstr "toggle fullscreen"
+
+#: tastenwerk/actions.py:415
+msgid "schließen"
+msgstr "close"
+
+#: tastenwerk/actions.py:416
+msgid "auf nächsten Monitor"
+msgstr "to next monitor"
+
+#: tastenwerk/actions.py:416
+msgid "auf vorherigen Monitor"
+msgstr "to previous monitor"
+
+#: tastenwerk/actions.py:417
+msgid "auf nächsten Monitor, maximiert"
+msgstr "to next monitor, maximized"
+
+#: tastenwerk/actions.py:421 tastenwerk/gui/importdlg.py:171 tastenwerk/gui/widgets.py:100 tastenwerk/gui/widgets.py:108
+msgid "Strg"
+msgstr "Ctrl"
+
+#: tastenwerk/actions.py:421 tastenwerk/gui/importdlg.py:172 tastenwerk/gui/widgets.py:100 tastenwerk/gui/widgets.py:108
+msgid "Alt"
+msgstr "Alt"
+
+#: tastenwerk/actions.py:421 tastenwerk/gui/widgets.py:108
+msgid "Umschalt"
+msgstr "Shift"
+
+#: tastenwerk/actions.py:422 tastenwerk/actions.py:422 tastenwerk/gui/widgets.py:102 tastenwerk/gui/widgets.py:102
+msgid "Enter"
+msgstr "Enter"
+
+#: tastenwerk/actions.py:423
+msgid "Rücktaste"
+msgstr "Backspace"
+
+#: tastenwerk/actions.py:423 tastenwerk/gui/widgets.py:103
+msgid "Entf"
+msgstr "Del"
+
+#: tastenwerk/actions.py:423 tastenwerk/gui/widgets.py:103
+msgid "Esc"
+msgstr "Esc"
+
+#: tastenwerk/actions.py:423 tastenwerk/gui/widgets.py:103
+msgid "Leertaste"
+msgstr "Space"
+
+#: tastenwerk/actions.py:424 tastenwerk/gui/widgets.py:104
+msgid "Ende"
+msgstr "End"
+
+#: tastenwerk/actions.py:424 tastenwerk/gui/widgets.py:105
+msgid "Druck"
+msgstr "Print"
+
+#: tastenwerk/actions.py:426
+msgid "Nächster Titel"
+msgstr "Next track"
+
+#: tastenwerk/actions.py:426
+msgid "Voriger Titel"
+msgstr "Previous track"
+
+#: tastenwerk/actions.py:392
+msgid "Claude formuliert …"
+msgstr "Claude is rewriting …"
+
+#: tastenwerk/actions.py:473
+msgid "[Zwischenablage]"
+msgstr "[Clipboard]"
+
+#: tastenwerk/actions.py:475 tastenwerk/actions.py:476
+msgid "[Uhrzeit]"
+msgstr "[Time]"
+
+#: tastenwerk/actions.py:502 tastenwerk/config.py:51 tastenwerk/gui/widgets.py:199
+msgid "Bildschirm sperren"
+msgstr "Lock screen"
+
+#: tastenwerk/actions.py:201 tastenwerk/actions.py:361
+msgid "Zwischenablage-Verlauf ist nicht verfügbar"
+msgstr "Clipboard history is not available"
+
+#: tastenwerk/actions.py:390
+msgid "Kein Text markiert."
+msgstr "No text selected."
+
+#: tastenwerk/actions.py:476
+msgid "[Datum]"
+msgstr "[Date]"
+
+#: tastenwerk/actions.py:476
+msgid "[Datum + Zeit]"
+msgstr "[Date + time]"
+
+#: tastenwerk/actions.py:520
+msgid "Zwischenablage-Verlauf leeren"
+msgstr "Clear clipboard history"
+
+#: tastenwerk/actions.py:520
+msgid "Zwischenablage-Verlauf zeigen"
+msgstr "Show clipboard history"
+
+#: tastenwerk/actions.py:484
+msgid "Tasten {keys}"
+msgstr "Keys {keys}"
+
+#: tastenwerk/actions.py:487
+msgid "Tippen „{text}“"
+msgstr "Type “{text}”"
+
+#: tastenwerk/actions.py:490
+msgid "Einfügen „{text}“"
+msgstr "Paste “{text}”"
+
+#: tastenwerk/actions.py:492
+msgid "Befehl {cmd}"
+msgstr "Command {cmd}"
+
+#: tastenwerk/actions.py:494
+msgid "Öffnen {target}"
+msgstr "Open {target}"
+
+#: tastenwerk/actions.py:496
+msgid "Fenster: {what}"
+msgstr "Window: {what}"
+
+#: tastenwerk/actions.py:498
+msgid "Arbeitsfläche: {n}"
+msgstr "Workspace: {n}"
+
+#: tastenwerk/actions.py:500
+msgid "{n} s warten"
+msgstr "Wait {n} s"
+
+#: tastenwerk/actions.py:504
+msgid "Hinweis „{text}“"
+msgstr "Notification “{text}”"
+
+#: tastenwerk/actions.py:511
+msgid "Programm: {name}"
+msgstr "App: {name}"
+
+#: tastenwerk/actions.py:514
+msgid "Bildschirmfoto: {what}"
+msgstr "Screenshot: {what}"
+
+#: tastenwerk/actions.py:523
+msgid "Claude: {text}"
+msgstr "Claude: {text}"
+
+#: tastenwerk/actions.py:205
+msgid "Im Zwischenablage-Verlauf gibt es keinen Eintrag Nr. {n}"
+msgstr "There is no entry no. {n} in the clipboard history"
+
+#: tastenwerk/actions.py:134
+msgid "Tastenwerk: Fehler"
+msgstr "Tastenwerk: error"
+
+#: tastenwerk/actions.py:196
+msgid "Programm „{name}“ nicht gefunden"
+msgstr "App “{name}” not found"
+
+#: tastenwerk/actions.py:519
+msgid "Letzte Kopie einfügen"
+msgstr "Paste last copy"
+
+#: tastenwerk/actions.py:519
+msgid "Vorletzte Kopie einfügen"
+msgstr "Paste second-to-last copy"
+
+#: tastenwerk/actions.py:519
+msgid "Verlaufseintrag Nr. {n} einfügen"
+msgstr "Paste history entry no. {n}"
+
+#: tastenwerk/clipboard.py:54
+msgid "Terminal"
+msgstr "Terminal"
+
+#: tastenwerk/clipboard.py:54 tastenwerk/gui/importdlg.py:62 tastenwerk/gui/prefs.py:85
+msgid "Dateien"
+msgstr "Files"
+
+#: tastenwerk/clipboard.py:61
+msgid "gerade eben"
+msgstr "just now"
+
+#: tastenwerk/clipboard.py:67
+msgid "gestern"
+msgstr "yesterday"
+
+#: tastenwerk/clipboard.py:68
+msgid "%d.%m.%Y"
+msgstr "%Y-%m-%d"
+
+#: tastenwerk/clipboard.py:63
+msgid "vor {n} Min."
+msgstr "{n} min ago"
+
+#: tastenwerk/clipboard.py:65
+msgid "vor {n} Std."
+msgstr "{n} h ago"
+
+#: tastenwerk/clipboard.py:366 tastenwerk/gui/editor.py:19 tastenwerk/gui/prefs.py:143
+msgid "Zwischenablage"
+msgstr "Clipboard"
+
+#: tastenwerk/clipboard.py:389
+msgid "Verlauf durchsuchen …"
+msgstr "Search history …"
+
+#: tastenwerk/clipboard.py:392
+msgid "Nur Angeheftete (Tab)"
+msgstr "Pinned only (Tab)"
+
+#: tastenwerk/clipboard.py:412
+msgid "↵ Einfügen   ⇧↵ Nur kopieren   Strg+1–9   Strg+P Anheften   Entf Löschen"
+msgstr "↵ Paste   ⇧↵ Copy only   Ctrl+1–9   Ctrl+P Pin   Del Delete"
+
+#: tastenwerk/clipboard.py:493
+msgid "Löschen (Entf)"
+msgstr "Delete (Del)"
+
+#: tastenwerk/clipboard.py:432
+msgid "Angeheftet"
+msgstr "Pinned"
+
+#: tastenwerk/clipboard.py:434 tastenwerk/gui/prefs.py:145
+msgid "Verlauf"
+msgstr "History"
+
+#: tastenwerk/clipboard.py:468
+msgid "Bild {w}×{h}"
+msgstr "Image {w}×{h}"
+
+#: tastenwerk/clipboard.py:485
+msgid "Lösen (Strg+P)"
+msgstr "Unpin (Ctrl+P)"
+
+#: tastenwerk/clipboard.py:485
+msgid "Anheften (Strg+P)"
+msgstr "Pin (Ctrl+P)"
+
+#: tastenwerk/clipboard.py:533 tastenwerk/gui/app.py:288
+msgid "Nichts gefunden"
+msgstr "Nothing found"
+
+#: tastenwerk/clipboard.py:476
+msgid "{n} Zeichen"
+msgid_plural "{n} Zeichen"
+msgstr[0] "{n} character"
+msgstr[1] "{n} characters"
+
+#: tastenwerk/clipboard.py:535
+msgid "Noch nichts angeheftet\nStrg+P heftet den markierten Eintrag an"
+msgstr "Nothing pinned yet\nCtrl+P pins the selected entry"
+
+#: tastenwerk/clipboard.py:477
+msgid " · {n} Zeilen"
+msgstr " · {n} lines"
+
+#: tastenwerk/clipboard.py:537
+msgid "Der Verlauf ist ausgeschaltet\n(Tastenwerk → Einstellungen → Zwischenablage)"
+msgstr "History is turned off\n(Tastenwerk → Preferences → Clipboard)"
+
+#: tastenwerk/clipboard.py:539
+msgid "Noch leer\nAlles, was du kopierst, erscheint hier"
+msgstr "Still empty\nEverything you copy will show up here"
+
+#: tastenwerk/clipboard_defaults.py:30
+msgid "Nie"
+msgstr "Never"
+
+#: tastenwerk/clipboard_defaults.py:30
+msgid "Nur Passwörter"
+msgstr "Passwords only"
+
+#: tastenwerk/clipboard_defaults.py:30
+msgid "Alles"
+msgstr "Everything"
+
+#: tastenwerk/config.py:43 tastenwerk/gestures.py:106 tastenwerk/gui/widgets.py:187
+msgid "Tasten senden"
+msgstr "Send keys"
+
+#: tastenwerk/config.py:44
+msgid "Text tippen"
+msgstr "Type text"
+
+#: tastenwerk/config.py:45
+msgid "Text einfügen (über Zwischenablage)"
+msgstr "Paste text (via clipboard)"
+
+#: tastenwerk/config.py:46 tastenwerk/gui/widgets.py:191
+msgid "Befehl ausführen"
+msgstr "Run command"
+
+#: tastenwerk/config.py:47
+msgid "Datei/URL/Programm öffnen"
+msgstr "Open file/URL/app"
+
+#: tastenwerk/config.py:48
+msgid "Fenster-Aktion"
+msgstr "Window action"
+
+#: tastenwerk/config.py:49 tastenwerk/gestures.py:108 tastenwerk/gestures.py:131 tastenwerk/gestures.py:131
+msgid "Arbeitsfläche wechseln"
+msgstr "Switch workspace"
+
+#: tastenwerk/config.py:50 tastenwerk/gui/widgets.py:193
+msgid "Warten"
+msgstr "Wait"
+
+#: tastenwerk/config.py:52
+msgid "Benachrichtigung zeigen"
+msgstr "Show notification"
+
+#: tastenwerk/config.py:53
+msgid "Markierten Text mit Claude umformen"
+msgstr "Rewrite selected text with Claude"
+
+#: tastenwerk/config.py:54 tastenwerk/gui/widgets.py:194 tastenwerk/tray.py:78
+msgid "Zwischenablage-Verlauf"
+msgstr "Clipboard history"
+
+#: tastenwerk/config.py:55 tastenwerk/gui/widgets.py:197
+msgid "Bildschirmfoto"
+msgstr "Screenshot"
+
+#: tastenwerk/config.py:56
+msgid "Programm öffnen oder wechseln"
+msgstr "Open or switch to app"
+
+#: tastenwerk/config.py:59
+msgid "Nächstes Fenster des Programms"
+msgstr "Next window of the app"
+
+#: tastenwerk/config.py:59 tastenwerk/gestures.py:107
+msgid "Minimieren"
+msgstr "Minimize"
+
+#: tastenwerk/config.py:59
+msgid "Nichts tun"
+msgstr "Do nothing"
+
+#: tastenwerk/config.py:61
+msgid "Bereich auswählen"
+msgstr "Select area"
+
+#: tastenwerk/config.py:61
+msgid "Ganzer Bildschirm"
+msgstr "Entire screen"
+
+#: tastenwerk/config.py:61
+msgid "Aktuelles Fenster"
+msgstr "Current window"
+
+#: tastenwerk/daemon.py:74
+msgid "Zwischenablage-Verlauf geleert (Angeheftete bleiben)"
+msgstr "Clipboard history cleared (pinned entries kept)"
+
+#: tastenwerk/daemon.py:112
+msgid "{h} Kürzel, {a} Tastenfolgen, {g} Gesten aktiv"
+msgstr "{h} shortcuts, {a} abbreviations, {g} gestures active"
+
+#: tastenwerk/daemon.py:174
+msgid "Tastenwerk: Konfiguration fehlerhaft"
+msgstr "Tastenwerk: configuration error"
+
+#: tastenwerk/daemon.py:115
+msgid "\n{n} Kürzel nicht belegbar: "
+msgstr "\n{n} shortcuts could not be registered: "
+
+#: tastenwerk/gestures.py:42
+msgid "nach oben"
+msgstr "up"
+
+#: tastenwerk/gestures.py:42
+msgid "nach unten"
+msgstr "down"
+
+#: tastenwerk/gestures.py:42
+msgid "nach links"
+msgstr "left"
+
+#: tastenwerk/gestures.py:42
+msgid "nach rechts"
+msgstr "right"
+
+#: tastenwerk/gestures.py:43
+msgid "zusammenziehen"
+msgstr "pinch in"
+
+#: tastenwerk/gestures.py:43
+msgid "auseinanderziehen"
+msgstr "pinch out"
+
+#: tastenwerk/gestures.py:106
+msgid "Schreibtisch zeigen"
+msgstr "Show desktop"
+
+#: tastenwerk/gestures.py:106
+msgid "Maximieren"
+msgstr "Maximize"
+
+#: tastenwerk/gestures.py:107
+msgid "Fenster andocken"
+msgstr "Tile window"
+
+#: tastenwerk/gestures.py:107
+msgid "Vollbild"
+msgstr "Fullscreen"
+
+#: tastenwerk/gestures.py:108
+msgid "Fenster schließen"
+msgstr "Close window"
+
+#: tastenwerk/gestures.py:108 tastenwerk/gui/editor.py:193
+msgid "Befehl"
+msgstr "Command"
+
+#: tastenwerk/gestures.py:109
+msgid "Mausklick"
+msgstr "Mouse click"
+
+#: tastenwerk/gestures.py:81
+msgid "Gesten gehen mit 3, 4 oder 5 Fingern (2 Finger sind Scrollen)"
+msgstr "Gestures use 3, 4 or 5 fingers (2 fingers is scrolling)"
+
+#: tastenwerk/gestures.py:91
+msgid "{n} Finger {direction}"
+msgstr "{n} fingers {direction}"
+
+#: tastenwerk/gestures.py:132 tastenwerk/gestures.py:132
+msgid "Übersicht"
+msgstr "Overview"
+
+#: tastenwerk/gestures.py:90
+msgid "{n} Finger {direction} wischen"
+msgstr "Swipe {direction} with {n} fingers"
+
+#: tastenwerk/gestures.py:133
+msgid "GNOME → {what}"
+msgstr "GNOME → {what}"
+
+#: tastenwerk/gui/app.py:24 tastenwerk/gui/app.py:150
+msgid "Alle Regeln"
+msgstr "All rules"
+
+#: tastenwerk/gui/app.py:25 tastenwerk/gui/editor.py:421 tastenwerk/gui/editor.py:428
+msgid "Tastenkürzel"
+msgstr "Keyboard shortcuts"
+
+#: tastenwerk/gui/app.py:26
+msgid "Tastenfolgen"
+msgstr "Abbreviations"
+
+#: tastenwerk/gui/app.py:27
+msgid "Touchpad-Gesten"
+msgstr "Touchpad gestures"
+
+#: tastenwerk/gui/app.py:28 tastenwerk/gui/editor.py:158
+msgid "Fenster"
+msgstr "Windows"
+
+#: tastenwerk/gui/app.py:29
+msgid "Mit Claude"
+msgstr "With Claude"
+
+#: tastenwerk/gui/app.py:30
+msgid "Zu prüfen"
+msgstr "To review"
+
+#: tastenwerk/gui/app.py:31 tastenwerk/gui/importdlg.py:21
+msgid "Ausgeschaltet"
+msgstr "Disabled"
+
+#: tastenwerk/gui/app.py:260 tastenwerk/gui/app.py:177
+msgid "Regeln"
+msgstr "Rules"
+
+#: tastenwerk/gui/app.py:105
+msgid "Aus BetterTouchTool importieren …"
+msgstr "Import from BetterTouchTool …"
+
+#: tastenwerk/gui/app.py:108 tastenwerk/gui/app.py:612 tastenwerk/gui/prefs.py:29
+msgid "Einstellungen"
+msgstr "Preferences"
+
+#: tastenwerk/gui/app.py:109 tastenwerk/gui/app.py:605
+msgid "Tastenkürzel von Tastenwerk"
+msgstr "Tastenwerk keyboard shortcuts"
+
+#: tastenwerk/gui/app.py:110
+msgid "Über Tastenwerk"
+msgstr "About Tastenwerk"
+
+#: tastenwerk/gui/app.py:257 tastenwerk/gui/app.py:214 tastenwerk/gui/app.py:334
+msgid "Überall"
+msgstr "Everywhere"
+
+#: tastenwerk/gui/app.py:442 tastenwerk/gui/editor.py:788
+msgid "Kopie angelegt (ausgeschaltet)"
+msgstr "Copy created (disabled)"
+
+#: tastenwerk/gui/app.py:457
+msgid "Rückgängig"
+msgstr "Undo"
+
+#: tastenwerk/gui/app.py:112
+msgid "Hauptmenü"
+msgstr "Main menu"
+
+#: tastenwerk/gui/app.py:141
+msgid "Hintergrunddienst starten/stoppen"
+msgstr "Start/stop background service"
+
+#: tastenwerk/gui/app.py:152
+msgid "Suchen (Strg+F)"
+msgstr "Search (Ctrl+F)"
+
+#: tastenwerk/gui/app.py:154
+msgid "Neue Regel (Strg+N)"
+msgstr "New rule (Ctrl+N)"
+
+#: tastenwerk/gui/app.py:160
+msgid "Name, Kürzel, Text oder Programm"
+msgstr "Name, shortcut, text or app"
+
+#: tastenwerk/gui/app.py:170
+msgid "Tastenwerk ist gestoppt – Kürzel, Tastenfolgen und Gesten reagieren gerade nicht."
+msgstr "Tastenwerk is stopped – shortcuts, abbreviations and gestures are not responding right now."
+
+#: tastenwerk/gui/app.py:171
+msgid "Starten"
+msgstr "Start"
+
+#: tastenwerk/gui/app.py:365
+msgid "Ungültige Geste"
+msgstr "Invalid gesture"
+
+#: tastenwerk/gui/app.py:392
+msgid "Bearbeiten"
+msgstr "Edit"
+
+#: tastenwerk/gui/app.py:393
+msgid "Duplizieren"
+msgstr "Duplicate"
+
+#: tastenwerk/gui/app.py:394
+msgid "Löschen"
+msgstr "Delete"
+
+#: tastenwerk/gui/app.py:502
+msgid "Pausiert"
+msgstr "Paused"
+
+#: tastenwerk/gui/app.py:503
+msgid "Fortsetzen über das Tray-Symbol"
+msgstr "Resume from the tray icon"
+
+#: tastenwerk/gui/app.py:524
+msgid "Tastenwerk läuft"
+msgstr "Tastenwerk is running"
+
+#: tastenwerk/gui/app.py:526
+msgid "Start fehlgeschlagen – siehe Protokoll in den Einstellungen"
+msgstr "Start failed – see the log in Preferences"
+
+#: tastenwerk/gui/app.py:550
+msgid "Konfiguration fehlerhaft"
+msgstr "Configuration error"
+
+#: tastenwerk/gui/app.py:552
+msgid "Ordner öffnen"
+msgstr "Open folder"
+
+#: tastenwerk/gui/app.py:596
+msgid "Tastenkürzel, Tastenfolgen, Touchpad-Gesten, Zwischenablage-Verlauf und Fenster-Aktionen für Linux.\nMit BetterTouchTool-Import und Claude-Textumformung."
+msgstr "Keyboard shortcuts, abbreviations, touchpad gestures, clipboard history and window actions for Linux.\nWith BetterTouchTool import and Claude text rewriting."
+
+#: tastenwerk/gui/app.py:611 tastenwerk/gui/app.py:294 tastenwerk/gui/editor.py:369 tastenwerk/gui/editor.py:714
+msgid "Neue Regel"
+msgstr "New rule"
+
+#: tastenwerk/gui/app.py:611
+msgid "Suchen"
+msgstr "Search"
+
+#: tastenwerk/gui/app.py:611 tastenwerk/gui/app.py:296
+msgid "Aus BetterTouchTool importieren"
+msgstr "Import from BetterTouchTool"
+
+#: tastenwerk/gui/app.py:612 tastenwerk/tray.py:84
+msgid "Beenden"
+msgstr "Quit"
+
+#: tastenwerk/gui/app.py:313
+msgid "Doppelte Belegungen und ähnliches"
+msgstr "Duplicate shortcuts and similar issues"
+
+#: tastenwerk/gui/app.py:361
+msgid "Ungültiges Kürzel"
+msgstr "Invalid shortcut"
+
+#: tastenwerk/gui/app.py:369
+msgid "Hinweise vom Import: "
+msgstr "Notes from the import: "
+
+#: tastenwerk/gui/app.py:457
+msgid "„{name}“ gelöscht"
+msgstr "“{name}” deleted"
+
+#: tastenwerk/gui/app.py:505 tastenwerk/gui/editor.py:411
+msgid "Aktiv"
+msgstr "Active"
+
+#: tastenwerk/gui/app.py:510
+msgid "Gestoppt"
+msgstr "Stopped"
+
+#: tastenwerk/gui/app.py:511
+msgid "Kürzel reagieren nicht"
+msgstr "Shortcuts are not responding"
+
+#: tastenwerk/gui/app.py:517
+msgid "Konnte den Dienst nicht starten – siehe Protokoll"
+msgstr "Could not start the service – see the log"
+
+#: tastenwerk/gui/app.py:518
+msgid "Konnte den Dienst nicht stoppen – siehe Protokoll"
+msgstr "Could not stop the service – see the log"
+
+#: tastenwerk/gui/app.py:122 tastenwerk/gui/importdlg.py:242
+msgid "Programme"
+msgstr "Apps"
+
+#: tastenwerk/gui/app.py:282
+msgid "{n} Regel gefunden"
+msgid_plural "{n} Regeln gefunden"
+msgstr[0] "{n} rule found"
+msgstr[1] "{n} rules found"
+
+#: tastenwerk/gui/app.py:283 tastenwerk/gui/importdlg.py:234
+msgid "{n} Regel"
+msgid_plural "{n} Regeln"
+msgstr[0] "{n} rule"
+msgstr[1] "{n} rules"
+
+#: tastenwerk/gui/app.py:289
+msgid "Versuche einen anderen Suchbegriff."
+msgstr "Try a different search term."
+
+#: tastenwerk/gui/app.py:291
+msgid "Willkommen bei Tastenwerk"
+msgstr "Welcome to Tastenwerk"
+
+#: tastenwerk/gui/app.py:292
+msgid "Lege deine erste Regel an – oder übernimm deine Einstellungen aus BetterTouchTool."
+msgstr "Create your first rule – or bring over your settings from BetterTouchTool."
+
+#: tastenwerk/gui/app.py:302
+msgid "Hier ist noch nichts"
+msgstr "Nothing here yet"
+
+#: tastenwerk/gui/app.py:303
+msgid "In dieser Ansicht gibt es keine Regeln."
+msgstr "There are no rules in this view."
+
+#: tastenwerk/gui/app.py:312
+msgid "{n} Hinweis zur Konfiguration"
+msgid_plural "{n} Hinweise zur Konfiguration"
+msgstr[0] "{n} note about the configuration"
+msgstr[1] "{n} notes about the configuration"
+
+#: tastenwerk/gui/app.py:359
+msgid "Von GNOME belegt ({what}) – wird nicht ausgelöst"
+msgstr "Taken by GNOME ({what}) – will not trigger"
+
+#: tastenwerk/gui/app.py:367
+msgid "Wird auch vom System genutzt ({what}) – beides löst aus"
+msgstr "Also used by the system ({what}) – both will trigger"
+
+#: tastenwerk/gui/app.py:415
+msgid "Fehler: {e}"
+msgstr "Error: {e}"
+
+#: tastenwerk/gui/app.py:507
+msgid "{n} Regel reagiert"
+msgid_plural "{n} Regeln reagieren"
+msgstr[0] "{n} rule is responding"
+msgstr[1] "{n} rules are responding"
+
+#: tastenwerk/gui/app.py:490
+msgid "Konfiguration fehlerhaft: {e}"
+msgstr "Configuration error: {e}"
+
+#: tastenwerk/gui/editor.py:18
+msgid "Datum"
+msgstr "Date"
+
+#: tastenwerk/gui/editor.py:18
+msgid "Uhrzeit"
+msgstr "Time"
+
+#: tastenwerk/gui/editor.py:18
+msgid "Datum + Zeit"
+msgstr "Date + time"
+
+#: tastenwerk/gui/editor.py:19
+msgid "Cursor hier"
+msgstr "Cursor here"
+
+#: tastenwerk/gui/editor.py:20
+msgid "Automatisch"
+msgstr "Automatic"
+
+#: tastenwerk/gui/editor.py:20
+msgid "Kurze Texte tippen, lange und mehrzeilige einfügen"
+msgstr "Type short texts, paste long and multi-line ones"
+
+#: tastenwerk/gui/editor.py:21
+msgid "Tippen"
+msgstr "Type"
+
+#: tastenwerk/gui/editor.py:21
+msgid "Zeichen für Zeichen – funktioniert überall"
+msgstr "Character by character – works everywhere"
+
+#: tastenwerk/gui/editor.py:22
+msgid "Einfügen"
+msgstr "Paste"
+
+#: tastenwerk/gui/editor.py:22
+msgid "Über die Zwischenablage – schnell, ideal für lange Texte"
+msgstr "Via the clipboard – fast, ideal for long texts"
+
+#: tastenwerk/gui/editor.py:23
+msgid "Ignorieren"
+msgstr "Ignore"
+
+#: tastenwerk/gui/editor.py:23
+msgid "An Cursor einfügen"
+msgstr "Insert at cursor"
+
+#: tastenwerk/gui/editor.py:23
+msgid "Über Zwischenablage einfügen"
+msgstr "Paste via clipboard"
+
+#: tastenwerk/gui/editor.py:24
+msgid "Als Benachrichtigung"
+msgstr "As a notification"
+
+#: tastenwerk/gui/editor.py:25
+msgid "Markierter Text"
+msgstr "Selected text"
+
+#: tastenwerk/gui/editor.py:25
+msgid "Aktuelle Zeile bis zum Cursor"
+msgstr "Current line up to the cursor"
+
+#: tastenwerk/gui/editor.py:25
+msgid "Gesamter Text im Feld"
+msgstr "Entire text in the field"
+
+#: tastenwerk/gui/editor.py:26
+msgid "Nächste"
+msgstr "Next"
+
+#: tastenwerk/gui/editor.py:26
+msgid "Vorherige"
+msgstr "Previous"
+
+#: tastenwerk/gui/editor.py:123
+msgid "Kombination aufnehmen und anhängen"
+msgstr "Record a combination and append it"
+
+#: tastenwerk/gui/editor.py:204
+msgid "Sekunden"
+msgstr "Seconds"
+
+#: tastenwerk/gui/editor.py:217
+msgid "Welcher Eintrag"
+msgstr "Which entry"
+
+#: tastenwerk/gui/editor.py:285
+msgid "Öffnet das Bildschirmfoto-Werkzeug von GNOME. Das Bild landet in „Bilder/Bildschirmfotos“ und in der Zwischenablage."
+msgstr "Opens the GNOME screenshot tool. The image is saved to “Pictures/Screenshots” and copied to the clipboard."
+
+#: tastenwerk/gui/editor.py:553
+msgid "Noch kein Auslöser festgelegt"
+msgstr "No trigger set yet"
+
+#: tastenwerk/gui/editor.py:762
+msgid "Weiter bearbeiten"
+msgstr "Keep editing"
+
+#: tastenwerk/gui/editor.py:763
+msgid "Verwerfen"
+msgstr "Discard"
+
+#: tastenwerk/gui/editor.py:764 tastenwerk/gui/editor.py:378
+msgid "Speichern"
+msgstr "Save"
+
+#: tastenwerk/gui/editor.py:79
+msgid "Nach oben"
+msgstr "Move up"
+
+#: tastenwerk/gui/editor.py:80
+msgid "Nach unten"
+msgstr "Move down"
+
+#: tastenwerk/gui/editor.py:81
+msgid "Aktion entfernen"
+msgstr "Remove action"
+
+#: tastenwerk/gui/editor.py:100
+msgid "Einfügen "
+msgstr "Paste "
+
+#: tastenwerk/gui/editor.py:100
+msgid "Öffnen "
+msgstr "Open "
+
+#: tastenwerk/gui/editor.py:100
+msgid "Arbeitsfläche: "
+msgstr "Workspace: "
+
+#: tastenwerk/gui/editor.py:113
+msgid "Einfügen als"
+msgstr "Insert as"
+
+#: tastenwerk/gui/editor.py:121
+msgid "Tasten (nacheinander, mit Leerzeichen getrennt)"
+msgstr "Keys (one after another, separated by spaces)"
+
+#: tastenwerk/gui/editor.py:122
+msgid "Aufnehmen"
+msgstr "Record"
+
+#: tastenwerk/gui/editor.py:134
+msgid "Vorschau"
+msgstr "Preview"
+
+#: tastenwerk/gui/editor.py:165
+msgid "Wechseln zu"
+msgstr "Switch to"
+
+#: tastenwerk/gui/editor.py:172 tastenwerk/gui/widgets.py:190
+msgid "Datei, Ordner, Webseite oder Programm"
+msgstr "File, folder, website or app"
+
+#: tastenwerk/gui/editor.py:174
+msgid "Datei auswählen"
+msgstr "Choose file"
+
+#: tastenwerk/gui/editor.py:181
+msgid "Datei oder Ordner wählen"
+msgstr "Choose a file or folder"
+
+#: tastenwerk/gui/editor.py:197
+msgid "Ausgabe des Befehls"
+msgstr "Command output"
+
+#: tastenwerk/gui/editor.py:213
+msgid "Was passiert"
+msgstr "What happens"
+
+#: tastenwerk/gui/editor.py:240 tastenwerk/gui/prefs.py:126
+msgid "Programm"
+msgstr "App"
+
+#: tastenwerk/gui/editor.py:243
+msgid "Wählen …"
+msgstr "Choose …"
+
+#: tastenwerk/gui/editor.py:249
+msgid "Wenn es schon vorne ist"
+msgstr "If it is already in front"
+
+#: tastenwerk/gui/editor.py:263
+msgid "Läuft es, kommt sein Fenster nach vorne – sonst wird es gestartet"
+msgstr "If it is running, its window comes to the front – otherwise it is started"
+
+#: tastenwerk/gui/editor.py:266
+msgid "Noch kein Programm gewählt"
+msgstr "No app chosen yet"
+
+#: tastenwerk/gui/editor.py:267
+msgid "Gerade geöffnete Programme stehen oben in der Liste"
+msgstr "Currently open apps are listed at the top"
+
+#: tastenwerk/gui/editor.py:282
+msgid "Was aufnehmen"
+msgstr "What to capture"
+
+#: tastenwerk/gui/editor.py:294
+msgid "Meldung"
+msgstr "Message"
+
+#: tastenwerk/gui/editor.py:299
+msgid "Anweisung an Claude"
+msgstr "Instruction for Claude"
+
+#: tastenwerk/gui/editor.py:300
+msgid "Was soll mit dem Text passieren? z. B. „Formuliere als freundliche Mail in der Du-Form“"
+msgstr "What should happen to the text? e.g. “Rewrite this as a friendly, informal email”"
+
+#: tastenwerk/gui/editor.py:304
+msgid "Welcher Text"
+msgstr "Which text"
+
+#: tastenwerk/gui/editor.py:369
+msgid "Regel bearbeiten"
+msgstr "Edit rule"
+
+#: tastenwerk/gui/editor.py:376 tastenwerk/gui/prefs.py:258
+msgid "Abbrechen"
+msgstr "Cancel"
+
+#: tastenwerk/gui/editor.py:409
+msgid "Name"
+msgstr "Name"
+
+#: tastenwerk/gui/editor.py:411
+msgid "Ausgeschaltete Regeln bleiben gespeichert"
+msgstr "Disabled rules are kept"
+
+#: tastenwerk/gui/editor.py:419
+msgid "Auslöser"
+msgstr "Trigger"
+
+#: tastenwerk/gui/editor.py:422
+msgid "Tastenfolge"
+msgstr "Abbreviation"
+
+#: tastenwerk/gui/editor.py:423
+msgid "Geste"
+msgstr "Gesture"
+
+#: tastenwerk/gui/editor.py:428
+msgid "Klicken und die gewünschten Tasten drücken"
+msgstr "Click and press the keys you want"
+
+#: tastenwerk/gui/editor.py:432
+msgid "Getippte Folge, z. B. ##mail"
+msgstr "Typed sequence, e.g. ##mail"
+
+#: tastenwerk/gui/editor.py:435
+msgid "Touchpad-Geste"
+msgstr "Touchpad gesture"
+
+#: tastenwerk/gui/editor.py:436
+msgid "Klicken und auf dem Touchpad wischen, oder über ⋯ wählen"
+msgstr "Click and swipe on the touchpad, or choose via ⋯"
+
+#: tastenwerk/gui/editor.py:459
+msgid "Gilt in"
+msgstr "Applies in"
+
+#: tastenwerk/gui/editor.py:462
+msgid "In allen Programmen"
+msgstr "In all apps"
+
+#: tastenwerk/gui/editor.py:465
+msgid "Nur in"
+msgstr "Only in"
+
+#: tastenwerk/gui/editor.py:470 tastenwerk/gui/prefs.py:204
+msgid "Programm hinzufügen"
+msgstr "Add app"
+
+#: tastenwerk/gui/editor.py:474
+msgid "Außer in"
+msgstr "Except in"
+
+#: tastenwerk/gui/editor.py:479
+msgid "Ausnahme hinzufügen"
+msgstr "Add exception"
+
+#: tastenwerk/gui/editor.py:489
+msgid "Aktionen"
+msgstr "Actions"
+
+#: tastenwerk/gui/editor.py:489
+msgid "Laufen nacheinander von oben nach unten ab"
+msgstr "Run one after another, top to bottom"
+
+#: tastenwerk/gui/editor.py:490 tastenwerk/gui/widgets.py:302
+msgid "Hinzufügen"
+msgstr "Add"
+
+#: tastenwerk/gui/editor.py:492
+msgid "Aktion"
+msgstr "Action"
+
+#: tastenwerk/gui/editor.py:497
+msgid "Noch keine Aktion"
+msgstr "No action yet"
+
+#: tastenwerk/gui/editor.py:497
+msgid "Über „+ Aktion“ hinzufügen"
+msgstr "Add one via “+ Action”"
+
+#: tastenwerk/gui/editor.py:615
+msgid "Füge mindestens ein Programm hinzu"
+msgstr "Add at least one app"
+
+#: tastenwerk/gui/editor.py:726
+msgid "Noch nicht ganz fertig"
+msgstr "Not quite done yet"
+
+#: tastenwerk/gui/editor.py:733
+msgid "Lege einen Auslöser fest – ein Tastenkürzel, eine Tastenfolge oder eine Geste."
+msgstr "Set a trigger – a keyboard shortcut, an abbreviation or a gesture."
+
+#: tastenwerk/gui/editor.py:735
+msgid "Füge mindestens eine Aktion hinzu."
+msgstr "Add at least one action."
+
+#: tastenwerk/gui/editor.py:737
+msgid "Wähle mindestens ein Programm – oder schalte „In allen Programmen“ ein."
+msgstr "Choose at least one app – or turn on “In all apps”."
+
+#: tastenwerk/gui/editor.py:753
+msgid "Gespeichert"
+msgstr "Saved"
+
+#: tastenwerk/gui/editor.py:760
+msgid "Änderungen verwerfen?"
+msgstr "Discard changes?"
+
+#: tastenwerk/gui/editor.py:761
+msgid "Du hast Änderungen an dieser Regel noch nicht gespeichert."
+msgstr "You have unsaved changes to this rule."
+
+#: tastenwerk/gui/editor.py:26
+msgid "Nummer {i}"
+msgstr "Number {i}"
+
+#: tastenwerk/gui/editor.py:150
+msgid "Noch keine Tasten"
+msgstr "No keys yet"
+
+#: tastenwerk/gui/editor.py:230
+msgid "Fenster mit Suche, ↵ fügt ein, Strg+P heftet an"
+msgstr "Window with search, ↵ pastes, Ctrl+P pins"
+
+#: tastenwerk/gui/editor.py:234
+msgid "Löscht alles außer Angehefteten"
+msgstr "Deletes everything except pinned entries"
+
+#: tastenwerk/gui/editor.py:291
+msgid "Keine Einstellungen nötig"
+msgstr "No settings needed"
+
+#: tastenwerk/gui/editor.py:291
+msgid "Sperrt die Sitzung sofort"
+msgstr "Locks the session immediately"
+
+#: tastenwerk/gui/editor.py:378
+msgid "Anlegen"
+msgstr "Create"
+
+#: tastenwerk/gui/editor.py:390
+msgid "Hinweise vom Import"
+msgstr "Notes from the import"
+
+#: tastenwerk/gui/editor.py:391
+msgid "Diese Regel wurde aus BetterTouchTool übernommen. Prüfe die Punkte und schalte sie dann ein."
+msgstr "This rule was imported from BetterTouchTool. Check the notes and then turn it on."
+
+#: tastenwerk/gui/editor.py:396
+msgid "Erledigt"
+msgstr "Done"
+
+#: tastenwerk/gui/editor.py:501
+msgid "Weitere Aktion hinzufügen"
+msgstr "Add another action"
+
+#: tastenwerk/gui/editor.py:516
+msgid "Regel löschen"
+msgstr "Delete rule"
+
+#: tastenwerk/gui/editor.py:519
+msgid "Als Kopie duplizieren"
+msgstr "Duplicate as copy"
+
+#: tastenwerk/gui/editor.py:741
+msgid "Die Claude-Aktion braucht eine Anweisung."
+msgstr "The Claude action needs an instruction."
+
+#: tastenwerk/gui/editor.py:743
+msgid "Bei „Tasten senden“ fehlen die Tasten."
+msgstr "“Send keys” is missing the keys."
+
+#: tastenwerk/gui/editor.py:51
+msgid "Einfügen:"
+msgstr "Insert:"
+
+#: tastenwerk/gui/editor.py:214
+msgid "Verlauf zeigen"
+msgstr "Show history"
+
+#: tastenwerk/gui/editor.py:214
+msgid "Eintrag direkt einfügen"
+msgstr "Paste entry directly"
+
+#: tastenwerk/gui/editor.py:214
+msgid "Verlauf leeren"
+msgstr "Clear history"
+
+#: tastenwerk/gui/editor.py:231
+msgid "1 = zuletzt kopiert, ohne Angeheftete. Nr. 2 wechselt bei jedem Druck zwischen den letzten beiden Kopien hin und her."
+msgstr "1 = most recent copy, pinned entries excluded. No. 2 switches back and forth between the last two copies with every press."
+
+#: tastenwerk/gui/editor.py:233
+msgid "1 = zuletzt kopiert, 2 = davor … Angeheftete zählen nicht mit."
+msgstr "1 = most recent copy, 2 = the one before … pinned entries don't count."
+
+#: tastenwerk/gui/editor.py:574
+msgid "Wird auch vom System genutzt ({what}) – beides würde ausgelöst"
+msgstr "Also used by the system ({what}) – both would trigger"
+
+#: tastenwerk/gui/editor.py:753
+msgid "„{name}“ angelegt"
+msgstr "“{name}” created"
+
+#: tastenwerk/gui/editor.py:577
+msgid "Von GNOME belegt ({what}) – wird so nicht ausgelöst"
+msgstr "Taken by GNOME ({what}) – will not trigger like this"
+
+#: tastenwerk/gui/editor.py:583
+msgid "Ohne Zusatztaste – überschreibt die Taste in allen Programmen"
+msgstr "No modifier key – overrides this key in all apps"
+
+#: tastenwerk/gui/editor.py:580
+msgid "Schon vergeben an „{name}“"
+msgstr "Already used by “{name}”"
+
+#: tastenwerk/gui/editor.py:586
+msgid "Sehr kurz – löst eventuell beim normalen Schreiben aus"
+msgstr "Very short – may trigger while typing normally"
+
+#: tastenwerk/gui/editor.py:589
+msgid "Frei – kann verwendet werden"
+msgstr "Free – can be used"
+
+#: tastenwerk/gui/editor.py:612
+msgid "Noch kein Programm"
+msgstr "No app yet"
+
+#: tastenwerk/gui/editor.py:612
+msgid "Keine Ausnahmen"
+msgstr "No exceptions"
+
+#: tastenwerk/gui/importdlg.py:21
+msgid "Übernehmen"
+msgstr "Import"
+
+#: tastenwerk/gui/importdlg.py:21
+msgid "Weglassen"
+msgstr "Skip"
+
+#: tastenwerk/gui/importdlg.py:22
+msgid "Aktualisieren"
+msgstr "Update"
+
+#: tastenwerk/gui/importdlg.py:22
+msgid "Beibehalten"
+msgstr "Keep"
+
+#: tastenwerk/gui/importdlg.py:406
+msgid ".\nAusgeschaltete Regeln findest du unter „Zu prüfen“."
+msgstr ".\nYou'll find disabled rules under “To review”."
+
+#: tastenwerk/gui/importdlg.py:139
+msgid "Handarbeit"
+msgstr "Manual work"
+
+#: tastenwerk/gui/importdlg.py:139
+msgid "nicht übertragbar"
+msgstr "not transferable"
+
+#: tastenwerk/gui/importdlg.py:311
+msgid "überall"
+msgstr "everywhere"
+
+#: tastenwerk/gui/importdlg.py:31 tastenwerk/gui/importdlg.py:43
+msgid "Aus BetterTouchTool übernehmen"
+msgstr "Import from BetterTouchTool"
+
+#: tastenwerk/gui/importdlg.py:44
+msgid "Wähle eine oder mehrere exportierte Preset-Dateien (.bttpreset oder .json).\nDeine bestehenden Regeln bleiben erhalten – du kannst jederzeit erneut importieren, dann wird nur Neues und Geändertes angeboten."
+msgstr "Choose one or more exported preset files (.bttpreset or .json).\nYour existing rules are kept – you can import again at any time; then only new and changed items are offered."
+
+#: tastenwerk/gui/importdlg.py:48
+msgid "Dateien auswählen …"
+msgstr "Choose files …"
+
+#: tastenwerk/gui/importdlg.py:54 tastenwerk/gui/importdlg.py:182 tastenwerk/gui/importdlg.py:241
+msgid "Weiter"
+msgstr "Next"
+
+#: tastenwerk/gui/importdlg.py:70
+msgid "Presets auswählen"
+msgstr "Choose presets"
+
+#: tastenwerk/gui/importdlg.py:86
+msgid "Ausgewählt"
+msgstr "Selected"
+
+#: tastenwerk/gui/importdlg.py:137
+msgid "So lassen sie sich unter Linux übernehmen"
+msgstr "How they can be brought over to Linux"
+
+#: tastenwerk/gui/importdlg.py:183
+msgid "Überblick"
+msgstr "Overview"
+
+#: tastenwerk/gui/importdlg.py:217
+msgid "Welche Programme ersetzen deine Mac-Programme?"
+msgstr "Which apps replace your Mac apps?"
+
+#: tastenwerk/gui/importdlg.py:218
+msgid "Regeln, die auf dem Mac nur in einem Programm galten, brauchen das passende Linux-Programm."
+msgstr "Rules that only applied in one app on the Mac need the matching Linux app."
+
+#: tastenwerk/gui/importdlg.py:280
+msgid "Außerdem"
+msgstr "Also"
+
+#: tastenwerk/gui/importdlg.py:281
+msgid "Schon vorhanden"
+msgstr "Already present"
+
+#: tastenwerk/gui/importdlg.py:281
+msgid "Seit dem letzten Import unverändert – deine Anpassungen bleiben"
+msgstr "Unchanged since the last import – your adjustments are kept"
+
+#: tastenwerk/gui/importdlg.py:282
+msgid "Früher bewusst weggelassen"
+msgstr "Deliberately skipped earlier"
+
+#: tastenwerk/gui/importdlg.py:282
+msgid "Wird nicht erneut angeboten"
+msgstr "Will not be offered again"
+
+#: tastenwerk/gui/importdlg.py:283
+msgid "Programm nicht zugeordnet"
+msgstr "App not assigned"
+
+#: tastenwerk/gui/importdlg.py:283
+msgid "Ohne passendes Linux-Programm"
+msgstr "No matching Linux app"
+
+#: tastenwerk/gui/importdlg.py:284
+msgid "Nicht übertragbar"
+msgstr "Not transferable"
+
+#: tastenwerk/gui/importdlg.py:284
+msgid "Gesten, Touch Bar, Remote"
+msgstr "Gestures, Touch Bar, Remote"
+
+#: tastenwerk/gui/importdlg.py:304
+msgid "Importieren"
+msgstr "Import"
+
+#: tastenwerk/gui/importdlg.py:306
+msgid "Regeln prüfen"
+msgstr "Review rules"
+
+#: tastenwerk/gui/importdlg.py:403
+msgid "{on} Regeln aktiv übernommen, {off} ausgeschaltet zum Nacharbeiten"
+msgstr "{on} rules imported as active, {off} disabled for later review"
+
+#: tastenwerk/gui/importdlg.py:407
+msgid "Import abgeschlossen"
+msgstr "Import complete"
+
+#: tastenwerk/gui/importdlg.py:409
+msgid "Bericht öffnen"
+msgstr "Open report"
+
+#: tastenwerk/gui/importdlg.py:411 tastenwerk/gui/importdlg.py:417
+msgid "Fertig"
+msgstr "Done"
+
+#: tastenwerk/gui/importdlg.py:118
+msgid "Datei lässt sich nicht lesen"
+msgstr "File cannot be read"
+
+#: tastenwerk/gui/importdlg.py:154
+msgid "Was nicht übertragbar ist"
+msgstr "What cannot be transferred"
+
+#: tastenwerk/gui/importdlg.py:155
+msgid "Klick- und Maus-Gesten sowie die Touch Bar"
+msgstr "Click and mouse gestures and the Touch Bar"
+
+#: tastenwerk/gui/importdlg.py:167
+msgid "Die ⌘-Taste wird zu …"
+msgstr "The ⌘ key becomes …"
+
+#: tastenwerk/gui/importdlg.py:168
+msgid "In gesendeten Kürzeln wird ⌘ immer zu Strg (⌘V → Strg+V)."
+msgstr "In sent shortcuts ⌘ always becomes Ctrl (⌘V → Ctrl+V)."
+
+#: tastenwerk/gui/importdlg.py:170
+msgid "Super (Windows-Taste)"
+msgstr "Super (Windows key)"
+
+#: tastenwerk/gui/importdlg.py:170
+msgid "Empfohlen – kollidiert am wenigsten mit Programm-Kürzeln"
+msgstr "Recommended – conflicts least with app shortcuts"
+
+#: tastenwerk/gui/importdlg.py:171
+msgid "Wie unter Linux üblich, überschreibt aber oft Programm-Kürzel"
+msgstr "Common on Linux, but often overrides app shortcuts"
+
+#: tastenwerk/gui/importdlg.py:172
+msgid "Gleiche Position wie ⌘ auf der Mac-Tastatur"
+msgstr "Same position as ⌘ on the Mac keyboard"
+
+#: tastenwerk/gui/importdlg.py:263
+msgid "Vorschläge sind voreingestellt. „Ausgeschaltet“ übernimmt die Regel, damit du sie später in Ruhe fertig machen kannst."
+msgstr "Suggestions are preselected. “Disabled” imports the rule so you can finish it later at your own pace."
+
+#: tastenwerk/gui/importdlg.py:265
+msgid "Alle übernehmen"
+msgstr "Import all"
+
+#: tastenwerk/gui/importdlg.py:275
+msgid "Diese Regeln gibt es schon – im Preset haben sie sich verändert."
+msgstr "These rules already exist – they have changed in the preset."
+
+#: tastenwerk/gui/importdlg.py:295
+msgid "Nichts Neues"
+msgstr "Nothing new"
+
+#: tastenwerk/gui/importdlg.py:296
+msgid "Deine Regeln sind auf dem Stand dieser Presets."
+msgstr "Your rules are up to date with these presets."
+
+#: tastenwerk/gui/importdlg.py:351
+msgid "{n} übernehmen"
+msgstr "Import {n}"
+
+#: tastenwerk/gui/importdlg.py:351
+msgid "{n} ausgeschaltet"
+msgstr "{n} disabled"
+
+#: tastenwerk/gui/importdlg.py:354
+msgid "{n} weglassen"
+msgstr "Skip {n}"
+
+#: tastenwerk/gui/importdlg.py:405
+msgid ", {up} aktualisiert"
+msgstr ", {up} updated"
+
+#: tastenwerk/gui/importdlg.py:136
+msgid "{n} Auslöser gefunden"
+msgstr "{n} triggers found"
+
+#: tastenwerk/gui/importdlg.py:232
+msgid "Nicht übernehmen"
+msgstr "Don't import"
+
+#: tastenwerk/gui/importdlg.py:319
+msgid "\nbisher: {trigger} → "
+msgstr "\npreviously: {trigger} → "
+
+#: tastenwerk/gui/importdlg.py:353
+msgid "{n} aktualisieren"
+msgstr "Update {n}"
+
+#: tastenwerk/gui/importdlg.py:379
+msgid "Vor dem Einschalten prüfen"
+msgstr "Check before enabling"
+
+#: tastenwerk/gui/importdlg.py:385
+msgid "Programm weggelassen"
+msgstr "App skipped"
+
+#: tastenwerk/gui/importdlg.py:389
+msgid "Import fehlgeschlagen"
+msgstr "Import failed"
+
+#: tastenwerk/gui/importdlg.py:262
+msgid "Neu ({n})"
+msgstr "New ({n})"
+
+#: tastenwerk/gui/importdlg.py:274
+msgid "In BetterTouchTool geändert ({n})"
+msgstr "Changed in BetterTouchTool ({n})"
+
+#: tastenwerk/gui/importdlg.py:232
+msgid "{name}  ·  Vorschlag"
+msgstr "{name}  ·  suggestion"
+
+#: tastenwerk/gui/prefs.py:22
+msgid "Schnell"
+msgstr "Fast"
+
+#: tastenwerk/gui/prefs.py:22
+msgid "Haiku – Antwort in wenigen Sekunden"
+msgstr "Haiku – answers within a few seconds"
+
+#: tastenwerk/gui/prefs.py:23
+msgid "Ausgewogen"
+msgstr "Balanced"
+
+#: tastenwerk/gui/prefs.py:23
+msgid "Sonnet – bessere Formulierungen, etwas langsamer"
+msgstr "Sonnet – better wording, a bit slower"
+
+#: tastenwerk/gui/prefs.py:24
+msgid "Gründlich"
+msgstr "Thorough"
+
+#: tastenwerk/gui/prefs.py:24
+msgid "Opus – beste Qualität, am langsamsten"
+msgstr "Opus – best quality, slowest"
+
+#: tastenwerk/gui/prefs.py:43
+msgid "Mit Menü: Zwischenablage, Pausieren, Oberfläche öffnen, Beenden"
+msgstr "With menu: clipboard, pause, open window, quit"
+
+#: tastenwerk/gui/prefs.py:44
+msgid "Benötigt das Paket gir1.2-ayatanaappindicator3-0.1"
+msgstr "Requires the package gir1.2-ayatanaappindicator3-0.1"
+
+#: tastenwerk/gui/prefs.py:45
+msgid "Symbol in der oberen Leiste"
+msgstr "Icon in the top bar"
+
+#: tastenwerk/gui/prefs.py:72
+msgid "Benachrichtigungen"
+msgstr "Notifications"
+
+#: tastenwerk/gui/prefs.py:72
+msgid "Beim Start, bei Fehlern und während Claude arbeitet"
+msgstr "On start, on errors and while Claude is working"
+
+#: tastenwerk/gui/prefs.py:73
+msgid "Groß-/Kleinschreibung bei Tastenfolgen beachten"
+msgstr "Case-sensitive abbreviations"
+
+#: tastenwerk/gui/prefs.py:74
+msgid "Aus: „##Mail“ und „##mail“ lösen beide aus"
+msgstr "Off: “##Mail” and “##mail” both trigger"
+
+#: tastenwerk/gui/prefs.py:75
+msgid "Zwischenablage wiederherstellen"
+msgstr "Restore clipboard"
+
+#: tastenwerk/gui/prefs.py:76
+msgid "Nach dem Einfügen von Text den vorherigen Inhalt zurückholen"
+msgstr "Bring back the previous content after pasting text"
+
+#: tastenwerk/gui/prefs.py:78
+msgid "Tipp-Geschwindigkeit"
+msgstr "Typing speed"
+
+#: tastenwerk/gui/prefs.py:79
+msgid "Millisekunden pro Zeichen – höher, falls Programme Zeichen verschlucken"
+msgstr "Milliseconds per character – increase if apps drop characters"
+
+#: tastenwerk/gui/prefs.py:131
+msgid "Zeitlimit (Sekunden)"
+msgstr "Timeout (seconds)"
+
+#: tastenwerk/gui/prefs.py:152
+msgid "Verlauf mitschreiben"
+msgstr "Record history"
+
+#: tastenwerk/gui/prefs.py:152
+msgid "Aus: Es wird nichts mehr gespeichert, der bisherige Verlauf bleibt"
+msgstr "Off: nothing new is saved, the existing history stays"
+
+#: tastenwerk/gui/prefs.py:153
+msgid "Bilder merken"
+msgstr "Remember images"
+
+#: tastenwerk/gui/prefs.py:153
+msgid "Kopierte Bilder und Bildschirmfotos"
+msgstr "Copied images and screenshots"
+
+#: tastenwerk/gui/prefs.py:154
+msgid "Eingefügtes nach oben"
+msgstr "Pasted entries move to the top"
+
+#: tastenwerk/gui/prefs.py:154
+msgid "Ein eingefügter Eintrag rückt an die Spitze"
+msgstr "A pasted entry moves to the top"
+
+#: tastenwerk/gui/prefs.py:169
+msgid "Höchstens Einträge"
+msgstr "Maximum entries"
+
+#: tastenwerk/gui/prefs.py:183
+msgid "Nach (Sekunden)"
+msgstr "After (seconds)"
+
+#: tastenwerk/gui/prefs.py:259 tastenwerk/gui/prefs.py:180 tastenwerk/gui/prefs.py:215
+msgid "Leeren"
+msgstr "Clear"
+
+#: tastenwerk/gui/prefs.py:35
+msgid "Allgemein"
+msgstr "General"
+
+#: tastenwerk/gui/prefs.py:36
+msgid "Hintergrunddienst"
+msgstr "Background service"
+
+#: tastenwerk/gui/prefs.py:37
+msgid "Der Dienst reagiert auf deine Kürzel – auch wenn dieses Fenster geschlossen ist."
+msgstr "The service responds to your shortcuts – even when this window is closed."
+
+#: tastenwerk/gui/prefs.py:38
+msgid "Beim Anmelden starten"
+msgstr "Start at login"
+
+#: tastenwerk/gui/prefs.py:46
+msgid "Protokoll"
+msgstr "Log"
+
+#: tastenwerk/gui/prefs.py:46
+msgid "Was der Dienst zuletzt getan hat"
+msgstr "What the service did recently"
+
+#: tastenwerk/gui/prefs.py:56
+msgid "Sprache"
+msgstr "Language"
+
+#: tastenwerk/gui/prefs.py:56
+msgid "Wirkt nach dem Neuöffnen der Oberfläche"
+msgstr "Takes effect after reopening the window"
+
+#: tastenwerk/gui/prefs.py:66
+msgid "Sprache geändert – bitte Tastenwerk schließen und neu öffnen"
+msgstr "Language changed – please close and reopen Tastenwerk"
+
+#: tastenwerk/gui/prefs.py:71
+msgid "Verhalten"
+msgstr "Behavior"
+
+#: tastenwerk/gui/prefs.py:86
+msgid "Konfigurationsordner"
+msgstr "Configuration folder"
+
+#: tastenwerk/gui/prefs.py:100
+msgid "Verbindung"
+msgstr "Connection"
+
+#: tastenwerk/gui/prefs.py:101
+msgid "Text-Umformungen laufen über das Claude-Code-Programm mit deinem Abo – ohne API-Schlüssel."
+msgstr "Text rewriting uses the Claude Code app with your subscription – no API key needed."
+
+#: tastenwerk/gui/prefs.py:102
+msgid "Prüfe …"
+msgstr "Checking …"
+
+#: tastenwerk/gui/prefs.py:105
+msgid "Anmelden"
+msgstr "Sign in"
+
+#: tastenwerk/gui/prefs.py:111
+msgid "Modell"
+msgstr "Model"
+
+#: tastenwerk/gui/prefs.py:114
+msgid "Qualität"
+msgstr "Quality"
+
+#: tastenwerk/gui/prefs.py:125
+msgid "Erweitert"
+msgstr "Advanced"
+
+#: tastenwerk/gui/prefs.py:146
+msgid "Merkt sich, was du kopierst. Abrufen über eine Regel mit der Aktion „Zwischenablage-Verlauf“ – z. B. Super+Shift+V."
+msgstr "Remembers what you copy. Open it with a rule using the action “Clipboard history” – e.g. Super+Shift+V."
+
+#: tastenwerk/gui/prefs.py:156
+msgid "1 Stunde"
+msgstr "1 hour"
+
+#: tastenwerk/gui/prefs.py:156
+msgid "4 Stunden"
+msgstr "4 hours"
+
+#: tastenwerk/gui/prefs.py:156
+msgid "8 Stunden"
+msgstr "8 hours"
+
+#: tastenwerk/gui/prefs.py:156
+msgid "1 Tag"
+msgstr "1 day"
+
+#: tastenwerk/gui/prefs.py:156
+msgid "3 Tage"
+msgstr "3 days"
+
+#: tastenwerk/gui/prefs.py:157
+msgid "1 Woche"
+msgstr "1 week"
+
+#: tastenwerk/gui/prefs.py:157
+msgid "2 Wochen"
+msgstr "2 weeks"
+
+#: tastenwerk/gui/prefs.py:157
+msgid "30 Tage"
+msgstr "30 days"
+
+#: tastenwerk/gui/prefs.py:157
+msgid "90 Tage"
+msgstr "90 days"
+
+#: tastenwerk/gui/prefs.py:157
+msgid "1 Jahr"
+msgstr "1 year"
+
+#: tastenwerk/gui/prefs.py:158
+msgid "Unbegrenzt"
+msgstr "Unlimited"
+
+#: tastenwerk/gui/prefs.py:162
+msgid "Aufbewahren"
+msgstr "Keep for"
+
+#: tastenwerk/gui/prefs.py:162
+msgid "Ältere Einträge verschwinden automatisch · Angeheftetes bleibt immer"
+msgstr "Older entries disappear automatically · pinned entries always stay"
+
+#: tastenwerk/gui/prefs.py:175
+msgid "Zwischenablage automatisch leeren"
+msgstr "Clear clipboard automatically"
+
+#: tastenwerk/gui/prefs.py:176
+msgid "Nach der eingestellten Zeit lässt sich die letzte Kopie nicht mehr einfügen. „Nur Passwörter“ meint Kopien aus den Programmen unten und als Passwort markierte Inhalte. Kopierst du vorher etwas Neues, beginnt die Zeit neu."
+msgstr "After the set time, the last copy can no longer be pasted. “Passwords only” means copies from the apps below and content marked as a password. If you copy something new before then, the timer restarts."
+
+#: tastenwerk/gui/prefs.py:200
+msgid "Nicht mitschreiben aus"
+msgstr "Don't record from"
+
+#: tastenwerk/gui/prefs.py:201
+msgid "Kopien aus diesen Programmen landen nie im Verlauf und gelten als Passwörter – gedacht für Passwort-Manager."
+msgstr "Copies from these apps never end up in the history and count as passwords – meant for password managers."
+
+#: tastenwerk/gui/prefs.py:213
+msgid "Gespeicherte Einträge"
+msgstr "Saved entries"
+
+#: tastenwerk/gui/prefs.py:214
+msgid "Liegt nur auf diesem Rechner, nur für dich lesbar"
+msgstr "Stored only on this computer, readable only by you"
+
+#: tastenwerk/gui/prefs.py:225
+msgid "{n} Eintrag"
+msgid_plural "{n} Einträge"
+msgstr[0] "{n} entry"
+msgstr[1] "{n} entries"
+
+#: tastenwerk/gui/prefs.py:256
+msgid "Verlauf leeren?"
+msgstr "Clear history?"
+
+#: tastenwerk/gui/prefs.py:257
+msgid "Alle Einträge außer den angehefteten werden gelöscht. Das lässt sich nicht rückgängig machen."
+msgstr "All entries except pinned ones will be deleted. This cannot be undone."
+
+#: tastenwerk/gui/prefs.py:291
+msgid "Claude Code ist nicht installiert"
+msgstr "Claude Code is not installed"
+
+#: tastenwerk/gui/prefs.py:292
+msgid "Im Terminal: curl -fsSL https://claude.ai/install.sh | bash"
+msgstr "In a terminal: curl -fsSL https://claude.ai/install.sh | bash"
+
+#: tastenwerk/gui/prefs.py:227
+msgid ", davon {n} angeheftet"
+msgstr ", {n} of them pinned"
+
+#: tastenwerk/gui/prefs.py:240 tastenwerk/gui/widgets.py:330
+msgid "Entfernen"
+msgstr "Remove"
+
+#: tastenwerk/gui/prefs.py:297
+msgid "Verbunden"
+msgstr "Connected"
+
+#: tastenwerk/gui/prefs.py:298
+msgid "über dein Claude-Abo"
+msgstr "via your Claude subscription"
+
+#: tastenwerk/gui/prefs.py:304
+msgid "Nicht angemeldet"
+msgstr "Not signed in"
+
+#: tastenwerk/gui/prefs.py:305
+msgid "Einmal mit deinem Claude-Konto anmelden"
+msgstr "Sign in once with your Claude account"
+
+#: tastenwerk/gui/prefs.py:54
+msgid "Automatisch ({lang})"
+msgstr "Automatic ({lang})"
+
+#: tastenwerk/gui/prefs.py:40
+msgid "Autostart an"
+msgstr "Autostart on"
+
+#: tastenwerk/gui/prefs.py:40
+msgid "Autostart aus"
+msgstr "Autostart off"
+
+#: tastenwerk/gui/prefs.py:161
+msgid "{n} Stunden"
+msgstr "{n} hours"
+
+#: tastenwerk/gui/prefs.py:188
+msgid "= {m} Min. {s} s"
+msgstr "= {m} min {s} s"
+
+#: tastenwerk/gui/prefs.py:266
+msgid "{n} Eintrag gelöscht"
+msgid_plural "{n} Einträge gelöscht"
+msgstr[0] "{n} entry deleted"
+msgstr[1] "{n} entries deleted"
+
+#: tastenwerk/gui/prefs.py:298
+msgid "über {method}"
+msgstr "via {method}"
+
+#: tastenwerk/gui/prefs.py:299
+msgid "Angemeldet {via}"
+msgstr "Signed in {via}"
+
+#: tastenwerk/gui/prefs.py:189
+msgid "= {m} Min."
+msgstr "= {m} min"
+
+#: tastenwerk/gui/widgets.py:100
+msgid "⇧ Umschalt"
+msgstr "⇧ Shift"
+
+#: tastenwerk/gui/widgets.py:104
+msgid "Bild ↑"
+msgstr "Page ↑"
+
+#: tastenwerk/gui/widgets.py:104
+msgid "Bild ↓"
+msgstr "Page ↓"
+
+#: tastenwerk/gui/widgets.py:104
+msgid "Einfg"
+msgstr "Ins"
+
+#: tastenwerk/gui/widgets.py:109
+msgid "Menü"
+msgstr "Menu"
+
+#: tastenwerk/gui/widgets.py:109
+msgid "Feststell"
+msgstr "Caps Lock"
+
+#: tastenwerk/gui/widgets.py:186
+msgid "Text einfügen"
+msgstr "Insert text"
+
+#: tastenwerk/gui/widgets.py:186
+msgid "Text-Baustein tippen oder einfügen"
+msgstr "Type or paste a text snippet"
+
+#: tastenwerk/gui/widgets.py:187
+msgid "Eine oder mehrere Tastenkombinationen"
+msgstr "One or more key combinations"
+
+#: tastenwerk/gui/widgets.py:188
+msgid "Fenster anordnen"
+msgstr "Arrange windows"
+
+#: tastenwerk/gui/widgets.py:188
+msgid "Andocken, maximieren, Monitor wechseln"
+msgstr "Tile, maximize, move to another monitor"
+
+#: tastenwerk/gui/widgets.py:189
+msgid "Mit Claude umformen"
+msgstr "Rewrite with Claude"
+
+#: tastenwerk/gui/widgets.py:189
+msgid "Markierten Text umschreiben lassen"
+msgstr "Have selected text rewritten"
+
+#: tastenwerk/gui/widgets.py:190
+msgid "Öffnen"
+msgstr "Open"
+
+#: tastenwerk/gui/widgets.py:191
+msgid "Shell-Befehl, optional mit Ausgabe"
+msgstr "Shell command, optionally with output"
+
+#: tastenwerk/gui/widgets.py:192
+msgid "Nächste, vorherige oder bestimmte"
+msgstr "Next, previous or a specific one"
+
+#: tastenwerk/gui/widgets.py:193
+msgid "Pause zwischen Aktionen"
+msgstr "Pause between actions"
+
+#: tastenwerk/gui/widgets.py:194
+msgid "Frühere Kopien suchen und einfügen"
+msgstr "Search and paste earlier copies"
+
+#: tastenwerk/gui/widgets.py:195
+msgid "Programm öffnen / wechseln"
+msgstr "Open / switch to app"
+
+#: tastenwerk/gui/widgets.py:195
+msgid "Läuft es, nach vorne holen – sonst starten"
+msgstr "If it is running, bring it to the front – otherwise start it"
+
+#: tastenwerk/gui/widgets.py:197
+msgid "Bereich, Bildschirm oder Fenster aufnehmen"
+msgstr "Capture an area, the screen or a window"
+
+#: tastenwerk/gui/widgets.py:199
+msgid "Sitzung sperren"
+msgstr "Lock the session"
+
+#: tastenwerk/gui/widgets.py:200
+msgid "Benachrichtigung"
+msgstr "Notification"
+
+#: tastenwerk/gui/widgets.py:200
+msgid "Kurze Meldung anzeigen"
+msgstr "Show a short message"
+
+#: tastenwerk/gui/widgets.py:385
+msgid "Kürzel aufnehmen"
+msgstr "Record shortcut"
+
+#: tastenwerk/gui/widgets.py:296
+msgid "Gerade geöffnet"
+msgstr "Currently open"
+
+#: tastenwerk/gui/widgets.py:297
+msgid "Alle Programme"
+msgstr "All apps"
+
+#: tastenwerk/gui/widgets.py:262
+msgid "Programm wählen"
+msgstr "Choose app"
+
+#: tastenwerk/gui/widgets.py:268
+msgid "Programm suchen"
+msgstr "Search apps"
+
+#: tastenwerk/gui/widgets.py:298
+msgid "Nicht in der Liste?"
+msgstr "Not in the list?"
+
+#: tastenwerk/gui/widgets.py:299
+msgid "Programmnamen (WM_CLASS) direkt eintragen, z. B. „code“"
+msgstr "Enter the app name (WM_CLASS) directly, e.g. “code”"
+
+#: tastenwerk/gui/widgets.py:300
+msgid "Programmname"
+msgstr "App name"
+
+#: tastenwerk/gui/widgets.py:410
+msgid "Esc bricht ab · Rücktaste löscht"
+msgstr "Esc cancels · Backspace clears"
+
+#: tastenwerk/gui/widgets.py:485
+msgid "Geste von Hand wählen"
+msgstr "Choose gesture manually"
+
+#: tastenwerk/gui/widgets.py:497
+msgid "Klicken bricht ab"
+msgstr "Click to cancel"
+
+#: tastenwerk/gui/widgets.py:516
+msgid "Touchpad-Gesten nicht erreichbar – bitte von Hand wählen (⋯)"
+msgstr "Touchpad gestures unavailable – please choose manually (⋯)"
+
+#: tastenwerk/gui/widgets.py:588
+msgid "→← zusammen"
+msgstr "→← pinch in"
+
+#: tastenwerk/gui/widgets.py:588
+msgid "←→ auseinander"
+msgstr "←→ pinch out"
+
+#: tastenwerk/gui/widgets.py:157
+msgid "{n} Finger {arrow}"
+msgstr "{n} fingers {arrow}"
+
+#: tastenwerk/gui/widgets.py:413
+msgid "Klicken, um neu aufzunehmen"
+msgstr "Click to record again"
+
+#: tastenwerk/gui/widgets.py:500
+msgid "Klicken und Geste neu ausführen"
+msgstr "Click and perform the gesture again"
+
+#: tastenwerk/gui/widgets.py:506
+msgid "Klicken und die Geste auf dem Touchpad ausführen"
+msgstr "Click and perform the gesture on the touchpad"
+
+#: tastenwerk/gui/widgets.py:554
+msgid "Finger"
+msgstr "Fingers"
+
+#: tastenwerk/gui/widgets.py:569
+msgid "Wischen"
+msgstr "Swipe"
+
+#: tastenwerk/gui/widgets.py:586
+msgid "Zusammenziehen"
+msgstr "Pinch"
+
+#: tastenwerk/gui/widgets.py:495
+msgid "Jetzt auf dem Touchpad wischen …"
+msgstr "Swipe on the touchpad now …"
+
+#: tastenwerk/gui/widgets.py:408
+msgid "Tasten drücken …"
+msgstr "Press keys …"
+
+#: tastenwerk/gui/widgets.py:504
+msgid "Geste aufnehmen"
+msgstr "Record gesture"
+
+#: tastenwerk/store.py:200
+msgid "Regel"
+msgstr "Rule"
+
+#: tastenwerk/store.py:62
+msgid "Ohne Namen"
+msgstr "Untitled"
+
+#: tastenwerk/store.py:237
+msgid "{name} (Kopie)"
+msgstr "{name} (copy)"
+
+#: tastenwerk/tray.py:79 tastenwerk/tray.py:111
+msgid "Pausieren"
+msgstr "Pause"
+
+#: tastenwerk/tray.py:81
+msgid "Tastenwerk öffnen …"
+msgstr "Open Tastenwerk …"
+
+#: tastenwerk/tray.py:82
+msgid "Konfiguration neu laden"
+msgstr "Reload configuration"
+
+#: tastenwerk/tray.py:104
+msgid "Tastenwerk pausiert"
+msgstr "Tastenwerk paused"
+
+#: tastenwerk/tray.py:105
+msgid "Pausiert – Kürzel ruhen"
+msgstr "Paused – shortcuts are resting"
+
+#: tastenwerk/tray.py:106
+msgid "Fortsetzen"
+msgstr "Resume"
+
+#: tastenwerk/tray.py:109
+msgid "Tastenwerk aktiv"
+msgstr "Tastenwerk active"
+
+#: tastenwerk/tray.py:110
+msgid "Aktiv – {n} Regel"
+msgid_plural "Aktiv – {n} Regeln"
+msgstr[0] "Active – {n} rule"
+msgstr[1] "Active – {n} rules"
+
+#: tastenwerk/windows.py:120
+msgid "Kein Fenster gefunden"
+msgstr "No window found"
+
+#: tastenwerk/windows.py:187
+msgid "Unbekannte Fenster-Aktion {op}"
+msgstr "Unknown window action {op}"

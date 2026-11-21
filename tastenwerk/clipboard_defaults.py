@@ -1,5 +1,7 @@
 """Standardwerte des Zwischenablage-Verlaufs (ohne GTK, für Dienst und Oberfläche)."""
 
+from .i18n import tr
+
 DEFAULTS = {
     "history": True,          # Verlauf mitschreiben
     "max_items": 300,         # angeheftete zählen nicht mit
@@ -25,7 +27,7 @@ def command(val) -> tuple[str, int] | None:
     return None
 
 
-CLEAR_SCOPES = {"never": "Nie", "secrets": "Nur Passwörter", "all": "Alles"}
+CLEAR_SCOPES = {"never": tr("Nie"), "secrets": tr("Nur Passwörter"), "all": tr("Alles")}
 
 
 def keep_hours(cfg: dict) -> float:

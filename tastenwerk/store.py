@@ -16,6 +16,7 @@ import yaml
 
 from . import config as cfgmod
 from .keys import Combo, KeyError_
+from .i18n import tr, trn  # noqa: E402
 
 MAIN_HEADER = (
     "# Tastenwerk – Konfiguration\n"
@@ -58,7 +59,7 @@ class RuleItem:
 
     @property
     def name(self) -> str:
-        return str(self.data.get("name") or "Ohne Namen")
+        return str(self.data.get("name") or tr("Ohne Namen"))
 
     @property
     def enabled(self) -> bool:
@@ -196,7 +197,7 @@ class Store:
 
     # ---------- Regeln ----------
     def validate(self, rule: dict) -> None:
-        cfgmod.parse_rule(rule, "Regel", 0)
+        cfgmod.parse_rule(rule, tr("Regel"), 0)
 
     def add(self, rule: dict) -> RuleItem:
         self.validate(rule)
@@ -233,7 +234,7 @@ class Store:
 
     def duplicate(self, item: RuleItem) -> RuleItem:
         new = {k: v for k, v in item.data.items() if k != "source"}
-        new["name"] = f"{item.name} (Kopie)"
+        new["name"] = tr("{name} (Kopie)").format(name=item.name)
         new["enabled"] = False
         return self.add(new)
 

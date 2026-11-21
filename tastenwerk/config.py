@@ -13,6 +13,7 @@ from .clipboard_defaults import DEFAULTS as CLIP_DEFAULTS
 from .clipboard_defaults import MAX_N as CLIP_MAX_N, command as clip_command
 from .gestures import Gesture, GestureError
 from .keys import Combo, KeyError_, parse_sequence
+from .i18n import tr, trn  # noqa: E402
 
 CONFIG_DIR = Path(os.environ.get("TASTENWERK_CONFIG_DIR",
                                  Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "tastenwerk"))
@@ -22,6 +23,7 @@ IMPORT_DIR = CONFIG_DIR / "imported"
 DEFAULT_SETTINGS = {
     "notify": True,
     "tray": True,                   # Symbol in der oberen Leiste
+    "language": "auto",             # auto (System) | de | en
     "abbreviation_case_sensitive": False,
     "type_delay_ms": 6,
     "key_delay_ms": 25,
@@ -38,25 +40,25 @@ DEFAULT_SETTINGS = {
 }
 
 ACTION_TYPES = {
-    "keys": "Tasten senden",
-    "type": "Text tippen",
-    "paste": "Text einfügen (über Zwischenablage)",
-    "run": "Befehl ausführen",
-    "open": "Datei/URL/Programm öffnen",
-    "window": "Fenster-Aktion",
-    "workspace": "Arbeitsfläche wechseln",
-    "delay": "Warten",
-    "lock": "Bildschirm sperren",
-    "notify": "Benachrichtigung zeigen",
-    "ai": "Markierten Text mit Claude umformen",
-    "clipboard": "Zwischenablage-Verlauf",
-    "screenshot": "Bildschirmfoto",
-    "app": "Programm öffnen oder wechseln",
+    "keys": tr("Tasten senden"),
+    "type": tr("Text tippen"),
+    "paste": tr("Text einfügen (über Zwischenablage)"),
+    "run": tr("Befehl ausführen"),
+    "open": tr("Datei/URL/Programm öffnen"),
+    "window": tr("Fenster-Aktion"),
+    "workspace": tr("Arbeitsfläche wechseln"),
+    "delay": tr("Warten"),
+    "lock": tr("Bildschirm sperren"),
+    "notify": tr("Benachrichtigung zeigen"),
+    "ai": tr("Markierten Text mit Claude umformen"),
+    "clipboard": tr("Zwischenablage-Verlauf"),
+    "screenshot": tr("Bildschirmfoto"),
+    "app": tr("Programm öffnen oder wechseln"),
 }
 
-APP_IF_ACTIVE = {"next": "Nächstes Fenster des Programms", "minimize": "Minimieren", "none": "Nichts tun"}
+APP_IF_ACTIVE = {"next": tr("Nächstes Fenster des Programms"), "minimize": tr("Minimieren"), "none": tr("Nichts tun")}
 
-SCREENSHOT_MODES = {"area": "Bereich auswählen", "screen": "Ganzer Bildschirm", "window": "Aktuelles Fenster"}
+SCREENSHOT_MODES = {"area": tr("Bereich auswählen"), "screen": tr("Ganzer Bildschirm"), "window": tr("Aktuelles Fenster")}
 
 WINDOW_OPS = [
     "left_half", "right_half", "top_half", "bottom_half",

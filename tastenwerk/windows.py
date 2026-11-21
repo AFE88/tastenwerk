@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from Xlib import X, Xatom, error as xerror
 
 from .x11 import X11
+from .i18n import tr, trn  # noqa: E402
 
 
 @dataclass
@@ -116,7 +117,7 @@ class WindowOps:
     def run(self, op: str):
         win = self.under_cursor() if op == "minimize_under_cursor" else self.active()
         if win is None:
-            raise RuntimeError("Kein Fenster gefunden")
+            raise RuntimeError(tr("Kein Fenster gefunden"))
         if op in ("minimize", "minimize_under_cursor"):
             self.x.client_message(win, "WM_CHANGE_STATE", [3])  # IconicState
             return
@@ -183,7 +184,7 @@ class WindowOps:
             "bottom_right": (x + hw, y + hh, w - hw, h - hh),
         }
         if op not in layouts:
-            raise RuntimeError(f"Unbekannte Fenster-Aktion {op}")
+            raise RuntimeError(tr("Unbekannte Fenster-Aktion {op}").format(op=op))
         self.move_resize(win, Rect(*layouts[op]))
 
     def workspace(self, where: str):

@@ -1,5 +1,7 @@
 <div align="center">
 
+**Deutsch** · [English](README.en.md)
+
 <img src="data/tastenwerk.svg" width="112" alt="Tastenwerk-Symbol">
 
 # Tastenwerk
@@ -33,6 +35,8 @@ Der BetterTouchTool-Ersatz für Zorin OS, Ubuntu, Linux Mint und andere Linux-Sy
 | ✨ **Mit Claude umformen** | Markierten Text per Kürzel umschreiben lassen, z. B. als freundliche Mail – über dein Claude-Abo, ohne API-Schlüssel. |
 | 🔗 **Makros** | Mehrere Aktionen hintereinander: Text einfügen, Tasten senden, warten, Befehl ausführen, Bildschirmfoto … |
 | 🍏 **Umstieg vom Mac** | BetterTouchTool-Presets importieren – ein Assistent übersetzt ⌘-Kürzel, Text-Bausteine und Gesten. |
+| 🔔 **Tray-Symbol** | In der oberen Leiste: Status, Zwischenablage, alle Kürzel pausieren (z. B. für Spiele), Oberfläche öffnen. |
+| 🌍 **Deutsch & Englisch** | Folgt der Systemsprache, umstellbar in den Einstellungen. Weitere Sprachen lassen sich leicht ergänzen. |
 
 Alles lässt sich in einer übersichtlichen Oberfläche einrichten: Kürzel per Tastendruck aufnehmen,
 Gesten direkt auf dem Touchpad vormachen, Programme aus einer Liste wählen.
@@ -261,6 +265,13 @@ Alle Aktionen und Platzhalter sind in [`config.example.yaml`](config.example.yam
 
 </details>
 
+## Übersetzungen
+
+Tastenwerk gibt es auf Deutsch und Englisch, andere Systemsprachen bekommen Englisch. Eine neue Sprache
+beizusteuern ist einfach: `locale/en.po` nach `locale/<sprachcode>.po` kopieren (z. B. `fr.po`) und
+die `msgstr`-Zeilen übersetzen. Nach Änderungen im Code sammelt `python3 tools/extract_messages.py`
+neue Texte in alle Sprachdateien ein. Beiträge gern als Pull Request.
+
 ## Gut zu wissen
 
 - **Nur X11.** Bei Zorin und Ubuntu beim Anmelden die Sitzung „… auf Xorg“ wählen.
@@ -284,6 +295,8 @@ tastenwerk/
   clipboard.py   Zwischenablage-Verlauf und sein Fenster
   actions.py     alle Aktionen (xdotool, Zwischenablage, Befehle, Claude)
   apps.py        installierte Programme und Fenster-Zuordnung
+  tray.py        Symbol in der oberen Leiste (Ayatana AppIndicator)
+  i18n.py        Übersetzungen (liest locale/*.po direkt)
   windows.py     Fenster andocken / Monitore (EWMH)
   config.py      Konfiguration, Includes, Prüfung
   store.py       Regeln lesen/schreiben für die Oberfläche
@@ -292,8 +305,8 @@ tastenwerk/
   importer/      BetterTouchTool-Import (btt.py = Übersetzung, wizard.py = Assistent)
 ```
 
-Geplant: Tray-Symbol mit Menü · Tastenfolgen optional erst nach Leerzeichen auslösen ·
-Fenster auf andere Arbeitsfläche schieben.
+Geplant: Tastenfolgen optional erst nach Leerzeichen auslösen · Fenster auf andere Arbeitsfläche
+schieben.
 
 </details>
 
