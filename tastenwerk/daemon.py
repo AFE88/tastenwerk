@@ -211,6 +211,21 @@ class Daemon:
     def _control_command(self, text: str):
         from .clipboard_defaults import command
         parts = text.split(None, 1)
+        if parts and parts[0] == "screenshot":
+            from .config import SCREENSHOT_MODES
+            mode = parts[1] if len(parts) > 1 else "area"
+            if mode not in SCREENSHOT_MODES:
+                log.warning("Unbekannter Bildschirmfoto-Modus: %r", mode[:30])
+                return
+            log.info("▶ Befehl: %s", text)
+            ex = self.executor
+
+            def shot():
+                ex._app = ex.x.active_app()
+                ex._clear = not ex.wait_modifiers_released()
+                ex.run_action({"screenshot": mode})
+            ex.submit(shot)
+            return
         if not parts or parts[0] != "clipboard":
             log.warning("Unbekannter Steuer-Befehl: %r", text[:60])
             return

@@ -233,6 +233,17 @@ class ActionEditor:
             2: "Löscht alles außer Angehefteten",
         }[sel])
 
+    def _build_screenshot(self):
+        from ..config import SCREENSHOT_MODES
+        self.shot_modes = list(SCREENSHOT_MODES)
+        self.shot = Adw.ComboRow(title="Was aufnehmen", model=_string_list(list(SCREENSHOT_MODES.values())))
+        cur = str(self.a.get("screenshot", "area"))
+        self.shot.set_selected(self.shot_modes.index(cur) if cur in self.shot_modes else 0)
+        self.shot.set_subtitle("Öffnet das Bildschirmfoto-Werkzeug von GNOME. Das Bild landet in "
+                               "„Bilder/Bildschirmfotos“ und in der Zwischenablage.")
+        self.shot.connect("notify::selected", lambda *_: self.changed())
+        self.row.add_row(self.shot)
+
     def _build_lock(self):
         self.row.add_row(Adw.ActionRow(title="Keine Einstellungen nötig", subtitle="Sperrt die Sitzung sofort"))
 
@@ -279,6 +290,8 @@ class ActionEditor:
             return {"delay": round(self.delay.get_value(), 2)}
         if k == "lock":
             return {"lock": True}
+        if k == "screenshot":
+            return {"screenshot": self.shot_modes[self.shot.get_selected()]}
         if k == "clipboard":
             sel = self.clip.get_selected()
             if sel == 1:
@@ -589,7 +602,8 @@ class RuleEditor(Adw.Dialog):
             defaults = {"type": {"type": ""}, "keys": {"keys": ""}, "window": {"window": "left_half"},
                         "ai": {"ai": ""}, "open": {"open": ""}, "run": {"run": ""},
                         "workspace": {"workspace": "next"}, "delay": {"delay": 0.3}, "lock": {"lock": True},
-                        "notify": {"notify": ""}, "clipboard": {"clipboard": "show"}}
+                        "notify": {"notify": ""}, "clipboard": {"clipboard": "show"},
+                        "screenshot": {"screenshot": "area"}}
             for e in self.editors:
                 e.row.set_expanded(False)
             self._add_editor(defaults[row.kind], expanded=True)

@@ -49,7 +49,10 @@ ACTION_TYPES = {
     "notify": "Benachrichtigung zeigen",
     "ai": "Markierten Text mit Claude umformen",
     "clipboard": "Zwischenablage-Verlauf",
+    "screenshot": "Bildschirmfoto",
 }
+
+SCREENSHOT_MODES = {"area": "Bereich auswählen", "screen": "Ganzer Bildschirm", "window": "Aktuelles Fenster"}
 
 WINDOW_OPS = [
     "left_half", "right_half", "top_half", "bottom_half",
@@ -160,6 +163,8 @@ def normalize_action(a, where: str) -> dict:
     elif kind == "clipboard" and clip_command(val) is None:
         raise ConfigError(f"{where}: clipboard kann 'show' (Verlauf zeigen), 'clear' (leeren) "
                           f"oder 'paste 2' (Eintrag Nr. 2 einfügen, 1–{CLIP_MAX_N}) sein")
+    elif kind == "screenshot" and str(val) not in SCREENSHOT_MODES:
+        raise ConfigError(f"{where}: screenshot kann {', '.join(SCREENSHOT_MODES)} sein")
     elif kind == "ai":
         if not isinstance(val, str) or not val.strip():
             raise ConfigError(f"{where}: ai braucht eine Anweisung als Text")

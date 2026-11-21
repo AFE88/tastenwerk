@@ -206,6 +206,27 @@ def cmd_clipboard(args):
     return 0
 
 
+def cmd_screenshot(args):
+    from . import control
+    from .config import SCREENSHOT_MODES
+    if args.mode not in SCREENSHOT_MODES:
+        print("Erlaubt: " + " · ".join(SCREENSHOT_MODES))
+        return 2
+    ok = control.send_command("screenshot " + args.mode)
+    try:
+        import time as _t
+        control.LOG_DIR.mkdir(parents=True, exist_ok=True)
+        with open(control.LOG_FILE, "a", encoding="utf-8") as f:
+            f.write(f"{_t.strftime('%H:%M:%S')} INFO    Aufruf 'tastenwerk screenshot {args.mode}' "
+                    f"(von PID {os.getppid()}): {'übergeben' if ok else 'Dienst nicht erreichbar'}\n")
+    except OSError:
+        pass
+    if not ok:
+        print("Tastenwerk läuft nicht.")
+        return 1
+    return 0
+
+
 def cmd_autostart(args):
     from . import control
     control.set_autostart(args.state == "on")
@@ -240,6 +261,9 @@ def main(argv=None):
     s = sub.add_parser("clipboard", help="Zwischenablage-Verlauf zeigen (für Maustasten, Skripte)")
     s.add_argument("what", nargs="*", help="show (Standard) · paste N · clear")
     s.set_defaults(fn=cmd_clipboard)
+    s = sub.add_parser("screenshot", help="Bildschirmfoto mit dem GNOME-Werkzeug (für Sondertasten)")
+    s.add_argument("mode", nargs="?", default="area", help="area (Standard) · screen · window")
+    s.set_defaults(fn=cmd_screenshot)
     s = sub.add_parser("autostart", help="beim Anmelden starten")
     s.add_argument("state", choices=["on", "off"])
     s.set_defaults(fn=cmd_autostart)

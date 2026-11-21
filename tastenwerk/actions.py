@@ -286,7 +286,8 @@ class Executor:
 
     def run_action(self, a: dict):
         kind = next(k for k in a if k in ("keys", "type", "paste", "run", "open", "window",
-                                           "workspace", "delay", "lock", "notify", "ai", "clipboard"))
+                                           "workspace", "delay", "lock", "notify", "ai", "clipboard",
+                                           "screenshot"))
         val = a[kind]
         if kind == "keys":
             self.send_keys(str(val))
@@ -312,6 +313,8 @@ class Executor:
             self.run_command(str(val), a)
         elif kind == "ai":
             self.ai_transform(str(val), a)
+        elif kind == "screenshot":
+            self.send_keys(screenshot_keys(str(val)))
         elif kind == "clipboard":
             from .clipboard_defaults import command
             cmd, n = command(val) or ("show", 0)
@@ -402,6 +405,28 @@ def pretty_keys(seq: str) -> str:
     return ", ".join(out)
 
 
+_SHOT_SETTING = {"area": ("show-screenshot-ui", "Print"), "screen": ("screenshot", "shift+Print"),
+                 "window": ("screenshot-window", "alt+Print")}
+_ACCEL_MODS = {"shift": "shift", "control": "ctrl", "primary": "ctrl", "ctrl": "ctrl", "alt": "alt",
+               "super": "super", "meta": "super"}
+
+
+def screenshot_keys(mode: str) -> str:
+    """GNOME-Kürzel fürs Bildschirmfoto aus den Systemeinstellungen (falls umbelegt), sonst Standard."""
+    key, default = _SHOT_SETTING.get(mode, _SHOT_SETTING["area"])
+    try:
+        out = subprocess.run(["gsettings", "get", "org.gnome.shell.keybindings", key],
+                             capture_output=True, text=True, timeout=3).stdout
+        accel = re.findall(r"'([^']+)'", out)[0]
+        mods = [_ACCEL_MODS.get(m.lower()) for m in re.findall(r"<(\w+)>", accel)]
+        name = re.sub(r"<\w+>", "", accel)
+        if name and all(mods):
+            return "+".join(mods + [name])
+    except (IndexError, OSError, subprocess.SubprocessError):
+        pass
+    return default
+
+
 def pretty_text(text: str) -> str:
     """Platzhalter lesbar machen: {date} -> [Datum], {cursor} entfällt."""
     def repl(m):
@@ -441,6 +466,9 @@ def describe_action(a: dict) -> str:
             return "Bildschirm sperren"
         if k == "notify":
             return f"Hinweis „{v}“"
+        if k == "screenshot":
+            from .config import SCREENSHOT_MODES
+            return "Bildschirmfoto: " + SCREENSHOT_MODES.get(str(v), str(v))
         if k == "clipboard":
             from .clipboard_defaults import command
             cmd, n = command(v) or ("show", 0)

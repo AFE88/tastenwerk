@@ -354,8 +354,9 @@ def _send_shortcut(codes_str: str, keys: KeyResolver) -> tuple[dict | None, str,
         if fm == {"ctrl", "cmd"} and kc == 12:
             return {"lock": True}, "adapted", ["⌃⌘Q (Sperren) → Bildschirm sperren"]
         if fm == {"shift", "cmd"} and kc in (20, 21, 23):  # ⇧⌘3 / ⇧⌘4 / ⇧⌘5
-            k = "shift+Print" if kc == 20 else "Print"
-            return {"keys": k}, "adapted", [f"Mac-Bildschirmfoto {mac_label(set(mods), kc)} → GNOME ({k})"]
+            mode = "screen" if kc == 20 else "area"
+            what = "ganzer Bildschirm" if mode == "screen" else "Bereich"
+            return {"screenshot": mode}, "adapted", [f"Mac-Bildschirmfoto {mac_label(set(mods), kc)} → GNOME ({what})"]
         if fm == {"opt", "cmd"} and kc == 53:
             return {"run": "gnome-system-monitor"}, "adapted", ["⌥⌘esc (Sofort beenden) → Systemüberwachung"]
         if (fm, kc) in MAC_DE_OPT_CHARS:
@@ -466,7 +467,7 @@ def convert_action(t: dict, keys: KeyResolver) -> tuple[list[dict], str, list[st
     if at == 5 or "mission control" in lname:
         return [{"keys": "super"}], "adapted", ["Mission Control → GNOME-Aktivitäten (Super)"], name
     if at in (169, 263) or "screenshot" in lname:
-        return [{"keys": "Print"}], "adapted", ["Screenshot → GNOME-Bildschirmfoto (Druck-Taste)"], name
+        return [{"screenshot": "area"}], "adapted", ["Screenshot → GNOME-Bildschirmfoto (Bereich)"], name
     if at == 203 or "clipboard" in lname or "zwischenablage" in lname:
         return [{"clipboard": "show"}], "ok", [], name
     if at in (26, 27) or lname in ("nächstes", "vorheriges", "next", "previous"):

@@ -56,6 +56,7 @@ CSS = """
 .tile-open   { background: linear-gradient(135deg, #e5a50a, #c88800); }
 .tile-ai     { background: linear-gradient(135deg, #e66100, #c64600); }
 .tile-clip   { background: linear-gradient(135deg, #1c9ab0, #0f7d91); }
+.tile-shot   { background: linear-gradient(135deg, #c061cb, #9141ac); }
 .tile-lock   { background: linear-gradient(135deg, #e01b24, #c01c28); }
 .tile-other  { background: linear-gradient(135deg, #77767b, #5e5c64); }
 .dim-tile { opacity: 0.45; }
@@ -189,10 +190,12 @@ ACTION_META = {
     "workspace": ("Arbeitsfläche wechseln", "Nächste, vorherige oder bestimmte", "view-paged-symbolic", "tile-window"),
     "delay": ("Warten", "Pause zwischen Aktionen", "alarm-symbolic", "tile-other"),
     "clipboard": ("Zwischenablage-Verlauf", "Frühere Kopien suchen und einfügen", "edit-paste-symbolic", "tile-clip"),
+    "screenshot": ("Bildschirmfoto", "Bereich, Bildschirm oder Fenster aufnehmen",
+                   "accessories-screenshot-symbolic", "tile-shot"),
     "lock": ("Bildschirm sperren", "Sitzung sperren", "system-lock-screen-symbolic", "tile-lock"),
     "notify": ("Benachrichtigung", "Kurze Meldung anzeigen", "preferences-system-notifications-symbolic", "tile-other"),
 }
-ACTION_ORDER = ["type", "keys", "window", "clipboard", "ai", "open", "run", "workspace", "delay", "lock", "notify"]
+ACTION_ORDER = ["type", "keys", "window", "clipboard", "screenshot", "ai", "open", "run", "workspace", "delay", "lock", "notify"]
 
 
 def action_kind(a: dict) -> str:

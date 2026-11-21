@@ -51,6 +51,8 @@ include:
 #    - lock: true                      Bildschirm sperren
 #    - notify: "Fertig"                Benachrichtigung
 #    - clipboard: show                 Zwischenablage-Verlauf zeigen (clear = leeren)
+#    - screenshot: area                Bildschirmfoto mit dem GNOME-Werkzeug
+#                                      (area = Bereich wählen, screen = ganzer Bildschirm, window = Fenster)
 #    - clipboard: paste 2              Eintrag Nr. 2 direkt einfügen (1 = zuletzt kopiert,
 #                                      Angeheftete zählen nicht mit; 2 wechselt zwischen den letzten beiden)
 #    - ai: "Formuliere als freundliche Mail"   markierten Text mit Claude umschreiben

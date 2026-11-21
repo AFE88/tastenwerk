@@ -35,6 +35,7 @@ Die Konfiguration liegt in `~/.config/tastenwerk/` und lässt sich auch von Hand
 | `tastenwerk import DATEI…` | BetterTouchTool-Presets übernehmen (Assistent) |
 | `tastenwerk reload` / `stop` | laufendes Tastenwerk neu laden / beenden |
 | `tastenwerk clipboard [paste N]` | Zwischenablage-Verlauf öffnen bzw. Eintrag N einfügen (für Maus- und Sondertasten) |
+| `tastenwerk screenshot [area\|screen\|window]` | Bildschirmfoto mit dem GNOME-Werkzeug (z. B. für die Screenshot-Taste in OpenLogi) |
 | `tastenwerk run --debug` | mit ausführlichem Protokoll starten |
 
 ## Regeln
@@ -59,7 +60,8 @@ rules:
 ```
 
 Alle Aktionen und Platzhalter sind in `config.example.yaml` beschrieben. Kurzfassung:
-`keys`, `type`, `paste`, `window`, `workspace`, `open`, `run`, `delay`, `lock`, `notify`, `ai`, `clipboard`.
+`keys`, `type`, `paste`, `window`, `workspace`, `open`, `run`, `delay`, `lock`, `notify`, `ai`, `clipboard`,
+`screenshot`.
 
 ## BetterTouchTool-Import
 
