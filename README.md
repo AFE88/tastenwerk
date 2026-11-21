@@ -10,11 +10,53 @@ landen Makros trotzdem auf der Maus.
 
 ## Installation
 
-Voraussetzung: Linux mit **X11-Sitzung** (unter Wayland können Programme keine globalen Kürzel
-abfangen), z. B. Zorin OS, Ubuntu oder Debian mit GNOME auf Xorg.
+### Passt mein System?
+
+Tastenwerk braucht eine **X11-Sitzung** (unter Wayland können Programme keine globalen Kürzel
+abfangen), **libadwaita 1.5** oder neuer und **Python 3.10** oder neuer.
+
+| System | Läuft? | Hinweis |
+|---|---|---|
+| Zorin OS 18 | ✅ getestet | GNOME 46 auf X11 |
+| Ubuntu 24.04 LTS | ✅ | beim Anmelden „Ubuntu auf Xorg“ wählen |
+| Linux Mint 22 (Cinnamon, MATE, Xfce) | ✅ | Desktops laufen standardmäßig auf X11 |
+| elementary OS 8 | ✅ | X11-Sitzung wählen |
+| Debian 13 „Trixie“ | ✅ | mit X11-Sitzung |
+| Fedora 40+ mit Xfce, KDE, Cinnamon oder MATE | ✅ | mit X11-Sitzung |
+| Arch, Manjaro, EndeavourOS, openSUSE Tumbleweed | ✅ | mit X11-Desktop |
+| Debian 12, Ubuntu 22.04, Mint 21, Pop!_OS 22.04, Zorin 17 | ❌ | libadwaita zu alt |
+| Ubuntu 25.10 / 26.04, Fedora 41+ mit GNOME | ❌ | GNOME bietet dort kein X11 mehr an |
+
+Nur Zorin OS 18 ist bisher wirklich getestet, die übrigen Angaben folgen aus den Paketversionen.
+Rückmeldungen sind willkommen (Issue auf GitHub).
+
+Außerhalb von GNOME funktionieren Kürzel, Tastenfolgen, Zwischenablage, Fenster- und
+Programm-Aktionen genauso. Nur die Konfliktprüfung kennt ausschließlich GNOME-Kürzel, das
+Bildschirmfoto sendet dort die Druck-Taste und das Sperren nutzt `loginctl lock-session`.
+
+### Installieren
+
+Ubuntu, Zorin, Mint, Debian, elementary OS:
 
 ```bash
 sudo apt install git python3-gi gir1.2-gtk-4.0 gir1.2-gtk-3.0 gir1.2-adw-1 python3-xlib python3-yaml xdotool
+```
+
+Fedora:
+
+```bash
+sudo dnf install git python3-gobject gtk4 gtk3 libadwaita python3-xlib python3-pyyaml xdotool
+```
+
+Arch, Manjaro, EndeavourOS:
+
+```bash
+sudo pacman -S git python-gobject gtk4 gtk3 libadwaita python-xlib python-yaml xdotool
+```
+
+Dann überall:
+
+```bash
 git clone https://github.com/AFE88/tastenwerk.git ~/tastenwerk
 ~/tastenwerk/bin/tastenwerk install
 ```
