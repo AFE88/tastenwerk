@@ -237,6 +237,7 @@ def cmd_autostart(args):
 def main(argv=None):
     p = argparse.ArgumentParser(prog="tastenwerk", description=f"{APP_NAME} {__version__} – Tastenkürzel für Linux (X11)")
     p.add_argument("--config", help="andere Konfigurationsdatei verwenden")
+    p.add_argument("--version", action="version", version=f"{APP_NAME} {__version__}")
     sub = p.add_subparsers(dest="cmd")
     s = sub.add_parser("run", help="im Vordergrund starten")
     s.add_argument("--debug", action="store_true")
