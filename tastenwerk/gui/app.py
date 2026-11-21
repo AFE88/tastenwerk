@@ -586,9 +586,12 @@ class TastenwerkApp(Adw.Application):
     def _about(self, *_):
         d = Adw.AboutDialog(application_name="Tastenwerk", application_icon=control.APP_ID, version=__version__,
                             developer_name="Tastenwerk",
-                            comments="Tastenkürzel, Tastenfolgen, Text-Bausteine und Fenster-Aktionen für Linux.\n"
+                            comments="Tastenkürzel, Tastenfolgen, Touchpad-Gesten, Zwischenablage-Verlauf und "
+                                     "Fenster-Aktionen für Linux.\n"
                                      "Mit BetterTouchTool-Import und Claude-Textumformung.",
-                            license_type=Gtk.License.MIT_X11)
+                            website="https://github.com/AFE88/tastenwerk",
+                            issue_url="https://github.com/AFE88/tastenwerk/issues",
+                            license_type=Gtk.License.GPL_3_0)
         d.present(self.win)
 
     def _shortcuts(self, *_):

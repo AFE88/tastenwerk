@@ -8,7 +8,9 @@ settings:
   notify: true                        # Benachrichtigungen beim Start/bei Fehlern
   abbreviation_case_sensitive: false  # „##Mail“ = „##mail“
   clipboard:                          # Zwischenablage-Verlauf
-    keep_days: 14                     # 0 = unbegrenzt, Angeheftetes bleibt immer
+    keep_hours: 336                   # Aufbewahrung in Stunden (336 = 2 Wochen), 0 = unbegrenzt; Angeheftetes bleibt
+    clear_scope: never                # Zwischenablage automatisch leeren: never | secrets (nur Passwörter) | all
+    clear_after: 60                   # … nach so vielen Sekunden ohne neue Kopie
     max_items: 300
     exclude_apps: [bitwarden, keepassxc]   # Passwort-Manager nie mitschreiben
   gesture_threshold: 20               # so weit (in %) muss eine Touchpad-Geste gewischt sein

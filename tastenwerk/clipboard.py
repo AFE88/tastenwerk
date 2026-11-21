@@ -78,6 +78,7 @@ class History:
         self._block = 0
         self._quiet_until = 0.0
         self._x = None
+        self._gen = 0            # zählt fremde Kopien – für das automatische Leeren
         self.load()
 
     @property
@@ -117,8 +118,9 @@ class History:
 
     def prune(self, save=True):
         cfg = self.cfg
-        keep_days = float(cfg.get("keep_days") or 0)
-        limit = time.time() - keep_days * 86400 if keep_days > 0 else None
+        from .clipboard_defaults import keep_hours
+        hours = keep_hours(cfg)
+        limit = time.time() - hours * 3600 if hours > 0 else None
         kept, n = [], 0
         self.items.sort(key=lambda i: i.get("time", 0), reverse=True)
         for it in self.items:
@@ -137,6 +139,7 @@ class History:
             self._drop_file(it)
         if removed and save:
             self._changed()
+        return bool(removed)
 
     def _drop_file(self, it):
         if it.get("kind") == "image" and it.get("file"):
@@ -162,6 +165,8 @@ class History:
     def start(self):
         cb = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
         cb.connect("owner-change", self._on_owner_change)
+        # Abgelaufenes auch dann entfernen, wenn gerade nichts kopiert wird
+        GLib.timeout_add_seconds(300, lambda: (self.prune(), True)[1])
 
     def _active_app(self) -> tuple[str, ...]:
         try:
@@ -173,22 +178,28 @@ class History:
             return ()
 
     def _on_owner_change(self, cb, _event):
+        if self.is_quiet():
+            return
         cfg = self.cfg
-        if not cfg.get("history", True) or self.is_quiet():
+        self._gen += 1
+        recording = bool(cfg.get("history", True))
+        if not recording and cfg.get("clear_scope", "never") == "never":
             return
         app = self._active_app()
         excluded = {a.lower() for a in cfg.get("exclude_apps") or []}
-        if {c.lower() for c in app} & excluded:
-            log.debug("Zwischenablage aus ausgeschlossenem Programm – nicht gespeichert")
-            return
-        cb.request_targets(self._got_targets, app)
+        from_secret_app = bool({c.lower() for c in app} & excluded)
+        cb.request_targets(self._got_targets, (app, self._gen, from_secret_app))
 
     def _got_targets(self, cb, *args):
         atoms = next((a for a in args if isinstance(a, list)), [])
-        app = args[-1] if args and isinstance(args[-1], tuple) else ()
+        app, gen, from_secret_app = args[-1] if args and isinstance(args[-1], tuple) else ((), self._gen, False)
         names = {a.name() for a in atoms if a is not None}
-        if names & SECRET_TARGETS:
-            log.debug("Als Passwort markiert – nicht gespeichert")
+        secret = from_secret_app or bool(names & SECRET_TARGETS)
+        self._schedule_clear(gen, secret)
+        if secret:
+            log.debug("Passwort-Kopie – nicht gespeichert")
+            return
+        if not self.cfg.get("history", True):
             return
         has_text = bool(names & {"UTF8_STRING", "STRING", "TEXT", "text/plain", "text/plain;charset=utf-8"})
         has_image = any(n.startswith("image/") for n in names)
@@ -196,6 +207,24 @@ class History:
             cb.request_image(self._got_image, app)
         elif has_text or not names:
             cb.request_text(self._got_text, app)
+
+    # ---------- Automatisch leeren ----------
+    def _schedule_clear(self, gen: int, secret: bool):
+        cfg = self.cfg
+        scope = cfg.get("clear_scope", "never")
+        if scope == "all" or (scope == "secrets" and secret):
+            secs = max(5, int(cfg.get("clear_after") or 60))
+            GLib.timeout_add_seconds(secs, self._clear_now, gen, secs)
+
+    def _clear_now(self, gen: int, secs: int):
+        if gen != self._gen:
+            return False   # inzwischen wurde etwas Neues kopiert – das bekommt seinen eigenen Zeitgeber
+        with self.quiet():
+            cb = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+            cb.set_text("", 0)
+            cb.clear()
+        log.info("Zwischenablage nach %d s geleert", secs)
+        return False
 
     def _got_text(self, _cb, text, app):
         if not text or not text.strip() or len(text) > MAX_TEXT:

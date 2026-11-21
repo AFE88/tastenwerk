@@ -13,6 +13,11 @@ from gi.repository import Adw, Gio, GLib, Gtk  # noqa: E402
 
 from .. import control  # noqa: E402
 
+
+def _string_list(labels):
+    return Gtk.StringList.new(list(labels))
+
+
 MODELS = [("haiku", "Schnell", "Haiku – Antwort in wenigen Sekunden"),
           ("sonnet", "Ausgewogen", "Sonnet – bessere Formulierungen, etwas langsamer"),
           ("opus", "Gründlich", "Opus – beste Qualität, am langsamsten")]
@@ -123,11 +128,18 @@ class Preferences(Adw.PreferencesDialog):
         sw("Verlauf mitschreiben", "Aus: Es wird nichts mehr gespeichert, der bisherige Verlauf bleibt", "history")
         sw("Bilder merken", "Kopierte Bilder und Bildschirmfotos", "images")
         sw("Eingefügtes nach oben", "Ein eingefügter Eintrag rückt an die Spitze", "move_to_top")
-        days = Adw.SpinRow.new_with_range(0, 365, 1)
-        days.set_title("Aufbewahren (Tage)")
-        days.set_subtitle("0 = unbegrenzt · Angeheftetes bleibt immer")
-        days.set_value(int(c.get("keep_days") or 0))
-        days.connect("notify::value", lambda r, *_: self.store.set_setting("keep_days", int(r.get_value()), sub="clipboard"))
+        from ..clipboard_defaults import CLEAR_SCOPES, keep_hours
+        keep = [(1, "1 Stunde"), (4, "4 Stunden"), (8, "8 Stunden"), (24, "1 Tag"), (72, "3 Tage"),
+                (168, "1 Woche"), (336, "2 Wochen"), (720, "30 Tage"), (2160, "90 Tage"), (8760, "1 Jahr"),
+                (0, "Unbegrenzt")]
+        cur = keep_hours(c)
+        if not any(abs(h - cur) < 0.01 for h, _ in keep):
+            keep.insert(0, (cur, f"{cur:g} Stunden"))
+        days = Adw.ComboRow(title="Aufbewahren", subtitle="Ältere Einträge verschwinden automatisch · Angeheftetes bleibt immer",
+                            model=_string_list([t for _, t in keep]))
+        days.set_selected(next(i for i, (h, _) in enumerate(keep) if abs(h - cur) < 0.01))
+        days.connect("notify::selected",
+                     lambda r, *_: self.store.set_setting("keep_hours", keep[r.get_selected()][0], sub="clipboard"))
         g.add(days)
         mx = Adw.SpinRow.new_with_range(20, 5000, 10)
         mx.set_title("Höchstens Einträge")
@@ -136,8 +148,34 @@ class Preferences(Adw.PreferencesDialog):
         g.add(mx)
         page.add(g)
 
+        g = Adw.PreferencesGroup(title="Zwischenablage automatisch leeren",
+                                 description="Nach der eingestellten Zeit lässt sich die letzte Kopie nicht mehr einfügen. "
+                                             "„Nur Passwörter“ meint Kopien aus den Programmen unten und als Passwort "
+                                             "markierte Inhalte. Kopierst du vorher etwas Neues, beginnt die Zeit neu.")
+        scopes = list(CLEAR_SCOPES)
+        scope = Adw.ComboRow(title="Leeren", model=_string_list(list(CLEAR_SCOPES.values())))
+        scope.set_selected(scopes.index(c.get("clear_scope", "never")) if c.get("clear_scope") in scopes else 0)
+        after = Adw.SpinRow.new_with_range(5, 3600, 5)
+        after.set_title("Nach (Sekunden)")
+        after.set_value(int(c.get("clear_after") or 60))
+
+        def upd_after_hint(*_):
+            v = int(after.get_value())
+            after.set_subtitle(f"= {v // 60} Min. {v % 60} s" if v >= 60 and v % 60 else
+                               (f"= {v // 60} Min." if v >= 60 else ""))
+            after.set_sensitive(scope.get_selected() != 0)
+        scope.connect("notify::selected", lambda r, *_: (self.store.set_setting("clear_scope", scopes[r.get_selected()],
+                                                                                  sub="clipboard"), upd_after_hint()))
+        after.connect("notify::value", lambda r, *_: (self.store.set_setting("clear_after", int(r.get_value()),
+                                                                               sub="clipboard"), upd_after_hint()))
+        upd_after_hint()
+        g.add(scope)
+        g.add(after)
+        page.add(g)
+
         g = Adw.PreferencesGroup(title="Nicht mitschreiben aus",
-                                 description="Kopien aus diesen Programmen landen nie im Verlauf – gedacht für Passwort-Manager.")
+                                 description="Kopien aus diesen Programmen landen nie im Verlauf und gelten als Passwörter – "
+                                             "gedacht für Passwort-Manager.")
         add = Gtk.Button(icon_name="list-add-symbolic", css_classes=["flat"], valign=Gtk.Align.CENTER,
                          tooltip_text="Programm hinzufügen")
         g.set_header_suffix(add)

@@ -171,6 +171,10 @@ Für Tasten, die eine Maus- oder Tastatur-Software belegt (z. B. OpenLogi), dort
 `~/tastenwerk/bin/tastenwerk clipboard`. Das öffnet den Verlauf direkt, ohne ein
 Tastenkürzel vorzutäuschen, und ist deshalb zuverlässiger als ein simuliertes Super+Shift+V.
 
+**Automatisch leeren:** In den Einstellungen lässt sich festlegen, dass die Zwischenablage nach
+einer bestimmten Zeit geleert wird, wahlweise nur bei Passwörtern oder bei allem. Der Verlauf hält
+Einträge so lange, wie unter „Aufbewahren“ eingestellt (1 Stunde bis 1 Jahr oder unbegrenzt).
+
 Im Terminal wird automatisch mit Strg+Shift+V eingefügt. Kopien aus Passwort-Managern (Bitwarden,
 KeePassXC …) und als Passwort markierte Inhalte werden nie gespeichert. Ebenso wenig, was
 Tastenwerk selbst kurz in die Zwischenablage legt. Der Verlauf liegt nur lokal in
