@@ -38,6 +38,10 @@ class Preferences(Adw.PreferencesDialog):
         self.autostart.connect("notify::active", lambda r, *_: (control.set_autostart(r.get_active()),
                                                                  window.toast("Autostart " + ("an" if r.get_active() else "aus"))))
         g.add(self.autostart)
+        from ..tray import available as tray_available
+        tray_sub = ("Mit Menü: Zwischenablage, Pausieren, Oberfläche öffnen, Beenden" if tray_available() else
+                    "Benötigt das Paket gir1.2-ayatanaappindicator3-0.1")
+        self._switch(g, "Symbol in der oberen Leiste", tray_sub, "tray", s, default=True)
         log = Adw.ActionRow(title="Protokoll", subtitle="Was der Dienst zuletzt getan hat", activatable=True)
         log.add_suffix(Gtk.Image(icon_name="go-next-symbolic"))
         log.connect("activated", lambda *_: self._open(control.LOG_FILE))
@@ -243,8 +247,8 @@ class Preferences(Adw.PreferencesDialog):
         d.connect("response", done)
         d.present(self)
 
-    def _switch(self, group, title, subtitle, key, s):
-        row = Adw.SwitchRow(title=title, subtitle=subtitle, active=bool(s.get(key)))
+    def _switch(self, group, title, subtitle, key, s, default=False):
+        row = Adw.SwitchRow(title=title, subtitle=subtitle, active=bool(s.get(key, default)))
         row.connect("notify::active", lambda r, *_: self.store.set_setting(key, r.get_active()))
         group.add(row)
 

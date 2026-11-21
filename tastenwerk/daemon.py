@@ -35,6 +35,11 @@ class Daemon:
         self.popup = ClipPopup(self.history, self._on_clip_choice)
         self.executor.on_clipboard = self._on_clipboard
         self._mtimes = self._stat()
+        from .tray import Tray
+        self.tray = Tray(self)
+        self.loop = None
+        from .control import PAUSED_FILE
+        self.user_paused = PAUSED_FILE.exists()   # über das Tray pausiert – übersteht auch Neustarts
 
     # ---------- Auslöser ----------
     def _on_hotkey(self, combo, app) -> bool:
@@ -92,6 +97,11 @@ class Daemon:
         self.executor.set_config(cfg)
         log.info("%d Regeln aktiv: %d Kürzel, %d Tastenfolgen, %d Gesten", len(cfg.enabled_rules()),
                  len(combos), len(abbrs), len(gestures))
+        self.tray.set_visible(bool(cfg.settings.get("tray", True)))
+        if self.user_paused:
+            self._release()
+            log.info("bleibt pausiert (Tray)")
+        self.tray.update()
         for w in cfg.warnings:
             log.warning(w)
         if failed:
@@ -105,12 +115,15 @@ class Daemon:
                 body += f"\n{len(failed)} Kürzel nicht belegbar: " + ", ".join(str(c) for c, _ in failed[:5])
             notify("Tastenwerk", body)
 
-    def pause(self, *_):
-        """Alle Kürzel und Tastenfolgen vorübergehend freigeben (z. B. beim Aufnehmen in der Oberfläche)."""
+    def _release(self):
         self.hotkeys.set_combos([])
         self.abbrev.set_combo_watch({}, None)
         self.abbrev.set_abbreviations([])
         self.gestures.set_gestures([])
+
+    def pause(self, *_):
+        """Alle Kürzel und Tastenfolgen vorübergehend freigeben (z. B. beim Aufnehmen in der Oberfläche)."""
+        self._release()
         log.info("pausiert")
         return True
 
@@ -118,6 +131,25 @@ class Daemon:
         self.apply()
         log.info("fortgesetzt")
         return True
+
+    def set_user_paused(self, on: bool):
+        """Pause durch den Nutzer (Tray): bleibt, bis er fortsetzt – auch über Neustarts hinweg."""
+        from .control import PAUSED_FILE
+        self.user_paused = on
+        if on:
+            PAUSED_FILE.parent.mkdir(parents=True, exist_ok=True)
+            PAUSED_FILE.touch()
+            self._release()
+            log.info("pausiert (über das Tray-Symbol)")
+        else:
+            PAUSED_FILE.unlink(missing_ok=True)
+            self.apply()
+            log.info("fortgesetzt (über das Tray-Symbol)")
+        self.tray.update()
+
+    def quit(self):
+        if self.loop is not None:
+            self.loop.quit()
 
     def _stat(self):
         out = {}
@@ -158,7 +190,7 @@ class Daemon:
         self.abbrev.start()
         self.history.start()
         self.apply(announce=True)
-        loop = GLib.MainLoop()
+        loop = self.loop = GLib.MainLoop()
         GLib.timeout_add_seconds(2, self._watch)
         GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGHUP, self.reload)
         GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGUSR1, self.pause)

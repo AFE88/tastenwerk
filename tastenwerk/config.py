@@ -21,6 +21,7 @@ IMPORT_DIR = CONFIG_DIR / "imported"
 
 DEFAULT_SETTINGS = {
     "notify": True,
+    "tray": True,                   # Symbol in der oberen Leiste
     "abbreviation_case_sensitive": False,
     "type_delay_ms": 6,
     "key_delay_ms": 25,

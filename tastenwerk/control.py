@@ -17,6 +17,7 @@ SOCKET = RUNTIME / "tastenwerk.sock"
 XDG_CONFIG = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
 AUTOSTART = XDG_CONFIG / "autostart" / "tastenwerk.desktop"
 LOG_DIR = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local" / "state")) / "tastenwerk"
+PAUSED_FILE = LOG_DIR / "paused"   # vorhanden = über das Tray pausiert
 LOG_FILE = LOG_DIR / "tastenwerk.log"
 APP_ID = "de.tastenwerk.Tastenwerk"
 CLIP_DIR = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local" / "share")) / "tastenwerk" / "clipboard"

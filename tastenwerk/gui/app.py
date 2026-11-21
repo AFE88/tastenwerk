@@ -495,7 +495,11 @@ class MainWindow(Adw.ApplicationWindow):
         self.status_switch.set_state(bool(pid))
         self.status_switch.handler_unblock(self._switch_handler)
         self.dot.remove_css_class("stopped")
-        if pid:
+        if pid and control.PAUSED_FILE.exists():
+            self.dot.add_css_class("stopped")
+            self.status_title.set_label("Pausiert")
+            self.status_sub.set_label("Fortsetzen über das Tray-Symbol")
+        elif pid:
             self.status_title.set_label("Aktiv")
             n = sum(1 for it in self.store.items if it.enabled) if self.store else 0
             self.status_sub.set_label(f"{n} Regeln reagieren")
