@@ -3,7 +3,7 @@
 DEFAULTS = {
     "history": True,          # Verlauf mitschreiben
     "max_items": 300,         # angeheftete zählen nicht mit
-    "keep_days": 14,          # 0 = unbegrenzt (BTT-Standard: 14); veraltet, keep_hours hat Vorrang
+    "keep_days": 14,          # 0 = unbegrenzt; veraltet, keep_hours hat Vorrang
     "clear_scope": "never",   # Zwischenablage leeren: never | secrets (nur Passwort-Kopien) | all
     "clear_after": 60,        # … nach so vielen Sekunden ohne neue Kopie
     "images": True,

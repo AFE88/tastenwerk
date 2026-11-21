@@ -44,7 +44,7 @@ Gesten direkt auf dem Touchpad vormachen, Programme aus einer Liste wählen.
 </tr>
 <tr>
 <td align="center"><sub>Regel-Editor: Auslöser, Programme und Aktionen</sub></td>
-<td align="center"><sub>Zwischenablage-Verlauf (Super+Shift+V)</sub></td>
+<td align="center"><sub>Zwischenablage-Verlauf mit Suche und Bildern</sub></td>
 </tr>
 </table>
 
@@ -123,8 +123,9 @@ sofort.
 
 ## Zwischenablage-Verlauf
 
-Tastenwerk merkt sich, was du kopierst, und zeigt es mit **Super+Shift+V** mittig über dem
-aktiven Fenster an – wie ⌘⇧V in BetterTouchTool.
+Tastenwerk merkt sich, was du kopierst, und zeigt es auf Knopfdruck mittig über dem aktiven
+Fenster an. Das Kürzel legst du selbst fest: eine Regel mit der Aktion „Zwischenablage-Verlauf“,
+zum Beispiel auf **Super+Shift+V** (so ist es in der Beispiel-Konfiguration eingerichtet).
 
 | Taste | Wirkung |
 |---|---|
