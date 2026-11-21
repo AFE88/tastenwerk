@@ -15,7 +15,7 @@ abfangen), z. B. Zorin OS, Ubuntu oder Debian mit GNOME auf Xorg.
 
 ```bash
 sudo apt install git python3-gi gir1.2-gtk-4.0 gir1.2-gtk-3.0 gir1.2-adw-1 python3-xlib python3-yaml xdotool
-git clone https://github.com/BENUTZER/tastenwerk.git ~/tastenwerk
+git clone https://github.com/AFE88/tastenwerk.git ~/tastenwerk
 ~/tastenwerk/bin/tastenwerk install
 ```
 
