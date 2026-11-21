@@ -1,0 +1,119 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  Tastenwerk – deine Kürzel, Tastenfolgen und Makros
+#  Diese Datei wird beim Speichern automatisch neu geladen.
+#  Prüfen:  tastenwerk check      Programmnamen herausfinden:  tastenwerk apps
+# ─────────────────────────────────────────────────────────────────────────────
+
+settings:
+  notify: true                        # Benachrichtigungen beim Start/bei Fehlern
+  abbreviation_case_sensitive: false  # „##Mail“ = „##mail“
+  clipboard:                          # Zwischenablage-Verlauf
+    keep_days: 14                     # 0 = unbegrenzt, Angeheftetes bleibt immer
+    max_items: 300
+    exclude_apps: [bitwarden, keepassxc]   # Passwort-Manager nie mitschreiben
+  gesture_threshold: 20               # so weit (in %) muss eine Touchpad-Geste gewischt sein
+  restore_clipboard: true             # Zwischenablage nach dem Einfügen wiederherstellen
+  ai:
+    command: claude                   # Claude-CLI, läuft über dein Abo (kein API-Schlüssel)
+    model: haiku                      # schnell; für bessere Texte: sonnet
+
+# Weitere Dateien einbinden (der BTT-Import legt seine Regeln dort ab)
+include:
+  - imported/*.yaml
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Regeln
+#
+#  Auslöser – genau einer davon:
+#    hotkey: ctrl+super+left            Tastenkürzel (ctrl, alt, shift, super, altgr)
+#    abbreviation: "##mail"            getippte Tastenfolge, wird danach gelöscht
+#    gesture: swipe down 4             Touchpad-Geste: swipe up/down/left/right oder pinch in/out,
+#                                        mit 3, 4 oder 5 Fingern. 3-Finger-Wischen nutzt GNOME schon.
+#
+#  Optional:
+#    apps: [code, zen]                 nur in diesen Programmen (WM_CLASS, siehe 'tastenwerk apps')
+#    not_apps: [gnome-terminal-server] überall außer hier
+#    enabled: false                    ausschalten, ohne zu löschen
+#
+#  Aktionen (do:) – laufen nacheinander:
+#    - keys: ctrl+v                    Tasten senden, mehrere mit Leerzeichen: "tab tab ctrl+v"
+#    - type: "Hallo {date}"            Text tippen (lange/mehrzeilige Texte werden eingefügt)
+#    - paste: "…"                      Text immer über die Zwischenablage einfügen
+#    - window: left_half               Fenster: left_half right_half top_half bottom_half
+#                                        left_third center_third right_third left_two_thirds right_two_thirds
+#                                        top_left top_right bottom_left bottom_right center
+#                                        maximize unmaximize toggle_maximize minimize minimize_under_cursor
+#                                        fullscreen close next_monitor prev_monitor next_monitor_maximized
+#    - workspace: next                 Arbeitsfläche: next, prev oder Nummer
+#    - open: ~/Dokumente               Datei, Ordner oder URL öffnen
+#    - run: gnome-system-monitor       Befehl starten (mit  output: type|paste|notify  die Ausgabe nutzen)
+#    - delay: 0.3                      warten (Sekunden)
+#    - lock: true                      Bildschirm sperren
+#    - notify: "Fertig"                Benachrichtigung
+#    - clipboard: show                 Zwischenablage-Verlauf zeigen (clear = leeren)
+#    - clipboard: paste 2              Eintrag Nr. 2 direkt einfügen (1 = zuletzt kopiert,
+#                                      Angeheftete zählen nicht mit; 2 wechselt zwischen den letzten beiden)
+#    - ai: "Formuliere als freundliche Mail"   markierten Text mit Claude umschreiben
+#      input: selection                (selection = Markierung, line = Zeile bis zum Cursor, all = alles)
+#
+#  Platzhalter in Texten: {date} {date:%Y-%m-%d} {time} {time:%H:%M:%S} {datetime}
+#                         {clipboard}  {cursor} (Cursor landet hier)   – geschweifte Klammer: {{ }}
+# ─────────────────────────────────────────────────────────────────────────────
+
+rules:
+  # --- Fenster -------------------------------------------------------------
+  - name: Fenster linkes Drittel
+    hotkey: ctrl+super+left
+    do: [{window: left_third}]
+
+  - name: Fenster mittleres Drittel
+    hotkey: ctrl+super+down
+    do: [{window: center_third}]
+
+  - name: Fenster rechtes Drittel
+    hotkey: ctrl+super+right
+    do: [{window: right_third}]
+
+  - name: Fenster auf nächsten Monitor
+    hotkey: super+alt+m
+    do: [{window: next_monitor}]
+
+  # --- Text ----------------------------------------------------------------
+  - name: Datum einfügen
+    abbreviation: "##datum"
+    do: [{type: "{date}"}]
+
+  - name: Uhrzeit einfügen
+    abbreviation: "##zeit"
+    do: [{type: "{time}"}]
+
+  # --- Beispiele (ausgeschaltet) -------------------------------------------
+  - name: Mail-Gruß
+    abbreviation: "##mfg"
+    enabled: false
+    do:
+      - type: |
+          Viele Grüße
+          {cursor}
+
+  - name: Markierten Text als freundliche Mail umformulieren
+    hotkey: super+alt+k
+    enabled: false
+    do:
+      - ai: "Formuliere den Text als freundliche, kurze E-Mail in der Du-Form."
+
+  - name: Systemüberwachung
+    hotkey: ctrl+shift+Escape
+    enabled: false
+    do: [{run: gnome-system-monitor}]
+
+  - name: Zwischenablage-Verlauf
+    hotkey: super+shift+v
+    do:
+      - clipboard: show
+
+  - name: Bildschirm sperren (Touchpad)
+    gesture: swipe down 4
+    enabled: false
+    do:
+      - lock: true

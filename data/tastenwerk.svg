@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4f8ff7"/>
+      <stop offset="1" stop-color="#2a5fd6"/>
+    </linearGradient>
+    <linearGradient id="cap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e4ebf7"/>
+    </linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c3cfe4"/>
+      <stop offset="1" stop-color="#9fb0cf"/>
+    </linearGradient>
+  </defs>
+  <!-- Hintergrund -->
+  <rect x="8" y="8" width="112" height="112" rx="26" fill="url(#bg)"/>
+  <rect x="8" y="8" width="112" height="56" rx="26" fill="#ffffff" opacity="0.08"/>
+  <!-- Tastenkappe: Sockel -->
+  <rect x="28" y="40" width="72" height="64" rx="14" fill="url(#side)"/>
+  <!-- Tastenkappe: Oberseite -->
+  <rect x="32" y="34" width="64" height="56" rx="12" fill="url(#cap)"/>
+  <!-- Symbol auf der Taste: Blitz -->
+  <path d="M68 44 L54 66 H63 L58 82 L74 58 H65 Z" fill="#2a5fd6"/>
+  <!-- Funken -->
+  <path d="M100 22 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 z" fill="#ffd34d"/>
+</svg>

@@ -1,0 +1,4 @@
+#!/bin/sh
+# Startet Tastenwerk direkt aus dem Projektordner
+DIR="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+PYTHONPATH="$DIR${PYTHONPATH:+:$PYTHONPATH}" exec /usr/bin/python3 -m tastenwerk "$@"
