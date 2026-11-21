@@ -183,6 +183,19 @@ def cmd_stop(args):
     return 0
 
 
+def cmd_clipboard(args):
+    from . import control
+    from .clipboard_defaults import command
+    what = " ".join(args.what) or "show"
+    if command(what) is None:
+        print("Erlaubt: show · clear · paste N (1 = zuletzt kopiert)")
+        return 2
+    if not control.send_command("clipboard " + what):
+        print("Tastenwerk läuft nicht.")
+        return 1
+    return 0
+
+
 def cmd_autostart(args):
     from . import control
     control.set_autostart(args.state == "on")
@@ -214,6 +227,9 @@ def main(argv=None):
     s.set_defaults(fn=cmd_import)
     sub.add_parser("reload", help="laufendes Tastenwerk neu laden").set_defaults(fn=cmd_reload)
     sub.add_parser("stop", help="laufendes Tastenwerk beenden").set_defaults(fn=cmd_stop)
+    s = sub.add_parser("clipboard", help="Zwischenablage-Verlauf zeigen (für Maustasten, Skripte)")
+    s.add_argument("what", nargs="*", help="show (Standard) · paste N · clear")
+    s.set_defaults(fn=cmd_clipboard)
     s = sub.add_parser("autostart", help="beim Anmelden starten")
     s.add_argument("state", choices=["on", "off"])
     s.set_defaults(fn=cmd_autostart)

@@ -34,6 +34,7 @@ Die Konfiguration liegt in `~/.config/tastenwerk/` und lässt sich auch von Hand
 | `tastenwerk apps [--wait 3]` | Programmnamen für `apps:` herausfinden |
 | `tastenwerk import DATEI…` | BetterTouchTool-Presets übernehmen (Assistent) |
 | `tastenwerk reload` / `stop` | laufendes Tastenwerk neu laden / beenden |
+| `tastenwerk clipboard [paste N]` | Zwischenablage-Verlauf öffnen bzw. Eintrag N einfügen (für Maus- und Sondertasten) |
 | `tastenwerk run --debug` | mit ausführlichem Protokoll starten |
 
 ## Regeln
@@ -105,6 +106,10 @@ dem aktiven Fenster an. Standard ist **Super+Shift+V**, wie ⌘⇧V in BTT.
 Ohne Fenster geht es mit der Aktion `clipboard: paste 2`: Sie fügt die vorletzte Kopie direkt ein
 (1 = zuletzt kopiert, Angeheftete zählen nicht mit). Weil eingefügte Einträge wieder nach oben
 rücken, wechselt Nr. 2 bei jedem Druck zwischen den letzten beiden Kopien.
+
+Für Tasten, die OpenLogi belegt (Maustasten, Sondertasten der MX Keys), dort als Befehl eintragen:
+`~/LinuxShortcutsTool/bin/tastenwerk clipboard`. Das öffnet den Verlauf direkt, ohne ein
+Tastenkürzel vorzutäuschen, und ist deshalb zuverlässiger als ein simuliertes Super+Shift+V.
 
 Im Terminal wird automatisch mit Strg+Shift+V eingefügt. Kopien aus Passwort-Managern (Bitwarden,
 KeePassXC …) und als Passwort markierte Inhalte werden nie gespeichert. Ebenso wenig, was

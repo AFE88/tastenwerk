@@ -165,6 +165,65 @@ class Daemon:
         GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGUSR2, self.resume)
         GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGINT, lambda *a: loop.quit() or False)
         GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGTERM, lambda *a: loop.quit() or False)
+        self._start_control()
         log.info("Tastenwerk läuft (Strg+C beendet)")
         loop.run()
+        self._stop_control()
         log.info("Tastenwerk beendet")
+
+    # ---------- Steuer-Kanal (tastenwerk clipboard …) ----------
+    def _start_control(self):
+        from gi.repository import Gio
+        from .control import SOCKET
+        try:
+            SOCKET.unlink()
+        except FileNotFoundError:
+            pass
+        try:
+            svc = Gio.SocketService()
+            svc.add_address(Gio.UnixSocketAddress.new(str(SOCKET)), Gio.SocketType.STREAM,
+                            Gio.SocketProtocol.DEFAULT, None)
+            os.chmod(SOCKET, 0o600)
+            svc.connect("incoming", self._on_control)
+            svc.start()
+            self._control = svc
+        except Exception as e:
+            log.warning("Steuer-Kanal nicht verfügbar (%s) – 'tastenwerk clipboard' geht dann nicht",
+                        getattr(e, "message", e))
+
+    def _stop_control(self):
+        from .control import SOCKET
+        try:
+            SOCKET.unlink()
+        except FileNotFoundError:
+            pass
+
+    def _on_control(self, _svc, conn, _src):
+        from gi.repository import Gio
+        try:
+            line, _ = Gio.DataInputStream.new(conn.get_input_stream()).read_line_utf8(None)
+        except Exception:
+            line = ""
+        conn.close(None)
+        self._control_command((line or "").strip())
+        return True
+
+    def _control_command(self, text: str):
+        from .clipboard_defaults import command
+        parts = text.split(None, 1)
+        if not parts or parts[0] != "clipboard":
+            log.warning("Unbekannter Steuer-Befehl: %r", text[:60])
+            return
+        cmd = command(parts[1] if len(parts) > 1 else "show")
+        if cmd is None:
+            log.warning("Unbekannter Zwischenablage-Befehl: %r", text[:60])
+            return
+        log.info("▶ Befehl: %s", text)
+        ex = self.executor
+        if cmd[0] == "paste":
+            ex.submit(lambda: ex.paste_history_nr(cmd[1]))
+        else:
+            def go():
+                prev = ex.x.active_window()
+                self._on_clipboard(cmd[0], prev.id if prev is not None else None)
+            ex.submit(go)

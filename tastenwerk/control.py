@@ -13,6 +13,7 @@ PROJECT = Path(__file__).resolve().parent.parent
 LAUNCHER = PROJECT / "bin" / "tastenwerk"
 RUNTIME = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp"))
 LOCK = RUNTIME / "tastenwerk.lock"
+SOCKET = RUNTIME / "tastenwerk.sock"
 XDG_CONFIG = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
 AUTOSTART = XDG_CONFIG / "autostart" / "tastenwerk.desktop"
 LOG_DIR = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local" / "state")) / "tastenwerk"
@@ -71,6 +72,21 @@ def _signal(sig) -> bool:
         os.kill(pid, sig)
         return True
     return False
+
+
+def send_command(text: str) -> bool:
+    """Einen Befehl an den laufenden Dienst schicken (z. B. „clipboard show“)."""
+    import socket
+    if not running_pid():
+        return False
+    try:
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
+            s.settimeout(2)
+            s.connect(str(SOCKET))
+            s.sendall(text.encode() + b"\n")
+        return True
+    except OSError:
+        return False
 
 
 def reload() -> bool:
