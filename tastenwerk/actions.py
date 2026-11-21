@@ -161,6 +161,39 @@ class Executor:
         self._clear = not self.wait_modifiers_released()
         self.send_keys(self.paste_combo())
 
+    def focus_or_launch(self, key: str, if_active: str = "next"):
+        """Programm nach vorne holen; läuft es nicht, starten. Ist es schon vorne: if_active."""
+        from .apps import Catalog
+        from .mainthread import run_on_main
+        cat = run_on_main(Catalog.get)
+        wins = []
+        for w in self.x.client_list(stacking=True):          # unten → oben
+            try:
+                if cat.matches(key, self.x.wm_class(w)):
+                    wins.append(w)
+            except Exception:
+                continue
+        if wins:
+            active = self.x.active_window()
+            ids = [w.id for w in wins]
+            if active is not None and active.id in ids:
+                if if_active == "minimize":
+                    self.x.client_message(active, "WM_CHANGE_STATE", [3])   # IconicState
+                elif if_active == "next" and len(wins) > 1:
+                    self.x.activate(wins[0])   # das am längsten nicht benutzte – so geht es reihum
+                return
+            self.x.activate(wins[-1])
+            return
+        info = cat.lookup(key) or run_on_main(lambda: Catalog.get(refresh=True)).lookup(key)
+        if info is not None:
+            log.info("Starte %s", info.get_display_name())
+            run_on_main(lambda: info.launch([], None))
+            return
+        try:
+            subprocess.Popen([key], start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except OSError:
+            raise RuntimeError(f"Programm „{key}“ nicht gefunden") from None
+
     def paste_history_nr(self, n: int):
         """Eintrag Nr. n des Verlaufs (1 = zuletzt kopiert, ohne Angeheftete) direkt einfügen."""
         if self.history is None:
@@ -287,7 +320,7 @@ class Executor:
     def run_action(self, a: dict):
         kind = next(k for k in a if k in ("keys", "type", "paste", "run", "open", "window",
                                            "workspace", "delay", "lock", "notify", "ai", "clipboard",
-                                           "screenshot"))
+                                           "screenshot", "app"))
         val = a[kind]
         if kind == "keys":
             self.send_keys(str(val))
@@ -315,6 +348,8 @@ class Executor:
             self.ai_transform(str(val), a)
         elif kind == "screenshot":
             self.send_keys(screenshot_keys(str(val)))
+        elif kind == "app":
+            self.focus_or_launch(str(val).strip(), a.get("if_active", "next"))
         elif kind == "clipboard":
             from .clipboard_defaults import command
             cmd, n = command(val) or ("show", 0)
@@ -466,6 +501,13 @@ def describe_action(a: dict) -> str:
             return "Bildschirm sperren"
         if k == "notify":
             return f"Hinweis „{v}“"
+        if k == "app":
+            try:
+                from .apps import Catalog
+                name = Catalog.get().name(str(v))
+            except Exception:
+                name = str(v)
+            return f"Programm: {name}"
         if k == "screenshot":
             from .config import SCREENSHOT_MODES
             return "Bildschirmfoto: " + SCREENSHOT_MODES.get(str(v), str(v))

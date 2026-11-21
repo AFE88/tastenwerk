@@ -51,6 +51,8 @@ include:
 #    - lock: true                      Bildschirm sperren
 #    - notify: "Fertig"                Benachrichtigung
 #    - clipboard: show                 Zwischenablage-Verlauf zeigen (clear = leeren)
+#    - app: org.gnome.Nautilus         Programm nach vorne holen, sonst starten
+#      if_active: next                 schon vorne: next = nächstes Fenster, minimize, none
 #    - screenshot: area                Bildschirmfoto mit dem GNOME-Werkzeug
 #                                      (area = Bereich wählen, screen = ganzer Bildschirm, window = Fenster)
 #    - clipboard: paste 2              Eintrag Nr. 2 direkt einfügen (1 = zuletzt kopiert,

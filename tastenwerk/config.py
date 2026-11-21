@@ -50,7 +50,10 @@ ACTION_TYPES = {
     "ai": "Markierten Text mit Claude umformen",
     "clipboard": "Zwischenablage-Verlauf",
     "screenshot": "Bildschirmfoto",
+    "app": "Programm öffnen oder wechseln",
 }
+
+APP_IF_ACTIVE = {"next": "Nächstes Fenster des Programms", "minimize": "Minimieren", "none": "Nichts tun"}
 
 SCREENSHOT_MODES = {"area": "Bereich auswählen", "screen": "Ganzer Bildschirm", "window": "Aktuelles Fenster"}
 
@@ -163,6 +166,11 @@ def normalize_action(a, where: str) -> dict:
     elif kind == "clipboard" and clip_command(val) is None:
         raise ConfigError(f"{where}: clipboard kann 'show' (Verlauf zeigen), 'clear' (leeren) "
                           f"oder 'paste 2' (Eintrag Nr. 2 einfügen, 1–{CLIP_MAX_N}) sein")
+    elif kind == "app":
+        if not isinstance(val, str) or not val.strip():
+            raise ConfigError(f"{where}: app braucht ein Programm, z. B. 'firefox' oder 'org.gnome.Nautilus'")
+        if a.get("if_active", "next") not in APP_IF_ACTIVE:
+            raise ConfigError(f"{where}: if_active kann {', '.join(APP_IF_ACTIVE)} sein")
     elif kind == "screenshot" and str(val) not in SCREENSHOT_MODES:
         raise ConfigError(f"{where}: screenshot kann {', '.join(SCREENSHOT_MODES)} sein")
     elif kind == "ai":

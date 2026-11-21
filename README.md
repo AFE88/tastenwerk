@@ -65,6 +65,10 @@ rules:
           Viele Grüße
           {cursor}
 
+  - name: Dateien
+    hotkey: super+e
+    do: [{app: org.gnome.Nautilus}]   # läuft es: nach vorne holen, sonst starten
+
   - name: Nur in VS Code
     abbreviation: "##api"
     apps: [code]
@@ -72,7 +76,7 @@ rules:
 ```
 
 Alle Aktionen und Platzhalter sind in `config.example.yaml` beschrieben. Kurzfassung:
-`keys`, `type`, `paste`, `window`, `workspace`, `open`, `run`, `delay`, `lock`, `notify`, `ai`, `clipboard`,
+`keys`, `type`, `paste`, `app`, `window`, `workspace`, `open`, `run`, `delay`, `lock`, `notify`, `ai`, `clipboard`,
 `screenshot`.
 
 ## BetterTouchTool-Import

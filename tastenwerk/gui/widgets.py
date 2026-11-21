@@ -9,6 +9,7 @@ gi.require_version("Adw", "1")
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk, Pango  # noqa: E402
 
 from .. import control  # noqa: E402
+from ..apps import Catalog  # noqa: E402
 from ..keys import MOD_ORDER, Combo, KeyError_  # noqa: E402
 
 CSS = """
@@ -190,12 +191,14 @@ ACTION_META = {
     "workspace": ("Arbeitsfläche wechseln", "Nächste, vorherige oder bestimmte", "view-paged-symbolic", "tile-window"),
     "delay": ("Warten", "Pause zwischen Aktionen", "alarm-symbolic", "tile-other"),
     "clipboard": ("Zwischenablage-Verlauf", "Frühere Kopien suchen und einfügen", "edit-paste-symbolic", "tile-clip"),
+    "app": ("Programm öffnen / wechseln", "Läuft es, nach vorne holen – sonst starten",
+            "view-app-grid-symbolic", "tile-open"),
     "screenshot": ("Bildschirmfoto", "Bereich, Bildschirm oder Fenster aufnehmen",
                    "accessories-screenshot-symbolic", "tile-shot"),
     "lock": ("Bildschirm sperren", "Sitzung sperren", "system-lock-screen-symbolic", "tile-lock"),
     "notify": ("Benachrichtigung", "Kurze Meldung anzeigen", "preferences-system-notifications-symbolic", "tile-other"),
 }
-ACTION_ORDER = ["type", "keys", "window", "clipboard", "screenshot", "ai", "open", "run", "workspace", "delay", "lock", "notify"]
+ACTION_ORDER = ["type", "keys", "app", "window", "clipboard", "screenshot", "ai", "open", "run", "workspace", "delay", "lock", "notify"]
 
 
 def action_kind(a: dict) -> str:
@@ -228,60 +231,9 @@ def make_tile(icon: str, style: str, size: int = 34, icon_size: int = 18, dim: b
 # ---------------------------------------------------------------------------
 # Programme (WM_CLASS ↔ App-Infos mit Symbol und Namen)
 # ---------------------------------------------------------------------------
-class AppCatalog:
+class AppCatalog(Catalog):
+    """App-Katalog der Oberfläche: wie ``apps.Catalog``, dazu die gerade offenen Programme."""
     _inst = None
-
-    @classmethod
-    def get(cls) -> "AppCatalog":
-        if cls._inst is None:
-            cls._inst = AppCatalog()
-        return cls._inst
-
-    def __init__(self):
-        self.by_key: dict[str, Gio.AppInfo] = {}
-        self.apps: list[tuple[str, Gio.AppInfo]] = []
-        for info in Gio.AppInfo.get_all():
-            if not info.should_show():
-                continue
-            keys = []
-            if isinstance(info, Gio.DesktopAppInfo):
-                wm = info.get_startup_wm_class()
-                if wm:
-                    keys.append(wm)
-                did = (info.get_id() or "").removesuffix(".desktop")
-                if did:
-                    keys.append(did)
-                    keys.append(did.split(".")[-1])
-            exe = info.get_executable()
-            if exe:
-                keys.append(exe.split("/")[-1])
-            if not keys:
-                continue
-            keys.append(info.get_display_name())
-            for k in keys:
-                self.by_key.setdefault(k.lower(), info)
-            self.apps.append((keys[0], info))
-        self.apps.sort(key=lambda t: t[1].get_display_name().casefold())
-
-    ALIASES = {"gnome-terminal-server": "gnome-terminal", "navigator": "zen", "code-url-handler": "code"}
-
-    def lookup(self, wm: str) -> Gio.AppInfo | None:
-        w = self.ALIASES.get(wm.lower(), wm.lower())
-        if w in self.by_key:
-            return self.by_key[w]
-        for k, info in self.by_key.items():
-            if k.endswith("." + w) or w.endswith("." + k):
-                return info
-        return None
-
-    def name(self, wm: str) -> str:
-        info = self.lookup(wm)
-        return info.get_display_name() if info else wm
-
-    def icon(self, wm: str) -> Gio.Icon:
-        info = self.lookup(wm)
-        icon = info.get_icon() if info else None
-        return icon or Gio.ThemedIcon.new("application-x-executable-symbolic")
 
     def open_windows(self) -> list[str]:
         try:

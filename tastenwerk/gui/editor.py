@@ -233,6 +233,48 @@ class ActionEditor:
             2: "Löscht alles außer Angehefteten",
         }[sel])
 
+    def _build_app(self):
+        from ..config import APP_IF_ACTIVE
+        self.app_key = str(self.a.get("app", "")).strip()
+        self.app_row = Adw.ActionRow(title="Programm", activatable=True)
+        self.app_icon = Gtk.Image(pixel_size=32)
+        self.app_row.add_prefix(self.app_icon)
+        pick = Gtk.Button(label="Wählen …", valign=Gtk.Align.CENTER)
+        pick.connect("clicked", self._pick_target_app)
+        self.app_row.add_suffix(pick)
+        self.app_row.set_activatable_widget(pick)
+        self.row.add_row(self.app_row)
+        self.app_modes = list(APP_IF_ACTIVE)
+        self.app_if = Adw.ComboRow(title="Wenn es schon vorne ist", model=_string_list(list(APP_IF_ACTIVE.values())))
+        cur = self.a.get("if_active", "next")
+        self.app_if.set_selected(self.app_modes.index(cur) if cur in self.app_modes else 0)
+        self.app_if.connect("notify::selected", lambda *_: self.changed())
+        self.row.add_row(self.app_if)
+        self._show_target_app()
+        if not self.app_key:
+            GLib.idle_add(lambda: (self._pick_target_app(), False)[1])
+
+    def _show_target_app(self):
+        from .widgets import AppCatalog
+        cat = AppCatalog.get()
+        if self.app_key:
+            self.app_row.set_title(GLib.markup_escape_text(cat.name(self.app_key)))
+            self.app_row.set_subtitle("Läuft es, kommt sein Fenster nach vorne – sonst wird es gestartet")
+            self.app_icon.set_from_gicon(cat.icon(self.app_key))
+        else:
+            self.app_row.set_title("Noch kein Programm gewählt")
+            self.app_row.set_subtitle("Gerade geöffnete Programme stehen oben in der Liste")
+            self.app_icon.set_from_icon_name("view-app-grid-symbolic")
+
+    def _pick_target_app(self, *_):
+        from .widgets import AppPicker
+
+        def picked(key):
+            self.app_key = key
+            self._show_target_app()
+            self.changed()
+        AppPicker(picked).present(self.dlg)
+
     def _build_screenshot(self):
         from ..config import SCREENSHOT_MODES
         self.shot_modes = list(SCREENSHOT_MODES)
@@ -292,6 +334,12 @@ class ActionEditor:
             return {"lock": True}
         if k == "screenshot":
             return {"screenshot": self.shot_modes[self.shot.get_selected()]}
+        if k == "app":
+            out = {"app": self.app_key}
+            mode = self.app_modes[self.app_if.get_selected()]
+            if mode != "next":
+                out["if_active"] = mode
+            return out
         if k == "clipboard":
             sel = self.clip.get_selected()
             if sel == 1:
@@ -609,7 +657,8 @@ class RuleEditor(Adw.Dialog):
                         "ai": {"ai": ""}, "open": {"open": ""}, "run": {"run": ""},
                         "workspace": {"workspace": "next"}, "delay": {"delay": 0.3}, "lock": {"lock": True},
                         "notify": {"notify": ""}, "clipboard": {"clipboard": "show"},
-                        "screenshot": {"screenshot": "area"}}
+                        "screenshot": {"screenshot": "area"},
+                        "app": {"app": ""}}
             for e in self.editors:
                 e.row.set_expanded(False)
             self._add_editor(defaults[row.kind], expanded=True)
