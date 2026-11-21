@@ -4,16 +4,28 @@ Tastenkürzel, getippte Tastenfolgen („##mail“), Touchpad-Gesten, Text-Baust
 Fenster-Aktionen für Linux mit X11. Gedacht als Ersatz für BetterTouchTool auf Zorin OS / GNOME. Alles steckt in einem
 Programm und einer Konfigurationsdatei.
 
-Die Maus bleibt bei **OpenLogi**. Wenn eine Maustaste dort ein Tastenkürzel sendet, kann
-Tastenwerk darauf reagieren. So landen auch Makros auf der Maus.
+Maustasten übernimmt Tastenwerk nicht selbst. Wenn deine Maus-Software (z. B. OpenLogi, Solaar,
+Piper) auf einer Taste ein Tastenkürzel oder einen Befehl wie `tastenwerk clipboard` auslöst,
+landen Makros trotzdem auf der Maus.
+
+## Installation
+
+Voraussetzung: Linux mit **X11-Sitzung** (unter Wayland können Programme keine globalen Kürzel
+abfangen), z. B. Zorin OS, Ubuntu oder Debian mit GNOME auf Xorg.
+
+```bash
+sudo apt install git python3-gi gir1.2-gtk-4.0 gir1.2-gtk-3.0 gir1.2-adw-1 python3-xlib python3-yaml xdotool
+git clone https://github.com/BENUTZER/tastenwerk.git ~/tastenwerk
+~/tastenwerk/bin/tastenwerk install
+```
+
+Danach steht **Tastenwerk** im Programm-Menü. Aktualisieren: `git -C ~/tastenwerk pull`.
+Optional: Touchpad-Gesten brauchen den Dienst **Touchégg** (bei Zorin dabei), Textumformung mit
+Claude das **Claude-Code-CLI** (siehe unten).
 
 ## Schnellstart
 
-**Tastenwerk** im Programm-Menü öffnen, oder:
-
-```bash
-~/LinuxShortcutsTool/bin/tastenwerk
-```
+**Tastenwerk** im Programm-Menü öffnen, oder im Terminal `~/tastenwerk/bin/tastenwerk`.
 
 In der Oberfläche legst du Regeln an, nimmst Kürzel per Tastendruck auf, importierst
 BetterTouchTool-Presets und startest den Hintergrunddienst (Schalter unten links). In den
@@ -109,8 +121,8 @@ Ohne Fenster geht es mit der Aktion `clipboard: paste 2`: Sie fügt die vorletzt
 (1 = zuletzt kopiert, Angeheftete zählen nicht mit). Weil eingefügte Einträge wieder nach oben
 rücken, wechselt Nr. 2 bei jedem Druck zwischen den letzten beiden Kopien.
 
-Für Tasten, die OpenLogi belegt (Maustasten, Sondertasten der MX Keys), dort als Befehl eintragen:
-`~/LinuxShortcutsTool/bin/tastenwerk clipboard`. Das öffnet den Verlauf direkt, ohne ein
+Für Tasten, die eine Maus- oder Tastatur-Software belegt (z. B. OpenLogi), dort als Befehl eintragen:
+`~/tastenwerk/bin/tastenwerk clipboard`. Das öffnet den Verlauf direkt, ohne ein
 Tastenkürzel vorzutäuschen, und ist deshalb zuverlässiger als ein simuliertes Super+Shift+V.
 
 Im Terminal wird automatisch mit Strg+Shift+V eingefügt. Kopien aus Passwort-Managern (Bitwarden,
@@ -186,3 +198,7 @@ Benötigt nur Pakete, die unter Zorin schon installiert sind: `python3-xlib`, `p
 
 Tray-Symbol mit Menü · Tastenfolgen erst nach
 Leerzeichen auslösen (optional) · Fenster auf andere Arbeitsfläche schieben
+
+## Lizenz
+
+GPL-3.0, siehe [LICENSE](LICENSE).
