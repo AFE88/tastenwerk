@@ -33,6 +33,7 @@ Der BetterTouchTool-Ersatz für Zorin OS, Ubuntu, Linux Mint und andere Linux-Sy
 | 📋 **Zwischenablage-Verlauf** | Alles, was du kopierst, inklusive Bilder – mit Suche, Anheften und Einfügen per Tastendruck. |
 | 🪟 **Fenster & Programme** | Fenster andocken, auf andere Monitore schieben, Programme starten oder nach vorne holen. |
 | ✨ **Mit Claude umformen** | Markierten Text per Kürzel umschreiben lassen, z. B. als freundliche Mail – über dein Claude-Abo, ohne API-Schlüssel. |
+| 🤖 **Mit Claude einrichten** | Claude Code kann deine Regeln über einen eingebauten MCP-Server lesen, prüfen und anlegen: „Leg mir ein freies Kürzel für Obsidian an.“ |
 | 🔗 **Makros** | Mehrere Aktionen hintereinander: Text einfügen, Tasten senden, warten, Befehl ausführen, Bildschirmfoto … |
 | 🍏 **Umstieg vom Mac** | BetterTouchTool-Presets importieren – ein Assistent übersetzt ⌘-Kürzel, Text-Bausteine und Gesten. |
 | 🔔 **Tray-Symbol** | In der oberen Leiste: Status, Zwischenablage, alle Kürzel pausieren (z. B. für Spiele), Oberfläche öffnen. |
@@ -177,6 +178,25 @@ claude auth login
 
 Ohne CLI funktioniert alles andere ganz normal.
 
+## Regeln mit Claude einrichten (MCP)
+
+Tastenwerk bringt einen kleinen **MCP-Server** mit. Damit kann Claude Code deine Regeln lesen,
+freie Kürzel suchen und neue Regeln anlegen, zum Beispiel „Leg mir ein Kürzel an, das Obsidian holt,
+und minimier es, wenn es schon vorne ist“. Claude nutzt dabei dieselbe Prüfung wie die Oberfläche:
+Es erfährt, ob ein Kürzel schon von einer anderen Regel oder von GNOME belegt ist, und legt keine
+fehlerhafte Konfiguration ab. Änderungen gelten sofort. Einmalig einrichten (braucht das Claude-Code-CLI, siehe oben):
+
+```bash
+tastenwerk mcp --install
+```
+
+Danach steht Tastenwerk in neuen Claude-Code-Sitzungen bereit (`/mcp` zeigt den Stand). Austragen
+geht mit `tastenwerk mcp --uninstall`.
+
+Bewusst **nicht** freigegeben: der Zwischenablage-Verlauf (er kann Passwörter enthalten), Fenstertitel
+und das Auslösen von Aktionen oder Tastendrücken. Claude ändert nur die Konfiguration, und Claude Code
+fragt vor jeder Änderung nach.
+
 ## Umstieg von BetterTouchTool
 
 In der Oberfläche über **Menü → Aus BetterTouchTool importieren …** (Strg+I) oder im Terminal:
@@ -260,6 +280,7 @@ Alle Aktionen und Platzhalter sind in [`config.example.yaml`](config.example.yam
 | `tastenwerk reload` / `stop` | laufenden Dienst neu laden / beenden |
 | `tastenwerk clipboard [paste N \| clear]` | Zwischenablage-Verlauf öffnen, Eintrag einfügen, leeren |
 | `tastenwerk screenshot [area \| screen \| window]` | Bildschirmfoto mit dem GNOME-Werkzeug |
+| `tastenwerk mcp --install` | Tastenwerk in Claude Code eintragen (MCP-Server) |
 | `tastenwerk install` | Eintrag im Programm-Menü anlegen |
 | `tastenwerk --version` | Version anzeigen |
 
@@ -294,6 +315,7 @@ tastenwerk/
   gestures.py    Touchpad-Gesten (über den Touchégg-Dienst)
   clipboard.py   Zwischenablage-Verlauf und sein Fenster
   actions.py     alle Aktionen (xdotool, Zwischenablage, Befehle, Claude)
+  mcp_server.py  MCP-Server für Claude (Regeln lesen, prüfen, anlegen)
   apps.py        installierte Programme und Fenster-Zuordnung
   tray.py        Symbol in der oberen Leiste (Ayatana AppIndicator)
   i18n.py        Übersetzungen (liest locale/*.po direkt)

@@ -234,6 +234,36 @@ def cmd_autostart(args):
     return 0
 
 
+def cmd_mcp(args):
+    from . import control
+    if args.config:
+        cfgmod.CONFIG_FILE = Path(args.config).expanduser().resolve()
+    if args.install or args.uninstall:
+        import subprocess
+        from .ai import find_claude
+        exe = find_claude("claude")
+        if not exe:
+            print("✗ Claude-CLI nicht gefunden. Von Hand eintragen:")
+            print(f"  claude mcp add --scope user tastenwerk -- {control.LAUNCHER} mcp")
+            return 1
+        if args.uninstall:
+            cmd = [exe, "mcp", "remove", "--scope", "user", "tastenwerk"]
+        else:
+            subprocess.run([exe, "mcp", "remove", "--scope", "user", "tastenwerk"], capture_output=True)
+            cmd = [exe, "mcp", "add", "--scope", "user", "tastenwerk", "--", str(control.LAUNCHER), "mcp"]
+        r = subprocess.run(cmd)
+        if r.returncode == 0:
+            print("✓ In Claude Code ausgetragen" if args.uninstall else
+                  "✓ In Claude Code eingetragen – in neuen Claude-Sitzungen verfügbar (/mcp zeigt den Stand)")
+        return r.returncode
+    if sys.stdin.isatty():
+        print("Das ist der MCP-Server für Claude – er wird von Claude gestartet, nicht von Hand.\n"
+              "Einrichten in Claude Code:  tastenwerk mcp --install", file=sys.stderr)
+    from . import mcp_server
+    mcp_server.OTHER_CONFIG = bool(args.config)
+    return mcp_server.serve()
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="tastenwerk", description=f"{APP_NAME} {__version__} – Tastenkürzel für Linux (X11)")
     p.add_argument("--config", help="andere Konfigurationsdatei verwenden")
@@ -265,6 +295,10 @@ def main(argv=None):
     s = sub.add_parser("screenshot", help="Bildschirmfoto mit dem GNOME-Werkzeug (für Sondertasten)")
     s.add_argument("mode", nargs="?", default="area", help="area (Standard) · screen · window")
     s.set_defaults(fn=cmd_screenshot)
+    s = sub.add_parser("mcp", help="MCP-Server für Claude (Regeln lesen, prüfen, anlegen)")
+    s.add_argument("--install", action="store_true", help="in Claude Code eintragen")
+    s.add_argument("--uninstall", action="store_true", help="aus Claude Code austragen")
+    s.set_defaults(fn=cmd_mcp)
     s = sub.add_parser("autostart", help="beim Anmelden starten")
     s.add_argument("state", choices=["on", "off"])
     s.set_defaults(fn=cmd_autostart)

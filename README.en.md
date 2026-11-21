@@ -33,6 +33,7 @@ A BetterTouchTool replacement for Zorin OS, Ubuntu, Linux Mint and other Linux s
 | 📋 **Clipboard history** | Everything you copy, including images – with search, pinning and pasting by keyboard. |
 | 🪟 **Windows & apps** | Tile windows, move them to other monitors, launch apps or bring them to the front. |
 | ✨ **Rewrite with Claude** | Rewrite selected text with a shortcut, e.g. as a friendly email – using your Claude subscription, no API key. |
+| 🤖 **Set up with Claude** | Claude Code can read, check and create your rules through a built-in MCP server: “Give Obsidian a free shortcut.” |
 | 🔗 **Macros** | Several actions in a row: insert text, send keys, wait, run a command, take a screenshot … |
 | 🍏 **Coming from the Mac** | Import BetterTouchTool presets – an assistant translates ⌘ shortcuts, text snippets and gestures. |
 | 🔔 **Tray icon** | In the top bar: status, clipboard, pause all shortcuts (e.g. for games), open the window. |
@@ -173,6 +174,25 @@ claude auth login
 
 Without the CLI everything else works as usual.
 
+## Set up rules with Claude (MCP)
+
+Tastenwerk includes a small **MCP server**. It lets Claude Code read your rules, find free shortcuts
+and create new rules, for example “Add a shortcut that brings Obsidian to the front, and minimize it
+when it already is”. Claude uses the same checks as the interface: it learns whether a shortcut is
+already taken by another rule or by GNOME, and it never writes a broken configuration. Changes apply
+immediately. One-time setup (needs the Claude Code CLI, see above):
+
+```bash
+tastenwerk mcp --install
+```
+
+Afterwards Tastenwerk is available in new Claude Code sessions (`/mcp` shows the status). Remove it
+with `tastenwerk mcp --uninstall`.
+
+Deliberately **not** exposed: the clipboard history (it can contain passwords), window titles, and
+triggering actions or key presses. Claude only changes the configuration, and Claude Code asks
+before every change.
+
 ## Coming from BetterTouchTool
 
 In the window via **Menu → Import from BetterTouchTool …** (Ctrl+I) or in a terminal:
@@ -255,6 +275,7 @@ German): `keys`, `type`, `paste`, `app`, `window`, `workspace`, `open`, `run`, `
 | `tastenwerk reload` / `stop` | reload / stop the running service |
 | `tastenwerk clipboard [paste N \| clear]` | open the clipboard history, paste an entry, clear it |
 | `tastenwerk screenshot [area \| screen \| window]` | screenshot with the GNOME tool |
+| `tastenwerk mcp --install` | Add Tastenwerk to Claude Code (MCP server) |
 | `tastenwerk install` | add the app menu entry |
 | `tastenwerk --version` | show the version |
 
