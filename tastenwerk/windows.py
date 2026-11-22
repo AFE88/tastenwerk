@@ -196,4 +196,4 @@ class WindowOps:
             target = max(cur - 1, 0)
         else:
             target = max(0, min(int(where) - 1, n - 1))
-        self.x.client_message(self.x.root, "_NET_CURRENT_DESKTOP", [target, X.CurrentTime])
+        self.x.client_message(self.x.root, "_NET_CURRENT_DESKTOP", [target, self.x.server_time()])

@@ -80,5 +80,35 @@ class X11:
         atoms = [self.atom(n) for n in names] + [0, 0]
         self.client_message(win, "_NET_WM_STATE", [action, atoms[0], atoms[1], 1])
 
+    def server_time(self) -> int:
+        """Aktuelle X-Server-Zeit. GNOME misstraut Anfragen mit Zeitstempel 0 (CurrentTime) und
+        markiert das Fenster dann nur als „will Aufmerksamkeit“, statt dorthin zu wechseln."""
+        try:
+            if getattr(self, "_tw", None) is None:
+                self._tw = self.root.create_window(-10, -10, 1, 1, 0, 0, X.InputOnly, X.CopyFromParent,
+                                                   event_mask=X.PropertyChangeMask)
+            self._tw.change_property(self.atom("_TASTENWERK_TIME"), Xatom.STRING, 8, b"")
+            self.d.flush()
+            for _ in range(50):
+                ev = self.d.next_event()
+                if ev.type == X.PropertyNotify and ev.window.id == self._tw.id:
+                    return int(ev.time)
+        except Exception:
+            pass
+        return X.CurrentTime
+
+    def desktop_of(self, win) -> int | None:
+        """Arbeitsfläche eines Fensters (None = unbekannt oder auf allen Arbeitsflächen)."""
+        v = self.prop(win, "_NET_WM_DESKTOP", Xatom.CARDINAL)
+        if not v or int(v[0]) == 0xFFFFFFFF:
+            return None
+        return int(v[0])
+
     def activate(self, win):
-        self.client_message(win, "_NET_ACTIVE_WINDOW", [2, X.CurrentTime, 0])
+        """Fenster nach vorne holen – liegt es auf einer anderen Arbeitsfläche, erst dorthin wechseln."""
+        t = self.server_time()
+        desk = self.desktop_of(win)
+        cur = self.prop(self.root, "_NET_CURRENT_DESKTOP", Xatom.CARDINAL)
+        if desk is not None and cur and int(cur[0]) != desk:
+            self.client_message(self.root, "_NET_CURRENT_DESKTOP", [desk, t])
+        self.client_message(win, "_NET_ACTIVE_WINDOW", [2, t, 0])
