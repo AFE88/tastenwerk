@@ -3,7 +3,7 @@
 from pathlib import Path as _Path
 
 # Version des letzten Release. Bei einem neuen Release hier erhöhen und den Git-Tag v<Version> setzen.
-BASE_VERSION = "0.3.0"
+BASE_VERSION = "0.3.1"
 APP_NAME = "Tastenwerk"
 
 
